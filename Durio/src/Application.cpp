@@ -29,9 +29,9 @@ void App::Run()
 		if (Movement.Left)
 			m_Cam.Pos.x--;
 		if (Movement.Up)
-			m_Cam.Pos.y++;
-		if (Movement.Down)
 			m_Cam.Pos.y--;
+		if (Movement.Down)
+			m_Cam.Pos.y++;
 
 		m_Sprite.Draw();
 		m_Sprite.Rotation++;
