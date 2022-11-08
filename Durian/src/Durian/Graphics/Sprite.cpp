@@ -21,15 +21,18 @@ namespace Durian
 	{
 		if (m_Texture)
 		{
-			SDL_FRect rect = { Pos.x, Pos.y, Scale.x, Scale.y };
+			SDL_FRect rect;
 
 			if (m_Camera)
 			{
-				rect.x -= m_Camera->Pos.x;
-				rect.y -= m_Camera->Pos.y;
+				Vec2<float> pos = Pos / m_Camera->Distance;
+				Vec2<float> scale = Scale / m_Camera->Distance;
+				rect = { pos.x - m_Camera->Pos.x, pos.y - m_Camera->Pos.y, scale.x, scale.y };
 			}
+			else
+				rect = { Pos.x, Pos.y, Scale.x, Scale.y };
 
-			SDL_FPoint rotationCenter = { Scale.x * RotationCenter.x, Scale.y * RotationCenter.y };
+			SDL_FPoint rotationCenter = { rect.w * RotationCenter.x, rect.h * RotationCenter.y };
 			SDL_RenderCopyExF(m_Window->GetRenderer(), m_Texture->GetTexture(), nullptr, &rect, Rotation, &rotationCenter, (SDL_RendererFlip)Flip);
 		}
 	}

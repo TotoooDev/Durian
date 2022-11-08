@@ -1,4 +1,5 @@
 #include <Application.h>
+#include <Durian/Core/Log.h>
 
 App::App()
 	: m_Window(Durian::WindowSpecification(&m_EventBus)), m_Sprite(&m_Window)
@@ -29,9 +30,10 @@ void App::Run()
 		if (Movement.Left)
 			m_Cam.Pos.x--;
 		if (Movement.Up)
-			m_Cam.Pos.y--;
+			m_Cam.Distance-=0.1f;
 		if (Movement.Down)
-			m_Cam.Pos.y++;
+			m_Cam.Distance+=0.1f;
+		DURIAN_LOG_INFO(m_Cam.Distance);
 
 		m_Sprite.Draw();
 		m_Sprite.Rotation++;

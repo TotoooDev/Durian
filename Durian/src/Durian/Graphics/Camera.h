@@ -8,5 +8,6 @@ namespace Durian
 	{
 	public:
 		Vec2<float> Pos = Vec2<float>(0.0f);
+		float Distance = 1.0f;
 	};
 }
