@@ -673,6 +673,7 @@
     <ClInclude Include="src\vendor\spdlog\version.h">
       <Filter>vendor\spdlog</Filter>
     </ClInclude>
+    <ClInclude Include="src\Durian\Graphics\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Durian\Core\Window.cpp">

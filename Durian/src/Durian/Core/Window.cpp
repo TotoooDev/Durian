@@ -37,12 +37,12 @@ namespace Durian
 		CreateRenderer();
 	}
 
-	void Window::SetDrawColor(const Math::Color& color)
+	void Window::SetDrawColor(const Color& color)
 	{
 		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(color.r * 255), (unsigned char)(color.g * 255), (unsigned char)(color.b * 255), (unsigned char)(color.a * 255));
 	}
 
-	void Window::Clear(const Math::Color& color)
+	void Window::Clear(const Color& color)
 	{
 		SetDrawColor(color);
 		SDL_RenderClear(m_Renderer);

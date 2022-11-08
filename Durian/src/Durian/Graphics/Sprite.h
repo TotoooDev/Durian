@@ -4,6 +4,7 @@
 #include <Durian/Core/Math.h>
 #include <Durian/Core/Ref.h>
 #include <Durian/Graphics/Texture.h>
+#include <Durian/Graphics/Camera.h>
 #include <SDL2/SDL.h>
 
 namespace Durian
@@ -23,20 +24,22 @@ namespace Durian
 
 		void LoadTexture(const std::string& path);
 		void SetTexture(Ref<Texture> texture) { m_Texture = texture; }
+		void SetCamera(Camera* camera) { m_Camera = camera; }
 
 		Ref<Texture> GetTexture() { return m_Texture; }
 
 		void Draw();
 
-		Math::Vec2<float> Pos = Math::Vec2(0.0f);
-		Math::Vec2<float> Scale = Math::Vec2(16.0f);
-		Math::Vec2<float> RotationCenter = Math::Vec2(0.5f);
+		Vec2<float> Pos = Vec2(0.0f);
+		Vec2<float> Scale = Vec2(16.0f);
+		Vec2<float> RotationCenter = Vec2(0.5f);
 		double Rotation = 0.0f;
 		FlipState Flip = FlipState::None;
 
 	private:
-		Window* m_Window;
+		Window* m_Window = nullptr;
 
 		Ref<Texture> m_Texture;
+		Camera* m_Camera = nullptr;
 	};
 }
