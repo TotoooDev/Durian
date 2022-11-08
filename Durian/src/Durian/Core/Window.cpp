@@ -32,6 +32,8 @@ namespace Durian
 		SDL_AddEventWatch([](void* userdata, SDL_Event* event)
 			{
 				WindowSpecification* spec = (WindowSpecification*)userdata;
+				if (!spec->Bus)
+					return 1;
 
 				switch (event->type)
 				{
@@ -54,11 +56,29 @@ namespace Durian
 					break;
 
 				case SDL_KEYDOWN:
-					spec->Bus->Publish(new KeyDownEvent(event->key.keysym.scancode));
+					if (SDL_GetWindowID(spec->NativeWindow) == event->key.windowID)
+						spec->Bus->Publish(new KeyDownEvent(event->key.keysym.scancode));
+					break;
+				case SDL_KEYUP:
+					if (SDL_GetWindowID(spec->NativeWindow) == event->key.windowID)
+						spec->Bus->Publish(new KeyUpEvent(event->key.keysym.scancode));
 					break;
 
-				case SDL_KEYUP:
-					spec->Bus->Publish(new KeyUpEvent(event->key.keysym.scancode));
+				case SDL_MOUSEMOTION:
+					if (SDL_GetWindowID(spec->NativeWindow) == event->motion.windowID)
+						spec->Bus->Publish(new MouseMovedEvent(event->motion.x, event->motion.y));
+					break;
+				case SDL_MOUSEWHEEL:
+					if (SDL_GetWindowID(spec->NativeWindow) == event->wheel.windowID)
+						spec->Bus->Publish(new MouseScrolledEvent(event->wheel.preciseX, event->wheel.preciseY));
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					if (SDL_GetWindowID(spec->NativeWindow) == event->button.windowID)
+						spec->Bus->Publish(new MouseButtonDownEvent(event->button.button));
+					break;
+				case SDL_MOUSEBUTTONUP:
+					if (SDL_GetWindowID(spec->NativeWindow) == event->button.windowID)
+						spec->Bus->Publish(new MouseButtonUpEvent(event->button.button));
 					break;
 
 				default:
@@ -79,6 +99,17 @@ namespace Durian
 		// No more windows
 		if (g_NumWindows <= 0)
 			SDL_Quit();
+	}
+
+	void Window::Clear(unsigned char r, unsigned char g, unsigned char b)
+	{
+		SDL_SetRenderDrawColor(m_Renderer, r, g, b, 255);
+		SDL_RenderClear(m_Renderer);
+	}
+
+	void Window::Present()
+	{
+		SDL_RenderPresent(m_Renderer);
 	}
 
 	void Window::PollEvents()

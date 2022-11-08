@@ -6,13 +6,13 @@ namespace Durian
 {
 	struct MouseMovedEvent : public Event
 	{
-		MouseMovedEvent(double xPos, double yPos)
+		MouseMovedEvent(int xPos, int yPos)
 			: x(xPos), y(yPos)
 		{
 			m_Name = "Mouse Moved Event";
 		}
 
-		double x, y;
+		int x, y;
 	};
 
 	struct MouseButtonDownEvent : public Event
@@ -39,12 +39,12 @@ namespace Durian
 
 	struct MouseScrolledEvent : public Event
 	{
-		MouseScrolledEvent(double x, double y)
+		MouseScrolledEvent(float x, float y)
 			: xOffset(x), yOffset(y)
 		{
 			m_Name = "Mouse Scrolled Event";
 		}
 
-		double xOffset, yOffset;
+		float xOffset, yOffset;
 	};
 }
