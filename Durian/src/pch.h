@@ -27,22 +27,10 @@
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-#include <GL/glew.h>
-
-#include <GLFW/glfw3.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
-
 #include <nlohmann/json.hpp>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include <Durian/Core/Timer.h>
-#include <Durian/Debug/Instrumentor.h>
-
 #include <windows.h>
+
+#include <Durian/Core/Log.h>
 
 #endif //PCH_H

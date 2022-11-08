@@ -44,8 +44,8 @@ project "Durian"
 
 	links
 	{
-		"glew32",
-		"glfw3dll"
+		"SDL2",
+		"SDL2main"
 	}
 
 	filter "system:windows"
@@ -100,7 +100,9 @@ project "Durio"
 
 	links
 	{
-		"Durian"
+		"Durian",
+		"SDL2",
+		"SDL2main"
 	}
 
 	filter "system:windows"
