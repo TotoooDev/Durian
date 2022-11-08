@@ -9,9 +9,11 @@ namespace Durian
 	class Texture
 	{
 	public:
-		Texture(Window* window, const std::string& path);
+		Texture(Window* window, const std::string& path = "");
 		~Texture();
 
+		void LoadFromFile(const std::string& path);
+		
 		SDL_Texture* GetTexture() { return m_Texture; }
 
 	private:

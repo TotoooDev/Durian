@@ -11,6 +11,56 @@ namespace Durian
 	Window::Window(const WindowSpecification& spec)
 		: m_Spec(spec)
 	{
+		Init();
+		CreateSDLWindow();
+		CreateRenderer();
+		SetCallbacks();
+		g_NumWindows++;
+	}
+
+	Window::~Window()
+	{
+		SDL_DestroyRenderer(m_Renderer);
+		SDL_DestroyWindow(m_NativeWindow);
+		g_NumWindows--;
+		// No more windows
+		if (g_NumWindows <= 0)
+		{
+			IMG_Quit();
+			SDL_Quit();
+		}
+	}
+
+	void Window::SetVSync(bool flag)
+	{
+		m_Spec.VSync = flag;
+		CreateRenderer();
+	}
+
+	void Window::SetDrawColor(const Math::Color& color)
+	{
+		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(color.r * 255), (unsigned char)(color.g * 255), (unsigned char)(color.b * 255), (unsigned char)(color.a * 255));
+	}
+
+	void Window::Clear(const Math::Color& color)
+	{
+		SetDrawColor(color);
+		SDL_RenderClear(m_Renderer);
+	}
+
+	void Window::Present()
+	{
+		SDL_RenderPresent(m_Renderer);
+	}
+
+	void Window::PollEvents()
+	{
+		SDL_Event event;
+		while (SDL_PollEvent(&event)); // Poll events, this is needed so SDL calls the event callback
+	}
+
+	void Window::Init()
+	{
 		if (!g_IsSDLInit)
 		{
 			if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
@@ -19,7 +69,7 @@ namespace Durian
 				DURIAN_LOG_INFO("SDL info: {0}", SDL_GetError());
 				return;
 			}
-			if (IMG_Init(IMG_INIT_PNG) == 0)
+			if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) == 0)
 			{
 				DURIAN_LOG_ERROR("Failed to initialize SDL_image!");
 				DURIAN_LOG_INFO("IMG info: {0}", IMG_GetError());
@@ -27,16 +77,28 @@ namespace Durian
 			}
 			g_IsSDLInit = true;
 		}
+	}
 
+	void Window::CreateSDLWindow()
+	{
 		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN);
 		m_Spec.NativeWindow = m_NativeWindow;
+	}
+
+	void Window::CreateRenderer()
+	{
+		if (m_Renderer)
+			SDL_DestroyRenderer(m_Renderer);
 
 		unsigned int flags = SDL_RENDERER_ACCELERATED;
 		if (m_Spec.VSync)
 			flags |= SDL_RENDERER_PRESENTVSYNC;
 		m_Renderer = SDL_CreateRenderer(m_NativeWindow, -1, flags);
 		SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
+	}
 
+	void Window::SetCallbacks()
+	{
 		SDL_AddEventWatch([](void* userdata, SDL_Event* event)
 			{
 				WindowSpecification* spec = (WindowSpecification*)userdata;
@@ -95,42 +157,5 @@ namespace Durian
 
 				return 0;
 			}, &m_Spec);
-
-		g_NumWindows++;
-	}
-
-	Window::~Window()
-	{
-		SDL_DestroyRenderer(m_Renderer);
-		SDL_DestroyWindow(m_NativeWindow);
-		g_NumWindows--;
-		// No more windows
-		if (g_NumWindows <= 0)
-		{
-			IMG_Quit();
-			SDL_Quit();
-		}
-	}
-
-	void Window::SetDrawColor(const Math::Color& color)
-	{
-		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(color.r * 255), (unsigned char)(color.g * 255), (unsigned char)(color.b * 255), (unsigned char)(color.a * 255));
-	}
-
-	void Window::Clear(const Math::Color& color)
-	{
-		SetDrawColor(color);
-		SDL_RenderClear(m_Renderer);
-	}
-
-	void Window::Present()
-	{
-		SDL_RenderPresent(m_Renderer);
-	}
-
-	void Window::PollEvents()
-	{
-		SDL_Event event;
-		while (SDL_PollEvent(&event)); // Poll events, this is needed so SDL calls the event callback
 	}
 }

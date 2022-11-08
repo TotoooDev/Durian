@@ -8,10 +8,9 @@ namespace Durian
 		class Vec2
 		{
 		public:
-			Vec2(T _x, T _y)
-				: x(_x), y(_y)  {}
-			Vec2(T _x)
-				: x(_x), y(_x) {}
+			Vec2() = default;
+			Vec2(T _x, T _y) : x(_x), y(_y)  {}
+			Vec2(T _x) : x(_x), y(_x) {}
 
 			T x, y;
 
@@ -19,15 +18,18 @@ namespace Durian
 			bool operator!=(const Vec2& lhs) const { return x != lhs.x || y != lhs.y; }
 			const Vec2& operator+(const Vec2& lhs) const { return Vec2(x + lhs.x, y + lhs.y); }
 			const Vec2& operator-(const Vec2& lhs) const { return Vec2(x - lhs.x, y - lhs.y); }
+			template <typename U>
+			const Vec2& operator*(const U& lhs) const { return Vec2(x * lhs, y * lhs); }
+			template <typename U>
+			const Vec2& operator/(const U& lhs) const { return Vec2(x / lhs, y / lhs); }
 		};
 
 		class Color
 		{
 		public:
-			Color(float _r, float _g, float _b, float _a)
-				: r(_r), g(_g), b(_b), a(_a) {}
-			Color(float x)
-				: r(x), g(x), b(x), a(x) {}
+			Color() = default;
+			Color(float _r, float _g, float _b, float _a) : r(_r), g(_g), b(_b), a(_a) {}
+			Color(float x) : r(x), g(x), b(x), a(x) {}
 
 			float r, g, b, a;
 

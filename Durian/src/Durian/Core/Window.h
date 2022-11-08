@@ -27,8 +27,10 @@ namespace Durian
 		Window(const WindowSpecification& spec);
 		~Window();
 
+		WindowSpecification GetSpecification() const { return m_Spec; }
 		SDL_Renderer* GetRenderer() const { return m_Renderer; }
 
+		void SetVSync(bool flag);
 		void SetDrawColor(const Math::Color& color);
 
 		void Clear(const Math::Color& color);
@@ -36,6 +38,11 @@ namespace Durian
 		void PollEvents();
 
 	private:
+		void Init();
+		void CreateSDLWindow();
+		void CreateRenderer();
+		void SetCallbacks();
+
 		SDL_Window* m_NativeWindow = nullptr;
 		SDL_Renderer* m_Renderer = nullptr;
 

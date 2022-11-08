@@ -18,6 +18,5 @@ private:
 	Durian::EventBus m_EventBus;
 	Durian::Window m_Window;
 	Durian::Sprite m_Sprite;
-	Durian::Texture m_Texture;
 	bool m_IsRunning = true;
 };
