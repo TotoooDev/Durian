@@ -643,6 +643,8 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Durian\Graphics\Sprite.h" />
+    <ClInclude Include="src\Durian\Core\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Durian\Core\Window.cpp">

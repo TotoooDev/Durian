@@ -9,8 +9,7 @@ namespace Durian
 	struct WindowSpecification
 	{
 		WindowSpecification(EventBus* bus, const std::string& title = "Durian Window", unsigned int width = 800, unsigned int height = 600, bool vsync = true)
-			: Bus(bus), Title(title), Width(width), Height(height), VSync(vsync)
-		{}
+			: Bus(bus), Title(title), Width(width), Height(height), VSync(vsync) {}
 
 		std::string Title = "Durian Window";
 		unsigned int Width = 800;

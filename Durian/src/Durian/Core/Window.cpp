@@ -24,10 +24,12 @@ namespace Durian
 
 		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN);
 		m_Spec.NativeWindow = m_NativeWindow;
+
 		unsigned int flags = SDL_RENDERER_ACCELERATED;
 		if (m_Spec.VSync)
 			flags |= SDL_RENDERER_PRESENTVSYNC;
 		m_Renderer = SDL_CreateRenderer(m_NativeWindow, -1, flags);
+		SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
 
 		SDL_AddEventWatch([](void* userdata, SDL_Event* event)
 			{

@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Durian\Core\Log.h" />
+    <ClInclude Include="src\Durian\Core\Math.h" />
     <ClInclude Include="src\Durian\Core\Timer.h" />
     <ClInclude Include="src\Durian\Core\Window.h" />
     <ClInclude Include="src\Durian\Event\Event.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="src\Durian\Event\Keycode.h" />
     <ClInclude Include="src\Durian\Event\MouseEvents.h" />
     <ClInclude Include="src\Durian\Event\WindowEvents.h" />
+    <ClInclude Include="src\Durian\Graphics\Sprite.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\vendor\SDL2\SDL.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_assert.h" />
