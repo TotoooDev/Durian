@@ -140,6 +140,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Application.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
@@ -147,9 +150,6 @@
     <ProjectReference Include="..\Durian\Durian.vcxproj">
       <Project>{485103AF-34F3-2D85-1DAE-41D909EFB4D5}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Application.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

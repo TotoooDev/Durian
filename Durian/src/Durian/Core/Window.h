@@ -27,7 +27,7 @@ namespace Durian
 		Window(const WindowSpecification& spec);
 		~Window();
 
-		void Clear(unsigned char r = 0, unsigned char g = 0, unsigned char b = 0);
+		void Clear(float r = 0.0f, float g = 0.0f, float b = 0.0f);
 		void Present();
 		void PollEvents();
 

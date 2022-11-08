@@ -45,6 +45,9 @@
     <ClInclude Include="src\Durian\Core\Log.h">
       <Filter>Durian\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Durian\Core\Timer.h">
+      <Filter>Durian\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\Durian\Core\Window.h">
       <Filter>Durian\Core</Filter>
     </ClInclude>

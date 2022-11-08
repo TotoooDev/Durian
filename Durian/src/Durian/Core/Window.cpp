@@ -101,9 +101,9 @@ namespace Durian
 			SDL_Quit();
 	}
 
-	void Window::Clear(unsigned char r, unsigned char g, unsigned char b)
+	void Window::Clear(float r, float g, float b)
 	{
-		SDL_SetRenderDrawColor(m_Renderer, r, g, b, 255);
+		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(r * 255), (unsigned char)(g * 255), (unsigned char)(b * 255), 255);
 		SDL_RenderClear(m_Renderer);
 	}
 

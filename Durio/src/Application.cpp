@@ -12,7 +12,7 @@ void App::Run()
 	{
 		m_Window.PollEvents();
 
-		m_Window.Clear();
+		m_Window.Clear(0.2f, 0.2f, 0.2f);
 
 		// Draw epic stuff here
 

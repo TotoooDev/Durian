@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Durian\Core\Log.h" />
+    <ClInclude Include="src\Durian\Core\Timer.h" />
     <ClInclude Include="src\Durian\Core\Window.h" />
     <ClInclude Include="src\Durian\Event\Event.h" />
     <ClInclude Include="src\Durian\Event\EventBus.h" />
