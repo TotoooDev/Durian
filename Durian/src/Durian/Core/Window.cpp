@@ -1,6 +1,7 @@
 #include <pch.h>
 #include <Durian/Core/Window.h>
 #include <Durian/Event/Events.h>
+#include <SDL2/SDL_image.h>
 
 namespace Durian
 {
@@ -15,11 +16,16 @@ namespace Durian
 			if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 			{
 				DURIAN_LOG_ERROR("Failed to initialize SDL!");
-				DURIAN_LOG_DEBUG("SDL info: {0}", SDL_GetError());
+				DURIAN_LOG_INFO("SDL info: {0}", SDL_GetError());
 				return;
 			}
-			else
-				g_IsSDLInit = true;
+			if (IMG_Init(IMG_INIT_PNG) == 0)
+			{
+				DURIAN_LOG_ERROR("Failed to initialize SDL_image!");
+				DURIAN_LOG_INFO("IMG info: {0}", IMG_GetError());
+				return;
+			}
+			g_IsSDLInit = true;
 		}
 
 		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN);
@@ -100,12 +106,20 @@ namespace Durian
 		g_NumWindows--;
 		// No more windows
 		if (g_NumWindows <= 0)
+		{
+			IMG_Quit();
 			SDL_Quit();
+		}
 	}
 
-	void Window::Clear(float r, float g, float b)
+	void Window::SetDrawColor(const Math::Color& color)
 	{
-		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(r * 255), (unsigned char)(g * 255), (unsigned char)(b * 255), 255);
+		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(color.r * 255), (unsigned char)(color.g * 255), (unsigned char)(color.b * 255), (unsigned char)(color.a * 255));
+	}
+
+	void Window::Clear(const Math::Color& color)
+	{
+		SetDrawColor(color);
 		SDL_RenderClear(m_Renderer);
 	}
 

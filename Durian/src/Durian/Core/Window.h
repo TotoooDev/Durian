@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Durian/Event/EventBus.h>
+#include <Durian/Core/Math.h>
 #include <SDL2/SDL.h>
 #include <string>
 
@@ -26,7 +27,11 @@ namespace Durian
 		Window(const WindowSpecification& spec);
 		~Window();
 
-		void Clear(float r = 0.0f, float g = 0.0f, float b = 0.0f);
+		SDL_Renderer* GetRenderer() const { return m_Renderer; }
+
+		void SetDrawColor(const Math::Color& color);
+
+		void Clear(const Math::Color& color);
 		void Present();
 		void PollEvents();
 

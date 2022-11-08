@@ -88,7 +88,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -138,13 +138,14 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Durian\Core\Log.h" />
     <ClInclude Include="src\Durian\Core\Math.h" />
+    <ClInclude Include="src\Durian\Core\Ref.h" />
     <ClInclude Include="src\Durian\Core\Timer.h" />
     <ClInclude Include="src\Durian\Core\Window.h" />
     <ClInclude Include="src\Durian\Event\Event.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="src\Durian\Event\MouseEvents.h" />
     <ClInclude Include="src\Durian\Event\WindowEvents.h" />
     <ClInclude Include="src\Durian\Graphics\Sprite.h" />
+    <ClInclude Include="src\Durian\Graphics\Texture.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\vendor\SDL2\SDL.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_assert.h" />
@@ -186,6 +188,7 @@
     <ClInclude Include="src\vendor\SDL2\SDL_haptic.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_hidapi.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_hints.h" />
+    <ClInclude Include="src\vendor\SDL2\SDL_image.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_joystick.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_keyboard.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_keycode.h" />
@@ -244,6 +247,12 @@
     <ClInclude Include="src\vendor\SDL2\SDL_vulkan.h" />
     <ClInclude Include="src\vendor\SDL2\begin_code.h" />
     <ClInclude Include="src\vendor\SDL2\close_code.h" />
+    <ClInclude Include="src\vendor\SDL2\miniz.h" />
+    <ClInclude Include="src\vendor\SDL2\nanosvg.h" />
+    <ClInclude Include="src\vendor\SDL2\nanosvgrast.h" />
+    <ClInclude Include="src\vendor\SDL2\qoi.h" />
+    <ClInclude Include="src\vendor\SDL2\stb_image.h" />
+    <ClInclude Include="src\vendor\SDL2\tiny_jpeg.h" />
     <ClInclude Include="src\vendor\nlohmann\json.hpp" />
     <ClInclude Include="src\vendor\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\vendor\spdlog\async.h" />
@@ -345,10 +354,11 @@
     <ClInclude Include="src\vendor\spdlog\stopwatch.h" />
     <ClInclude Include="src\vendor\spdlog\tweakme.h" />
     <ClInclude Include="src\vendor\spdlog\version.h" />
-    <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Durian\Core\Window.cpp" />
+    <ClCompile Include="src\Durian\Graphics\Sprite.cpp" />
+    <ClCompile Include="src\Durian\Graphics\Texture.cpp" />
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

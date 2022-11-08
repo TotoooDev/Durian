@@ -34,5 +34,6 @@
 #include <windows.h>
 
 #include <Durian/Core/Log.h>
+#include <Durian/Core/Ref.h>
 
 #endif //PCH_H

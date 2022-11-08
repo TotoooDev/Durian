@@ -45,7 +45,8 @@ project "Durian"
 	links
 	{
 		"SDL2",
-		"SDL2main"
+		"SDL2main",
+		"SDL2_image"
 	}
 
 	filter "system:windows"
@@ -77,6 +78,8 @@ project "Durio"
 	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
 	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
 
+	debugdir ("bin/" .. outputDir .. "/%{prj.name}")
+
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -101,8 +104,6 @@ project "Durio"
 	links
 	{
 		"Durian",
-		"SDL2",
-		"SDL2main"
 	}
 
 	filter "system:windows"

@@ -7,6 +7,7 @@ namespace Durian
 		template <typename T>
 		class Vec2
 		{
+		public:
 			Vec2(T _x, T _y)
 				: x(_x), y(_y)  {}
 			Vec2(T _x)
@@ -22,6 +23,7 @@ namespace Durian
 
 		class Color
 		{
+		public:
 			Color(float _r, float _g, float _b, float _a)
 				: r(_r), g(_g), b(_b), a(_a) {}
 			Color(float x)

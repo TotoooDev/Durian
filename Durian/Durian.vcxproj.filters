@@ -10,6 +10,9 @@
     <Filter Include="Durian\Event">
       <UniqueIdentifier>{99A8A2EB-850B-3290-2E91-6A461AD3FD12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Durian\Graphics">
+      <UniqueIdentifier>{880A3BD8-F495-A89C-FDA6-2B9169B1049D}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
@@ -37,12 +40,15 @@
     <Filter Include="vendor\spdlog\sinks">
       <UniqueIdentifier>{42A61A34-AE07-F841-3775-3EF4A3D52E01}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vendor\stb_image">
-      <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Durian\Core\Log.h">
+      <Filter>Durian\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Durian\Core\Math.h">
+      <Filter>Durian\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Durian\Core\Ref.h">
       <Filter>Durian\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\Durian\Core\Timer.h">
@@ -71,6 +77,12 @@
     </ClInclude>
     <ClInclude Include="src\Durian\Event\WindowEvents.h">
       <Filter>Durian\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Durian\Graphics\Sprite.h">
+      <Filter>Durian\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Durian\Graphics\Texture.h">
+      <Filter>Durian\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\vendor\SDL2\SDL.h">
@@ -161,6 +173,9 @@
       <Filter>vendor\SDL2</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\SDL2\SDL_hints.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\SDL_image.h">
       <Filter>vendor\SDL2</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\SDL2\SDL_joystick.h">
@@ -335,6 +350,24 @@
       <Filter>vendor\SDL2</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\SDL2\close_code.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\miniz.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\nanosvg.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\nanosvgrast.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\qoi.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\stb_image.h">
+      <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\SDL2\tiny_jpeg.h">
       <Filter>vendor\SDL2</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\nlohmann\json.hpp">
@@ -640,15 +673,16 @@
     <ClInclude Include="src\vendor\spdlog\version.h">
       <Filter>vendor\spdlog</Filter>
     </ClInclude>
-    <ClInclude Include="src\vendor\stb_image\stb_image.h">
-      <Filter>vendor\stb_image</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Durian\Graphics\Sprite.h" />
-    <ClInclude Include="src\Durian\Core\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Durian\Core\Window.cpp">
       <Filter>Durian\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Durian\Graphics\Sprite.cpp">
+      <Filter>Durian\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Durian\Graphics\Texture.cpp">
+      <Filter>Durian\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
