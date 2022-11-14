@@ -33,7 +33,6 @@ void App::Run()
 			m_Cam.Distance-=0.1f;
 		if (Movement.Down)
 			m_Cam.Distance+=0.1f;
-		DURIAN_LOG_INFO(m_Cam.Distance);
 
 		m_Sprite.Draw();
 		m_Sprite.Rotation++;
