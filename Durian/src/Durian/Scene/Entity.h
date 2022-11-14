@@ -58,7 +58,7 @@ namespace Durian
 
 	private:
 		entt::entity m_Identifier = entt::null;
-		Scene* m_Scene;
+		Scene* m_Scene = nullptr;
 
 		friend class Scene;
 	};

@@ -1,10 +1,11 @@
 #pragma once
 
-#include <Scene/Entity.h>
 #include <entt/entt.hpp>
 
 namespace Durian
 {
+	class Entity;
+
 	class Scene
 	{
 	public:
@@ -13,5 +14,7 @@ namespace Durian
 
 	private:
 		entt::registry m_Registry;
+
+		friend class Entity;
 	};
 }
