@@ -15,3 +15,13 @@
 #define DURIAN_LOG_ERROR(...)
 
 #endif
+
+#if defined DURIAN_DO_ASSERT
+
+#define DURIAN_ASSERT(x, ...) if (!x) { DURIAN_LOG_ERROR(__VA_ARGS__); __debugbreak(); }
+
+#else
+
+#define DURIAN_ASSERT(x, ...)
+
+#endif

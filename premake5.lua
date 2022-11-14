@@ -114,11 +114,19 @@ project "Durio"
 		-- add windows specific stuff here
 
 	filter "configurations:Debug"
-		defines "DURIAN_DEBUG"
+		defines
+		{
+			"DURIAN_DEBUG",
+			"DURIAN_DO_ASSERT"
+		}
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "DURIAN_RELEASE"
+		defines
+		{
+			"DURIAN_DEBUG",
+			"DURIAN_DO_ASSERT"
+		}
 		optimize "On"
 
 	filter "configurations:Distribution"

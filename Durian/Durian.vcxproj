@@ -158,6 +158,8 @@
     <ClInclude Include="src\Durian\Graphics\Camera.h" />
     <ClInclude Include="src\Durian\Graphics\Sprite.h" />
     <ClInclude Include="src\Durian\Graphics\Texture.h" />
+    <ClInclude Include="src\Durian\Scene\Entity.h" />
+    <ClInclude Include="src\Durian\Scene\Scene.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\vendor\SDL2\SDL.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_assert.h" />
@@ -254,6 +256,7 @@
     <ClInclude Include="src\vendor\SDL2\qoi.h" />
     <ClInclude Include="src\vendor\SDL2\stb_image.h" />
     <ClInclude Include="src\vendor\SDL2\tiny_jpeg.h" />
+    <ClInclude Include="src\vendor\entt\entt.hpp" />
     <ClInclude Include="src\vendor\nlohmann\json.hpp" />
     <ClInclude Include="src\vendor\nlohmann\json_fwd.hpp" />
     <ClInclude Include="src\vendor\spdlog\async.h" />
@@ -360,6 +363,7 @@
     <ClCompile Include="src\Durian\Core\Window.cpp" />
     <ClCompile Include="src\Durian\Graphics\Sprite.cpp" />
     <ClCompile Include="src\Durian\Graphics\Texture.cpp" />
+    <ClCompile Include="src\Durian\Scene\Scene.cpp" />
     <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
