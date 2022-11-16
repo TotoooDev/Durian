@@ -13,11 +13,17 @@
     <Filter Include="Durian\Graphics">
       <UniqueIdentifier>{880A3BD8-F495-A89C-FDA6-2B9169B1049D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Durian\Scene">
+      <UniqueIdentifier>{659495EC-51F7-2491-FA7C-5D47E6BEF013}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\SDL2">
       <UniqueIdentifier>{F7E96DC1-639F-E6B6-EC93-E08D5848DDBA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\entt">
+      <UniqueIdentifier>{DD8078C1-4936-F1B6-D22A-EB8D3EDFE7BA}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\nlohmann">
       <UniqueIdentifier>{1D296E81-89B4-DB45-92C5-5E3AFECF3746}</UniqueIdentifier>
@@ -86,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="src\Durian\Graphics\Texture.h">
       <Filter>Durian\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Durian\Scene\Entity.h">
+      <Filter>Durian\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Durian\Scene\Scene.h">
+      <Filter>Durian\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\vendor\SDL2\SDL.h">
@@ -372,6 +384,9 @@
     </ClInclude>
     <ClInclude Include="src\vendor\SDL2\tiny_jpeg.h">
       <Filter>vendor\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\entt\entt.hpp">
+      <Filter>vendor\entt</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\nlohmann\json.hpp">
       <Filter>vendor\nlohmann</Filter>
@@ -688,5 +703,6 @@
       <Filter>Durian\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Durian\Scene\Scene.cpp" />
   </ItemGroup>
 </Project>
