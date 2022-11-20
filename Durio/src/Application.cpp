@@ -12,10 +12,10 @@ App::App()
 	m_Sprite.Pos = Durian::Vec2(100.0f);
 	m_Sprite.Scale = Durian::Vec2(64.0f);
 	m_Sprite.Rotation = 30.0f;
-	m_Sprite.LoadTexture("durian.png");
+	m_Sprite.LoadTexture("img.png");
 	m_Sprite.SetCamera(&m_Cam);
 
-	Durian::Renderer::Get();
+	// Durian::Renderer::Get();
 }
 
 void App::Run()
@@ -24,7 +24,8 @@ void App::Run()
 	{
 		m_Window.PollEvents();
 
-		m_Window.Clear(Durian::Color(0.2f, 0.2f, 0.2f, 1.0f));
+		// m_Window.Clear(Durian::Color(0.2f, 0.2f, 0.2f, 1.0f));
+		Durian::Renderer::Get()->Clear(0.2f, 0.2f, 0.2f);
 
 		// Draw epic stuff here
 

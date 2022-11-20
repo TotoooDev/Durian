@@ -33,7 +33,7 @@ namespace Durian
 				rect = { Pos.x, Pos.y, Scale.x, Scale.y };
 
 			SDL_FPoint rotationCenter = { rect.w * RotationCenter.x, rect.h * RotationCenter.y };
-			SDL_RenderCopyExF(m_Window->GetRenderer(), m_Texture->GetTexture(), nullptr, &rect, Rotation, &rotationCenter, (SDL_RendererFlip)Flip);
+			// SDL_RenderCopyExF(m_Window->GetRenderer(), m_Texture->GetTexture(), nullptr, &rect, Rotation, &rotationCenter, (SDL_RendererFlip)Flip);
 		}
 	}
 }

@@ -13,14 +13,14 @@ namespace Durian
 	{
 		Init();
 		CreateSDLWindow();
-		CreateRenderer();
+		// CreateRenderer();
 		SetCallbacks();
 		g_NumWindows++;
 	}
 
 	Window::~Window()
 	{
-		SDL_DestroyRenderer(m_Renderer);
+		// SDL_DestroyRenderer(m_Renderer);
 		SDL_DestroyWindow(m_NativeWindow);
 		g_NumWindows--;
 		// No more windows
@@ -34,23 +34,28 @@ namespace Durian
 	void Window::SetVSync(bool flag)
 	{
 		m_Spec.VSync = flag;
-		CreateRenderer();
+		if (m_Spec.VSync)
+			SDL_GL_SetSwapInterval(1);
+		else
+			SDL_GL_SetSwapInterval(0);
+		// CreateRenderer();
 	}
 
-	void Window::SetDrawColor(const Color& color)
-	{
-		SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(color.r * 255), (unsigned char)(color.g * 255), (unsigned char)(color.b * 255), (unsigned char)(color.a * 255));
-	}
+	// void Window::SetDrawColor(const Color& color)
+	// {
+	// 	SDL_SetRenderDrawColor(m_Renderer, (unsigned char)(color.r * 255), (unsigned char)(color.g * 255), (unsigned char)(color.b * 255), (unsigned char)(color.a * 255));
+	// }
 
-	void Window::Clear(const Color& color)
-	{
-		SetDrawColor(color);
-		SDL_RenderClear(m_Renderer);
-	}
+	// void Window::Clear(const Color& color)
+	// {
+	// 	SetDrawColor(color);
+	// 	SDL_RenderClear(m_Renderer);
+	// }
 
 	void Window::Present()
 	{
-		SDL_RenderPresent(m_Renderer);
+		// SDL_RenderPresent(m_Renderer);
+		SDL_GL_SwapWindow(m_NativeWindow);
 	}
 
 	void Window::PollEvents()
@@ -83,25 +88,29 @@ namespace Durian
 	{
 		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 		m_Spec.NativeWindow = m_NativeWindow;
+
 		#if defined DURIAN_OPENGL_DEBUG
 			DURIAN_LOG_WARN("OpenGL debug context created! The application may run slower.");
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 		#endif
 		auto context = SDL_GL_CreateContext(m_NativeWindow);
 		DURIAN_ASSERT(context, "Failed to create OpenGL context!");
-	}
 
-	void Window::CreateRenderer()
-	{
-		if (m_Renderer)
-			SDL_DestroyRenderer(m_Renderer);
-
-		unsigned int flags = SDL_RENDERER_ACCELERATED;
 		if (m_Spec.VSync)
-			flags |= SDL_RENDERER_PRESENTVSYNC;
-		m_Renderer = SDL_CreateRenderer(m_NativeWindow, -1, flags);
-		SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
+			SDL_GL_SetSwapInterval(1); // Set VSync
 	}
+
+	// void Window::CreateRenderer()
+	// {
+	// 	if (m_Renderer)
+	// 		SDL_DestroyRenderer(m_Renderer);
+	// 
+	// 	unsigned int flags = SDL_RENDERER_ACCELERATED;
+	// 	if (m_Spec.VSync)
+	// 		flags |= SDL_RENDERER_PRESENTVSYNC;
+	// 	m_Renderer = SDL_CreateRenderer(m_NativeWindow, -1, flags);
+	// 	SDL_SetRenderDrawBlendMode(m_Renderer, SDL_BLENDMODE_BLEND);
+	// }
 
 	void Window::SetCallbacks()
 	{
