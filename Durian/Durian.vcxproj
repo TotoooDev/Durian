@@ -75,7 +75,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DURIAN_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DURIAN_DEBUG;DURIAN_DO_ASSERT;DURIAN_OPENGL_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;src\Durian;src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -88,7 +88,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -96,7 +96,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>DURIAN_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DURIAN_DEBUG;DURIAN_DO_ASSERT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;src\Durian;src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -138,7 +138,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -156,11 +156,16 @@
     <ClInclude Include="src\Durian\Event\MouseEvents.h" />
     <ClInclude Include="src\Durian\Event\WindowEvents.h" />
     <ClInclude Include="src\Durian\Graphics\Camera.h" />
+    <ClInclude Include="src\Durian\Graphics\Renderer.h" />
     <ClInclude Include="src\Durian\Graphics\Sprite.h" />
     <ClInclude Include="src\Durian\Graphics\Texture.h" />
     <ClInclude Include="src\Durian\Scene\Entity.h" />
     <ClInclude Include="src\Durian\Scene\Scene.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\vendor\GL\eglew.h" />
+    <ClInclude Include="src\vendor\GL\glew.h" />
+    <ClInclude Include="src\vendor\GL\glxew.h" />
+    <ClInclude Include="src\vendor\GL\wglew.h" />
     <ClInclude Include="src\vendor\SDL2\SDL.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_assert.h" />
     <ClInclude Include="src\vendor\SDL2\SDL_atomic.h" />
@@ -358,9 +363,11 @@
     <ClInclude Include="src\vendor\spdlog\stopwatch.h" />
     <ClInclude Include="src\vendor\spdlog\tweakme.h" />
     <ClInclude Include="src\vendor\spdlog\version.h" />
+    <ClInclude Include="src\vendor\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Durian\Core\Window.cpp" />
+    <ClCompile Include="src\Durian\Graphics\Renderer.cpp" />
     <ClCompile Include="src\Durian\Graphics\Sprite.cpp" />
     <ClCompile Include="src\Durian\Graphics\Texture.cpp" />
     <ClCompile Include="src\Durian\Scene\Scene.cpp" />

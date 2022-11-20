@@ -1,5 +1,6 @@
 #include <Application.h>
 #include <Durian/Core/Log.h>
+#include <Durian/Graphics/Renderer.h>
 
 App::App()
 	: m_Window(Durian::WindowSpecification(&m_EventBus)), m_Sprite(&m_Window)
@@ -13,6 +14,8 @@ App::App()
 	m_Sprite.Rotation = 30.0f;
 	m_Sprite.LoadTexture("durian.png");
 	m_Sprite.SetCamera(&m_Cam);
+
+	Durian::Renderer::Get();
 }
 
 void App::Run()

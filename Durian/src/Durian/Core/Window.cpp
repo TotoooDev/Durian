@@ -81,8 +81,14 @@ namespace Durian
 
 	void Window::CreateSDLWindow()
 	{
-		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN);
+		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 		m_Spec.NativeWindow = m_NativeWindow;
+		#if defined DURIAN_OPENGL_DEBUG
+			DURIAN_LOG_WARN("OpenGL debug context created! The application may run slower.");
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+		#endif
+		auto context = SDL_GL_CreateContext(m_NativeWindow);
+		DURIAN_ASSERT(context, "Failed to create OpenGL context!");
 	}
 
 	void Window::CreateRenderer()

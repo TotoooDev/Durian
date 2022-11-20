@@ -46,7 +46,9 @@ project "Durian"
 	{
 		"SDL2",
 		"SDL2main",
-		"SDL2_image"
+		"SDL2_image",
+		"glew32",
+		"opengl32"
 	}
 
 	filter "system:windows"
@@ -57,11 +59,20 @@ project "Durian"
 		-- add windows specific stuff here
 
 	filter "configurations:Debug"
-		defines "DURIAN_DEBUG"
+		defines
+		{
+			"DURIAN_DEBUG",
+			"DURIAN_DO_ASSERT",
+			"DURIAN_OPENGL_DEBUG"
+		}
 		symbols "On"
 
 	filter "configurations:Release"
-		defines "DURIAN_RELEASE"
+		defines
+		{
+			"DURIAN_DEBUG",
+			"DURIAN_DO_ASSERT"
+		}
 		optimize "On"
 
 	filter "configurations:Distribution"
@@ -117,7 +128,8 @@ project "Durio"
 		defines
 		{
 			"DURIAN_DEBUG",
-			"DURIAN_DO_ASSERT"
+			"DURIAN_DO_ASSERT",
+			"DURIAN_OPENGL_DEBUG"
 		}
 		symbols "On"
 

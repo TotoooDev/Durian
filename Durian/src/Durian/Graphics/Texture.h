@@ -19,5 +19,7 @@ namespace Durian
 	private:
 		SDL_Texture* m_Texture;
 		Window* m_Window;
+
+		unsigned int m_ID;
 	};
 }

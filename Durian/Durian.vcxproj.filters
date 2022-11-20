@@ -19,6 +19,9 @@
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vendor\GL">
+      <UniqueIdentifier>{358C53DE-A1F6-0755-EA34-B9FA56DEE5A9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor\SDL2">
       <UniqueIdentifier>{F7E96DC1-639F-E6B6-EC93-E08D5848DDBA}</UniqueIdentifier>
     </Filter>
@@ -87,6 +90,9 @@
     <ClInclude Include="src\Durian\Graphics\Camera.h">
       <Filter>Durian\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\Durian\Graphics\Renderer.h">
+      <Filter>Durian\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="src\Durian\Graphics\Sprite.h">
       <Filter>Durian\Graphics</Filter>
     </ClInclude>
@@ -100,6 +106,18 @@
       <Filter>Durian\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\vendor\GL\eglew.h">
+      <Filter>vendor\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\GL\glew.h">
+      <Filter>vendor\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\GL\glxew.h">
+      <Filter>vendor\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\GL\wglew.h">
+      <Filter>vendor\GL</Filter>
+    </ClInclude>
     <ClInclude Include="src\vendor\SDL2\SDL.h">
       <Filter>vendor\SDL2</Filter>
     </ClInclude>
@@ -691,10 +709,16 @@
     <ClInclude Include="src\vendor\spdlog\version.h">
       <Filter>vendor\spdlog</Filter>
     </ClInclude>
+    <ClInclude Include="src\vendor\stb_image.h">
+      <Filter>vendor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Durian\Core\Window.cpp">
       <Filter>Durian\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Durian\Graphics\Renderer.cpp">
+      <Filter>Durian\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Durian\Graphics\Sprite.cpp">
       <Filter>Durian\Graphics</Filter>
@@ -702,7 +726,9 @@
     <ClCompile Include="src\Durian\Graphics\Texture.cpp">
       <Filter>Durian\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Durian\Scene\Scene.cpp">
+      <Filter>Durian\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Durian\Scene\Scene.cpp" />
   </ItemGroup>
 </Project>
