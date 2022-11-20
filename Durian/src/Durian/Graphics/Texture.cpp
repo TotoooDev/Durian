@@ -60,4 +60,10 @@ namespace Durian
 		// 	DURIAN_LOG_INFO("IMG error: ", IMG_GetError());
 		// }
 	}
+
+	void Texture::Bind(unsigned int activeTexture)
+	{
+		glActiveTexture(GL_TEXTURE0 + activeTexture);
+		glBindTexture(GL_TEXTURE_2D, m_ID);
+	}
 }
