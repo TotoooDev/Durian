@@ -1,4 +1,5 @@
 #pragma once
+#include <signal.h>
 
 #if defined DURIAN_DEBUG || DURIAN_RELEASE
 
@@ -18,7 +19,11 @@
 
 #if defined DURIAN_DO_ASSERT
 
+#if defined _WIN32
 #define DURIAN_ASSERT(x, ...) if (!x) { DURIAN_LOG_ERROR(__VA_ARGS__); __debugbreak(); }
+#elif __linux__
+#define DURIAN_ASSERT(x, ...) if (!x) { DURIAN_LOG_ERROR(__VA_ARGS__); raise(SIGTRAP); }
+#endif
 
 #else
 

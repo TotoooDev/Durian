@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Durian/Event/EventBus.h>
-#include <Durian/Core/Math.h>
 #include <SDL2/SDL.h>
 #include <string>
 

@@ -9,8 +9,8 @@ App::App()
 	m_EventBus.Subscribe(this, &App::OnKeyDown);
 	m_EventBus.Subscribe(this, &App::OnKeyUp);
 
-	m_Sprite.Pos = Durian::Vec2(100.0f);
-	m_Sprite.Scale = Durian::Vec2(64.0f);
+	m_Sprite.Pos = glm::vec2(100.0f);
+	m_Sprite.Scale = glm::vec2(64.0f);
 	m_Sprite.Rotation = 30.0f;
 	m_Sprite.LoadTexture("img.png");
 	m_Sprite.SetCamera(&m_Cam);

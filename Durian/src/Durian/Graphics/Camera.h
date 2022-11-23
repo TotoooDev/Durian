@@ -1,13 +1,12 @@
 #pragma once
-
-#include <Durian/Core/Math.h>
+#include <glm/glm.hpp>
 
 namespace Durian
 {
 	class Camera
 	{
 	public:
-		Vec2<float> Pos = Vec2<float>(0.0f);
+		glm::vec2 Pos = glm::vec2(0.0f);
 		float Distance = 1.0f;
 	};
 }

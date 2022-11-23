@@ -42,19 +42,40 @@ project "Durian"
 		"libs"
 	}
 
-	links
+	defines
 	{
-		"SDL2",
-		"SDL2main",
-		"SDL2_image",
-		"glew32",
-		"opengl32"
+		"GLEW_NO_GLU"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
+		libdirs
+		{
+			"libs/windows"
+		}
+		links
+		{
+			"SDL2",
+			"SDL2main",
+			"SDL2_image",
+			"glew32",
+			"opengl32"
+		}
+
+	filter "system:linux"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"
+		links
+		{
+			"SDL2",
+			"SDL2main",
+			"SDL2_image",
+			"GLEW",
+			"GL"
+		}
 
 		-- add windows specific stuff here
 
@@ -71,7 +92,7 @@ project "Durian"
 		defines
 		{
 			"DURIAN_DEBUG",
-			"DURIAN_DO_ASSERT"
+			"DURIAN_DO_ASSERT",
 		}
 		optimize "On"
 
@@ -107,11 +128,6 @@ project "Durio"
 		"Durian/src"
 	}
 
-	libdirs
-	{
-		"libs"
-	}
-
 	links
 	{
 		"Durian",
@@ -121,8 +137,31 @@ project "Durio"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
+		libdirs
+		{
+			"libs/windows"
+		}
+		links
+		{
+			"SDL2",
+			"SDL2main",
+			"SDL2_image",
+			"glew32",
+			"opengl32"
+		}
 
-		-- add windows specific stuff here
+	filter "system:linux"
+		cppdialect "C++17"
+		staticruntime "On"
+		systemversion "latest"
+		links
+		{
+			"SDL2",
+			"SDL2main",
+			"SDL2_image",
+			"GLEW",
+			"GL"
+		}
 
 	filter "configurations:Debug"
 		defines

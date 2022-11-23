@@ -15,6 +15,7 @@
 #include <utility>
 #include <algorithm>
 #include <functional>
+#include <fstream>
 
 #include <string>
 #include <sstream>
@@ -31,7 +32,9 @@
 
 #include <nlohmann/json.hpp>
 
+#if defined _WIN32
 #include <windows.h>
+#endif
 
 #include <stb_image.h>
 

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <Durian/Core/Window.h>
-#include <Durian/Core/Math.h>
 #include <Durian/Core/Ref.h>
 #include <Durian/Graphics/Texture.h>
 #include <Durian/Graphics/Camera.h>
 #include <SDL2/SDL.h>
+#include <glm/glm.hpp>
 
 namespace Durian
 {
@@ -30,9 +30,9 @@ namespace Durian
 
 		void Draw();
 
-		Vec2<float> Pos = Vec2(0.0f);
-		Vec2<float> Scale = Vec2(16.0f);
-		Vec2<float> RotationCenter = Vec2(0.5f);
+		glm::vec2 Pos = glm::vec2(0.0f);
+		glm::vec2 Scale = glm::vec2(16.0f);
+		glm::vec2 RotationCenter = glm::vec2(0.5f);
 		double Rotation = 0.0f;
 		FlipState Flip = FlipState::None;
 

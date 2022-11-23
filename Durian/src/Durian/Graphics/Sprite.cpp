@@ -25,8 +25,8 @@ namespace Durian
 
 			if (m_Camera)
 			{
-				Vec2<float> pos = Pos / m_Camera->Distance;
-				Vec2<float> scale = Scale / m_Camera->Distance;
+				glm::vec2 pos = Pos / m_Camera->Distance;
+				glm::vec2 scale = Scale / m_Camera->Distance;
 				rect = { pos.x - m_Camera->Pos.x, pos.y - m_Camera->Pos.y, scale.x, scale.y };
 			}
 			else
