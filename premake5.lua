@@ -62,7 +62,6 @@ project "Durian"
 		{
 			"SDL2",
 			"SDL2main",
-			"SDL2_image",
 			"glew32",
 			"opengl32"
 		}
@@ -75,7 +74,6 @@ project "Durian"
 		{
 			"SDL2",
 			"SDL2main",
-			"SDL2_image",
 			"GLEW",
 			"GL"
 		}
@@ -148,7 +146,6 @@ project "Durio"
 		{
 			"SDL2",
 			"SDL2main",
-			"SDL2_image",
 			"glew32",
 			"opengl32"
 		}
@@ -161,7 +158,6 @@ project "Durio"
 		{
 			"SDL2",
 			"SDL2main",
-			"SDL2_image",
 			"GLEW",
 			"GL"
 		}
