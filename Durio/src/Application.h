@@ -3,7 +3,6 @@
 #include <Durian/Core/Window.h>
 #include <Durian/Event/Events.h>
 #include <Durian/Event/EventBus.h>
-#include <Durian/Graphics/Sprite.h>
 #include <Durian/Scene/Scene.h>
 #include <Durian/Scene/Entity.h>
 

@@ -1,7 +1,6 @@
 #include <pch.h>
 #include <Durian/Core/Window.h>
 #include <Durian/Event/Events.h>
-#include <SDL2/SDL_image.h>
 
 namespace Durian
 {
@@ -24,7 +23,6 @@ namespace Durian
 		// No more windows
 		if (g_NumWindows <= 0)
 		{
-			IMG_Quit();
 			SDL_Quit();
 		}
 	}
@@ -57,12 +55,6 @@ namespace Durian
 			{
 				DURIAN_LOG_ERROR("Failed to initialize SDL!");
 				DURIAN_LOG_INFO("SDL info: {0}", SDL_GetError());
-				return;
-			}
-			if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) == 0)
-			{
-				DURIAN_LOG_ERROR("Failed to initialize SDL_image!");
-				DURIAN_LOG_INFO("IMG info: {0}", IMG_GetError());
 				return;
 			}
 			g_IsSDLInit = true;
