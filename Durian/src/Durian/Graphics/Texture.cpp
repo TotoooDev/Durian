@@ -1,4 +1,5 @@
 #define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #include <pch.h>
 #include <Durian/Graphics/Texture.h>
 // #include <SDL2/SDL_image.h>
@@ -6,8 +7,9 @@
 
 namespace Durian
 {
-	Texture::Texture(Window* window, const std::string& path)
-		: m_Window(window)
+	//Texture::Texture(Window* window, const std::string& path)
+	//	: m_Window(window)
+	Texture::Texture(const std::string& path)
 	{
 		stbi_set_flip_vertically_on_load(true);
 		glGenTextures(1, &m_ID);

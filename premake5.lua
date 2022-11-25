@@ -47,6 +47,9 @@ project "Durian"
 		"GLEW_NO_GLU"
 	}
 
+	pchheader "pch.h"
+	pchsource "pch.cpp"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"

@@ -1,5 +1,8 @@
 #pragma once
+#include <Durian/Graphics/Shader.h>
 #include <Durian/Graphics/Texture.h>
+#include <Durian/Graphics/VertexObjects.h>
+#include <Durian/Graphics/Camera.h>
 #include <glm/glm.hpp>
 
 namespace Durian
@@ -9,16 +12,27 @@ namespace Durian
 	public:
 		static Renderer* Get();
 
-		void Clear(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f);
+		void Init();
 
-		void DrawRectTextured(glm::vec2 pos, glm::vec2 scale, Texture* texture);
-		// void DrawRectColor();
+		void Clear(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f);
+		void SetCurrentCamera(const OrthoCamera& cam, const glm::mat4& view);
+
+		void DrawRectTextured(const glm::mat4& transform, Texture* texture);
+		void DrawRectColor(const glm::mat4& transform, const glm::vec4& color);
+
+		void DrawVerticesTextured(const glm::mat4& transform, Texture* texture, const VAO& vao, const EBO& ebo);
+		void DrawVerticesColor(const glm::mat4& transform, const glm::vec4& color, const VAO& vao, const EBO& ebo);
 
 	private:
-		Renderer() = default;
-
+		Renderer();
 		static void InitOpenGLDebugOutput();
 
 		static Renderer* m_Instance;
+
+		Shader m_ShaderColor;
+		Shader m_ShaderTexture;
+		
+		VAO m_RectVAO;
+		EBO m_RectEBO;
 	};
 }

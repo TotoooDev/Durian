@@ -36,8 +36,6 @@
 #include <windows.h>
 #endif
 
-#include <stb_image.h>
-
 #include <glm/glm.hpp>
 
 #include <Durian/Core/Log.h>

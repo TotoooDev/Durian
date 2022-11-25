@@ -1,5 +1,4 @@
 #pragma once
-
 #include <Durian/Core/Window.h>
 // #include <SDL2/SDL.h>
 #include <string>
@@ -9,7 +8,8 @@ namespace Durian
 	class Texture
 	{
 	public:
-		Texture(Window* window, const std::string& path = "");
+		// Texture(Window* window, const std::string& path = "");
+		Texture(const std::string& path = "");
 		~Texture();
 
 		void LoadFromFile(const std::string& path);
@@ -20,7 +20,7 @@ namespace Durian
 
 	private:
 		// SDL_Texture* m_Texture;
-		Window* m_Window;
+		// Window* m_Window;
 
 		unsigned int m_ID;
 	};

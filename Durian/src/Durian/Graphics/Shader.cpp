@@ -50,7 +50,7 @@ namespace Durian
         if (!success)
         {
             glGetShaderInfoLog(vertexShader, sizeof(infoLog), nullptr, infoLog);
-            DURIAN_LOG_ERROR(infoLog);
+            DURIAN_LOG_ERROR("Error compiling vertex shader! \n{}", infoLog);
         }
         // Fragment shader
         unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -61,7 +61,7 @@ namespace Durian
         if (!success)
         {
             glGetShaderInfoLog(fragmentShader, sizeof(infoLog), nullptr, infoLog);
-            DURIAN_LOG_ERROR(infoLog);
+            DURIAN_LOG_ERROR("Error compiling fragment shader! \n{}", infoLog);
         }
 
         // Shader program
@@ -73,7 +73,7 @@ namespace Durian
         glGetShaderiv(m_ID, GL_LINK_STATUS, &success);
         if (!success)
         {
-            glGetProgramInfoLog(fragmentShader, sizeof(infoLog), nullptr, infoLog);
+            glGetProgramInfoLog(m_ID, sizeof(infoLog), nullptr, infoLog);
             DURIAN_LOG_ERROR(infoLog);
         }
 
@@ -102,6 +102,10 @@ namespace Durian
     void Shader::SetVec3(const glm::vec3& value, const std::string& name)
     {
         glUniform3fv(glGetUniformLocation(m_ID, name.c_str()), 1, &value[0]); 
+    }
+    void Shader::SetVec4(const glm::vec4& value, const std::string& name)
+    {
+        glUniform4fv(glGetUniformLocation(m_ID, name.c_str()), 1, &value[0]); 
     }
     void Shader::SetMat2(const glm::mat2& value, const std::string& name)
     {

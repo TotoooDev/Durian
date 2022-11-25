@@ -4,6 +4,8 @@
 #include <Durian/Event/Events.h>
 #include <Durian/Event/EventBus.h>
 #include <Durian/Graphics/Sprite.h>
+#include <Durian/Scene/Scene.h>
+#include <Durian/Scene/Entity.h>
 
 class App
 {
@@ -24,7 +26,10 @@ private:
 
 	Durian::EventBus m_EventBus;
 	Durian::Window m_Window;
-	Durian::Sprite m_Sprite;
-	Durian::Camera m_Cam;
+	// Durian::Sprite m_Sprite;
+	// Durian::Camera m_Cam;
+	Durian::Scene m_Scene;
+	Durian::Entity m_SpriteEntity;
+	Durian::Entity m_CameraEntity;
 	bool m_IsRunning = true;
 };

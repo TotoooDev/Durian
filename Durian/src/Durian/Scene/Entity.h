@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Scene/Scene.h>
-#include <Core/Log.h>
+#include <Durian/Scene/Scene.h>
+#include <Durian/Core/Log.h>
 #include <entt/entt.hpp>
 
 namespace Durian

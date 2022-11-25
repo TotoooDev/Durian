@@ -6,15 +6,41 @@ namespace Durian
 {
 	Renderer* Renderer::m_Instance = nullptr;
 
+	Renderer::Renderer()
+		: m_ShaderColor("shaders/color.vert", "shaders/color.frag"),
+		  m_ShaderTexture("shaders/texture.vert", "shaders/texture.frag")
+	{
+		#if defined DURIAN_OPENGL_DEBUG
+				InitOpenGLDebugOutput();
+		#endif
+
+		// Setup rect VAO
+		std::vector<float> quadVertices =
+		{
+			// Pos              // Tex coords
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f
+		};
+		std::vector<unsigned int> quadIndices =
+		{
+			0, 1, 2,
+			0, 2, 3
+		};
+		VertexLayout layout;
+		layout.AddAttribute(Type::Float, 3); // Pos
+		layout.AddAttribute(Type::Float, 2); // Tex coords
+		m_RectVAO.SetData(quadVertices, layout);
+		m_RectEBO.SetData(quadIndices);
+	}
+
 	Renderer* Renderer::Get()
 	{
 		if (!m_Instance)
 		{
-			m_Instance = new Renderer;
 			DURIAN_ASSERT(glewInit() == GLEW_OK, glewGetErrorString(glewInit()));
-			#if defined DURIAN_OPENGL_DEBUG
-				InitOpenGLDebugOutput();
-			#endif
+			m_Instance = new Renderer;
 		}
 		return m_Instance;
 	}
@@ -25,9 +51,47 @@ namespace Durian
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
-	void Renderer::DrawRectTextured(glm::vec2 pos, glm::vec2 scale, Texture* texture)
+	void Renderer::SetCurrentCamera(const OrthoCamera& cam, const glm::mat4& view)
 	{
+		m_ShaderColor.Bind();
+		m_ShaderColor.SetMat4(view, "uView");
+		m_ShaderColor.SetMat4(cam.GetProjectionMatrix(), "uProjection");
+	}
 
+	void Renderer::DrawRectTextured(const glm::mat4& transform, Texture* texture)
+	{
+		DrawVerticesTextured(transform, texture, m_RectVAO, m_RectEBO);
+	}
+
+	void Renderer::DrawRectColor(const glm::mat4& transform, const glm::vec4& color)
+	{
+		DrawVerticesColor(transform, color, m_RectVAO, m_RectEBO);
+	}
+
+	void Renderer::DrawVerticesTextured(const glm::mat4& transform, Texture* texture, const VAO& vao, const EBO& ebo)
+	{
+		texture->Bind();
+
+		m_ShaderTexture.Bind();
+		m_ShaderTexture.SetMat4(transform, "uModel");
+		m_ShaderTexture.SetInt(0, "uTexture");
+
+		vao.Bind();
+		ebo.Bind();
+
+		glDrawElements(GL_TRIANGLES, ebo.GetCount(), GL_UNSIGNED_INT, 0);
+	}
+
+	void Renderer::DrawVerticesColor(const glm::mat4& transform, const glm::vec4& color, const VAO& vao, const EBO& ebo)
+	{
+		m_ShaderColor.Bind();
+		m_ShaderColor.SetMat4(transform, "uModel");
+		m_ShaderColor.SetVec4(color, "uColor");
+
+		vao.Bind();
+		ebo.Bind();
+
+		glDrawElements(GL_TRIANGLES, ebo.GetCount(), GL_UNSIGNED_INT, 0);
 	}
 
 	void Renderer::InitOpenGLDebugOutput()

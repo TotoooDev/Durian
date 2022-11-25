@@ -24,7 +24,7 @@ namespace Durian
 
 		void LoadTexture(const std::string& path);
 		void SetTexture(Ref<Texture> texture) { m_Texture = texture; }
-		void SetCamera(Camera* camera) { m_Camera = camera; }
+		// void SetCamera(Camera* camera) { m_Camera = camera; }
 
 		Ref<Texture> GetTexture() { return m_Texture; }
 
@@ -40,6 +40,6 @@ namespace Durian
 		Window* m_Window = nullptr;
 
 		Ref<Texture> m_Texture;
-		Camera* m_Camera = nullptr;
+		// Camera* m_Camera = nullptr;
 	};
 }

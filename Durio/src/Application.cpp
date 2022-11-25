@@ -1,19 +1,33 @@
 #include <Application.h>
 #include <Durian/Core/Log.h>
 #include <Durian/Graphics/Renderer.h>
+#include <Durian/Scene/Components.h>
 
 App::App()
-	: m_Window(Durian::WindowSpecification(&m_EventBus)), m_Sprite(&m_Window)
+	: m_Window(Durian::WindowSpecification(&m_EventBus))// , m_Sprite(&m_Window)
 {
 	m_EventBus.Subscribe(this, &App::OnWindowClose);
 	m_EventBus.Subscribe(this, &App::OnKeyDown);
 	m_EventBus.Subscribe(this, &App::OnKeyUp);
 
-	m_Sprite.Pos = glm::vec2(100.0f);
-	m_Sprite.Scale = glm::vec2(64.0f);
-	m_Sprite.Rotation = 30.0f;
-	m_Sprite.LoadTexture("img.png");
-	m_Sprite.SetCamera(&m_Cam);
+	m_SpriteEntity = m_Scene.CreateEntity("Sprite");
+	auto& transformComp = m_SpriteEntity.AddComponent<Durian::TransformComponent>();
+	transformComp.Scale = glm::vec3(64.0f, 64.0f, 64.0f);
+	Durian::Texture tex;
+	auto& texComp = m_SpriteEntity.AddComponent<Durian::SpriteComponent>(tex);
+	texComp.Color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
+	texComp.UseColor = true;
+
+	m_CameraEntity = m_Scene.CreateEntity("Camera");
+	m_CameraEntity.AddComponent<Durian::TransformComponent>();
+	Durian::OrthoCamera cam;
+	m_CameraEntity.AddComponent<Durian::OrthoCameraComponent>(cam);
+
+	// m_Sprite.Pos = glm::vec2(100.0f);
+	// m_Sprite.Scale = glm::vec2(64.0f);
+	// m_Sprite.Rotation = 30.0f;
+	// m_Sprite.LoadTexture("img.png");
+	// m_Sprite.SetCamera(&m_Cam);
 
 	// Durian::Renderer::Get();
 }
@@ -28,18 +42,19 @@ void App::Run()
 		Durian::Renderer::Get()->Clear(0.2f, 0.2f, 0.2f);
 
 		// Draw epic stuff here
+		m_Scene.UpdateScene(0.0f);
 
-		if (Movement.Right)
-			m_Cam.Pos.x++;
-		if (Movement.Left)
-			m_Cam.Pos.x--;
-		if (Movement.Up)
-			m_Cam.Distance-=0.1f;
-		if (Movement.Down)
-			m_Cam.Distance+=0.1f;
+		// if (Movement.Right)
+		// 	m_Cam.Pos.x++;
+		// if (Movement.Left)
+		// 	m_Cam.Pos.x--;
+		// if (Movement.Up)
+		// 	m_Cam.Distance-=0.1f;
+		// if (Movement.Down)
+		// 	m_Cam.Distance+=0.1f;
 
-		m_Sprite.Draw();
-		m_Sprite.Rotation++;
+		// m_Sprite.Draw();
+		// m_Sprite.Rotation++;
 
 		m_Window.Present();
 	}
