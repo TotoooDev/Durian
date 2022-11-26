@@ -25,8 +25,6 @@ private:
 
 	Durian::EventBus m_EventBus;
 	Durian::Window m_Window;
-	// Durian::Sprite m_Sprite;
-	// Durian::Camera m_Cam;
 	Durian::Scene m_Scene;
 	Durian::Entity m_SpriteEntity;
 	Durian::Entity m_CameraEntity;

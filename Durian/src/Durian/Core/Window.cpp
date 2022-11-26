@@ -70,6 +70,9 @@ namespace Durian
 			DURIAN_LOG_WARN("OpenGL debug context created! The application may run slower.");
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 		#endif
+		SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE); //OpenGL core profile
+    	SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 3); //OpenGL 3+
+    	SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 3); //OpenGL 3.3
 		auto context = SDL_GL_CreateContext(m_NativeWindow);
 		DURIAN_ASSERT(context, "Failed to create OpenGL context!");
 

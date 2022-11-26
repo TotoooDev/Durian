@@ -56,9 +56,12 @@ namespace Durian
 		m_ShaderColor.Bind();
 		m_ShaderColor.SetMat4(view, "uView");
 		m_ShaderColor.SetMat4(cam.GetProjectionMatrix(), "uProjection");
+		m_ShaderTexture.Bind();
+		m_ShaderTexture.SetMat4(view, "uView");
+		m_ShaderTexture.SetMat4(cam.GetProjectionMatrix(), "uProjection");
 	}
 
-	void Renderer::DrawRectTextured(const glm::mat4& transform, Texture* texture)
+	void Renderer::DrawRectTextured(const glm::mat4& transform, Ref<Texture> texture)
 	{
 		DrawVerticesTextured(transform, texture, m_RectVAO, m_RectEBO);
 	}
@@ -68,13 +71,13 @@ namespace Durian
 		DrawVerticesColor(transform, color, m_RectVAO, m_RectEBO);
 	}
 
-	void Renderer::DrawVerticesTextured(const glm::mat4& transform, Texture* texture, const VAO& vao, const EBO& ebo)
+	void Renderer::DrawVerticesTextured(const glm::mat4& transform, Ref<Texture> texture, const VAO& vao, const EBO& ebo)
 	{
-		texture->Bind();
-
 		m_ShaderTexture.Bind();
 		m_ShaderTexture.SetMat4(transform, "uModel");
 		m_ShaderTexture.SetInt(0, "uTexture");
+
+		texture->Bind(0);
 
 		vao.Bind();
 		ebo.Bind();

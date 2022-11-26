@@ -12,9 +12,9 @@ namespace Durian
 		~Texture();
 
 		void LoadFromFile(const std::string& path);
-		void Bind(unsigned int activeTexture = 0);
+		void Bind(unsigned int activeTexture = 0) const;
 		
-		unsigned int GetID() { return m_ID; }
+		unsigned int GetID() const { return m_ID; }
 
 	private:
 		unsigned int m_ID;

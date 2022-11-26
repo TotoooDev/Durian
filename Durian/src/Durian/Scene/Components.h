@@ -42,10 +42,10 @@ namespace Durian
     {
         bool Draw = true;
 		bool UseColor = false;
-        Texture Tex;
+        Ref<Texture> Tex;
 		glm::vec4 Color;
 
-        SpriteComponent(const Texture& tex) 
+        SpriteComponent(Ref<Texture> tex) 
             : Tex(tex) {}
 		SpriteComponent(const SpriteComponent&) = default;
     };

@@ -1,5 +1,6 @@
 #include <Application.h>
 #include <Durian/Core/Log.h>
+#include <Durian/Core/Ref.h>
 #include <Durian/Graphics/Renderer.h>
 #include <Durian/Scene/Components.h>
 
@@ -13,23 +14,12 @@ App::App()
 	m_SpriteEntity = m_Scene.CreateEntity("Sprite");
 	auto& transformComp = m_SpriteEntity.AddComponent<Durian::TransformComponent>();
 	transformComp.Scale = glm::vec3(64.0f, 64.0f, 64.0f);
-	Durian::Texture tex;
-	auto& texComp = m_SpriteEntity.AddComponent<Durian::SpriteComponent>(tex);
-	texComp.Color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);
-	texComp.UseColor = true;
+	auto& texComp = m_SpriteEntity.AddComponent<Durian::SpriteComponent>(Durian::CreateRef<Durian::Texture>("img.png"));
 
 	m_CameraEntity = m_Scene.CreateEntity("Camera");
 	m_CameraEntity.AddComponent<Durian::TransformComponent>();
 	Durian::OrthoCamera cam;
 	m_CameraEntity.AddComponent<Durian::OrthoCameraComponent>(cam);
-
-	// m_Sprite.Pos = glm::vec2(100.0f);
-	// m_Sprite.Scale = glm::vec2(64.0f);
-	// m_Sprite.Rotation = 30.0f;
-	// m_Sprite.LoadTexture("img.png");
-	// m_Sprite.SetCamera(&m_Cam);
-
-	// Durian::Renderer::Get();
 }
 
 void App::Run()

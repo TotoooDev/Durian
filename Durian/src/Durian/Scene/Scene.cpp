@@ -39,7 +39,7 @@ namespace Durian
 				if (sprite.UseColor)
 					Renderer::Get()->DrawRectColor(transform.GetTransfrom(), sprite.Color);
 				else
-					Renderer::Get()->DrawRectTextured(transform.GetTransfrom(), &sprite.Tex);
+					Renderer::Get()->DrawRectTextured(transform.GetTransfrom(), sprite.Tex);
 			}
 		}
 	}
