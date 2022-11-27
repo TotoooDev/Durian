@@ -15,6 +15,7 @@ App::App()
 	auto& transformComp = m_SpriteEntity.AddComponent<Durian::TransformComponent>();
 	transformComp.Scale = glm::vec3(64.0f, 64.0f, 64.0f);
 	auto& texComp = m_SpriteEntity.AddComponent<Durian::SpriteComponent>(Durian::CreateRef<Durian::Texture>("img.png"));
+	m_SpriteEntity.AddComponent<Durian::ScriptComponent>("Script.lua");
 
 	m_CameraEntity = m_Scene.CreateEntity("Camera");
 	m_CameraEntity.AddComponent<Durian::TransformComponent>();

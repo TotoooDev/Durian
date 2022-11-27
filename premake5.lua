@@ -75,10 +75,9 @@ project "Durian"
 			"SDL2",
 			"SDL2main",
 			"GLEW",
-			"GL"
+			"GL",
+			"lua"
 		}
-
-		-- add windows specific stuff here
 
 	filter "configurations:Debug"
 		defines
@@ -154,12 +153,17 @@ project "Durio"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
+		libdirs
+		{
+			"libs/linux"
+		}
 		links
 		{
 			"SDL2",
 			"SDL2main",
 			"GLEW",
-			"GL"
+			"GL",
+			"lua"
 		}
 
 	filter "configurations:Debug"

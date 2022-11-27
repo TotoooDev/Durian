@@ -1,6 +1,7 @@
 #pragma once
 #include <Durian/Graphics/Texture.h>
 #include <Durian/Graphics/Camera.h>
+#include <Durian/Scene/Script.h>
 #include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -60,4 +61,14 @@ namespace Durian
 			: Cam(cam) {}
 		OrthoCameraComponent(const OrthoCameraComponent&) = default;
     };
+
+	struct ScriptComponent
+	{
+		std::string ScriptPath;
+		LuaScript Script;
+
+		ScriptComponent(const std::string& path = "")
+			: ScriptPath(path), Script(ScriptPath) {}
+		ScriptComponent(const ScriptComponent&) = default;
+	};
 }
