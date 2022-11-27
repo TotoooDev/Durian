@@ -64,6 +64,36 @@ namespace Durian
         return (float)lua_tonumber(m_State, -1);
     }
 
+    glm::vec3 LuaScript::GetTransformTranslation()
+    {
+        glm::vec3 result(0.0f);
+
+        lua_getglobal(m_State, "Transform");
+        if (lua_istable(m_State, -1))
+        {
+            lua_pushstring(m_State, "Translation");
+            lua_gettable(m_State, -1);
+            if (lua_istable(m_State, -1))
+            {
+                lua_pushstring(m_State, "x");
+                lua_gettable(m_State, -2);
+                result.x = lua_tonumber(m_State, -1);
+
+                lua_pushstring(m_State, "y");
+                lua_gettable(m_State, -2);
+                result.y = lua_tonumber(m_State, -1);
+
+                lua_pushstring(m_State, "z");
+                lua_gettable(m_State, -2);
+                result.z = lua_tonumber(m_State, -1);
+
+                lua_pop(m_State, 2);
+            }
+        }
+
+        return result;
+    }
+
     bool LuaScript::CheckLua(int r)
     {
         if (r != LUA_OK)

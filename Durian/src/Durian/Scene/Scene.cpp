@@ -27,6 +27,12 @@ namespace Durian
 		for (auto&& [id, script] : scriptView.each())
 		{
 			script.Script.OnUpdate(timestep);
+			if (m_Registry.any_of<TransformComponent>(id))
+			{
+				auto& transform = m_Registry.get<TransformComponent>(id);
+				transform.Translation = script.Script.GetTransformTranslation();
+				DURIAN_LOG_INFO(transform.Translation.x);
+			}
 		}
 
 		auto camView = m_Registry.view<TransformComponent, OrthoCameraComponent>();

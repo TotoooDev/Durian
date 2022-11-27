@@ -19,6 +19,7 @@ namespace Durian
         void OnUpdate(float timestep);
 
         float GetNumber(const std::string& name);
+        glm::vec3 GetTransformTranslation();
 
     private:
         bool CheckLua(int r);
