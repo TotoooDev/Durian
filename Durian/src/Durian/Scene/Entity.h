@@ -15,6 +15,8 @@ namespace Durian
 
 		}
 
+		entt::entity GetID() const { return m_Identifier; }
+
 		template <typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{

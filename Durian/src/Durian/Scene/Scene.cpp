@@ -23,6 +23,12 @@ namespace Durian
 
 	void Scene::UpdateScene(double timestep)
 	{
+		auto scriptView = m_Registry.view<ScriptComponent>();
+		for (auto&& [id, script] : scriptView.each())
+		{
+			script.Script.OnUpdate(timestep);
+		}
+
 		auto camView = m_Registry.view<TransformComponent, OrthoCameraComponent>();
 		for (auto&& [id, transform, camera] : camView.each())
 		{

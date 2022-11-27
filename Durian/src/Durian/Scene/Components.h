@@ -67,8 +67,8 @@ namespace Durian
 		std::string ScriptPath;
 		LuaScript Script;
 
-		ScriptComponent(const std::string& path = "")
-			: ScriptPath(path), Script(ScriptPath) {}
+		ScriptComponent(Entity ent, const std::string& path = "")
+			: ScriptPath(path), Script(ent, ScriptPath) {}
 		ScriptComponent(const ScriptComponent&) = default;
 	};
 }

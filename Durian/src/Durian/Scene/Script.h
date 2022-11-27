@@ -1,4 +1,5 @@
 #pragma once
+#include <Durian/Scene/Entity.h>
 extern "C"
 {
     #include "Lua/lua.h"
@@ -12,7 +13,12 @@ namespace Durian
     class LuaScript
     {
     public:
-        LuaScript(const std::string& filePath = "");
+        LuaScript(Entity ent, const std::string& filePath = "");
+        
+        void OnStart();
+        void OnUpdate(float timestep);
+
+        float GetNumber(const std::string& name);
 
     private:
         bool CheckLua(int r);
