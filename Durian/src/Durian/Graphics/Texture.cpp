@@ -1,6 +1,5 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 #include <pch.h>
+#include <stb_image.h>
 #include <Durian/Graphics/Texture.h>
 #include <GL/glew.h>
 

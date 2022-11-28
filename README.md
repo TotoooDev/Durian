@@ -6,7 +6,9 @@ A wannabe 2D game engine
 
 ### For Windows users
 
-Clone the repository, run GenerateProjects.bat and a solution will be created for you. Open the solution and hit the build button (make sure you build in Distribution mode)
+Clone the repository, run GenerateProjects.bat and a solution will be created for you. 
+
+Open the solution and hit the build button (make sure you build in Distribution mode)
 
 ### For Linuwux users
 

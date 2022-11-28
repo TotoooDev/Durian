@@ -10,6 +10,9 @@
 // See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
 #define NOMINMAX
 
+// For stb_image
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <iostream>
 #include <memory>
 #include <utility>

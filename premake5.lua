@@ -63,7 +63,8 @@ project "Durian"
 			"SDL2",
 			"SDL2main",
 			"glew32",
-			"opengl32"
+			"opengl32",
+			"lua54"
 		}
 
 	filter "system:linux"
@@ -146,7 +147,8 @@ project "Durio"
 			"SDL2",
 			"SDL2main",
 			"glew32",
-			"opengl32"
+			"opengl32",
+			"lua54"
 		}
 
 	filter "system:linux"

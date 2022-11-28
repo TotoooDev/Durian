@@ -30,7 +30,7 @@ namespace Durian
 			if (m_Registry.any_of<TransformComponent>(id))
 			{
 				auto& transform = m_Registry.get<TransformComponent>(id);
-				transform.Translation = script.Script.GetTransformTranslation();
+				script.Script.GetTransformComponent(&transform);
 				DURIAN_LOG_INFO(transform.Translation.x);
 			}
 		}

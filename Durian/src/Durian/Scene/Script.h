@@ -10,6 +10,8 @@ extern "C"
 
 namespace Durian
 {
+    struct TransformComponent;
+
     class LuaScript
     {
     public:
@@ -20,6 +22,7 @@ namespace Durian
 
         float GetNumber(const std::string& name);
         glm::vec3 GetTransformTranslation();
+        void GetTransformComponent(TransformComponent* comp);
 
     private:
         bool CheckLua(int r);
