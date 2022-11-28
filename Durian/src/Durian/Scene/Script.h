@@ -1,5 +1,6 @@
 #pragma once
 #include <Durian/Scene/Entity.h>
+#include <Durian/Event/Events.h>
 extern "C"
 {
     #include "Lua/lua.h"
@@ -20,8 +21,6 @@ namespace Durian
         void OnStart();
         void OnUpdate(float timestep);
 
-        float GetNumber(const std::string& name);
-        glm::vec3 GetTransformTranslation();
         void GetTransformComponent(TransformComponent* comp);
 
     private:
@@ -29,5 +28,15 @@ namespace Durian
 
         lua_State* m_State;
         std::string m_Path;
+
+        struct UserData
+        {
+            Entity Ent;
+            int KeyDown = 0;
+            int KeyUp = 0;
+        } m_UserData;
+
+        void OnKeyDown(KeyDownEvent* event);
+        void OnKeyUp(KeyUpEvent* event);
     };
 }

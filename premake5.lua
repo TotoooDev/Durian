@@ -188,3 +188,10 @@ project "Durio"
 	filter "configurations:Distribution"
 		defines "DURIAN_DIST"
 		optimize "On"
+
+	postbuildcommands
+	{
+		"{COPYFILE} shaders/*.vert bin/" .. outputDir .. "/%{prj.name}/shaders/",
+		"{COPYFILE} shaders/*.frag bin/" .. outputDir .. "/%{prj.name}/shaders/",
+		"{COPYFILE} lua/DurianEngine.lua bin/" .. outputDir .. "/%{prj.name}/"
+	}

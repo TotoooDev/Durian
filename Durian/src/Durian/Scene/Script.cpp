@@ -1,4 +1,5 @@
 #include <pch.h>
+#include <Durian/Core/Application.h>
 #include <Durian/Scene/Script.h>
 #include <Durian/Scene/Components.h>
 
@@ -12,7 +13,9 @@ namespace Durian
         if (!CheckLua(luaL_dofile(m_State, m_Path.c_str())))
             return;
 
-        lua_pushlightuserdata(m_State, &ent);
+        m_UserData.Ent = ent;
+
+        lua_pushlightuserdata(m_State, &m_UserData);
         lua_setglobal(m_State, "Durian_EntityPointer");
 
         lua_register(m_State, "Durian_LogInfo", [](lua_State* state)
@@ -33,17 +36,34 @@ namespace Durian
         lua_register(m_State, "Durian_AttachTransform", [](lua_State* state)
         {
             lua_getglobal(state, "Durian_EntityPointer");
-            Entity* ent = (Entity*)lua_touserdata(state, -1);
-            ent->AddComponent<TransformComponent>();
+            UserData* data = (UserData*)lua_touserdata(state, -1);
+            data->Ent.AddComponent<TransformComponent>();
             return 0;
         });
         lua_register(m_State, "Durian_DetachTransform", [](lua_State* state)
             {
                 lua_getglobal(state, "Durian_EntityPointer");
-                Entity* ent = (Entity*)lua_touserdata(state, -1);
-                ent->RemoveComponent<TransformComponent>();
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                data->Ent.RemoveComponent<TransformComponent>();
                 return 0;
             });
+        lua_register(m_State, "Durian_EventKeyDown", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_EntityPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->KeyDown);
+                return 1;
+            });
+        lua_register(m_State, "Durian_EventKeyUp", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_EntityPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->KeyUp);
+                return 1;
+            });
+
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyDown);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyUp);
 
         OnStart();
     }
@@ -63,42 +83,6 @@ namespace Durian
             lua_pushnumber(m_State, timestep);
             CheckLua(lua_pcall(m_State, 1, 0, 0));
         }
-    }
-
-    float LuaScript::GetNumber(const std::string& name)
-    {
-        lua_getglobal(m_State, name.c_str());
-        return (float)lua_tonumber(m_State, -1);
-    }
-
-    glm::vec3 LuaScript::GetTransformTranslation()
-    {
-        glm::vec3 result(0.0f);
-
-        lua_getglobal(m_State, "Transform");
-        if (lua_istable(m_State, -1))
-        {
-            lua_pushstring(m_State, "Translation");
-            lua_gettable(m_State, -1);
-            if (lua_istable(m_State, -1))
-            {
-                lua_pushstring(m_State, "x");
-                lua_gettable(m_State, -2);
-                result.x = lua_tonumber(m_State, -1);
-
-                lua_pushstring(m_State, "y");
-                lua_gettable(m_State, -2);
-                result.y = lua_tonumber(m_State, -1);
-
-                lua_pushstring(m_State, "z");
-                lua_gettable(m_State, -2);
-                result.z = lua_tonumber(m_State, -1);
-
-                lua_pop(m_State, 2);
-            }
-        }
-
-        return result;
     }
 
     void LuaScript::GetTransformComponent(TransformComponent* comp)
@@ -188,5 +172,16 @@ namespace Durian
             return false;
         }
         return true;
+    }
+
+    void LuaScript::OnKeyDown(KeyDownEvent* event)
+    {
+        m_UserData.KeyDown = event->Keycode;
+        m_UserData.KeyUp = 0;
+    }
+    void LuaScript::OnKeyUp(KeyUpEvent* event)
+    {
+        m_UserData.KeyDown = 0;
+        m_UserData.KeyUp = event->Keycode;
     }
 }
