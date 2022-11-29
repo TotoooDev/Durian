@@ -1,27 +1,28 @@
-Transform =
-{
-    Translation =
-    {
-        x = 0,
-        y = 0,
-        z = 0
-    },
-    Scale =
-    {
-        x = 1,
-        y = 1,
-        z = 1
-    },
-    Rotation =
-    {
-        x = 0,
-        y = 0,
-        z = 0
-    }
-}
 
 Durian =
 {
+    Transform =
+    {
+        Translation =
+        {
+            x = 0,
+            y = 0,
+            z = 0
+        },
+        Scale =
+        {
+            x = 1,
+            y = 1,
+            z = 1
+        },
+        Rotation =
+        {
+            x = 0,
+            y = 0,
+            z = 0
+        }
+    },
+
     Keycode =
     {
         -- I copied all of this from the Durian source by hand and now I want to fucking die

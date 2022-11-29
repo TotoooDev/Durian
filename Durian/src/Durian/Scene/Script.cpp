@@ -1,4 +1,5 @@
 #include <pch.h>
+#include <Durian/Core/Ref.h>
 #include <Durian/Core/Application.h>
 #include <Durian/Scene/Script.h>
 #include <Durian/Scene/Components.h>
@@ -55,77 +56,82 @@ namespace Durian
     {
         glm::vec3 translation(0.0f), scale(0.0f), rotation(0.0f);
 
-        lua_getglobal(m_State, "Transform");
+        lua_getglobal(m_State, "Durian");
         if (lua_istable(m_State, -1))
         {
-            lua_pushstring(m_State, "Translation");
+            lua_pushstring(m_State, "Transform");
             lua_gettable(m_State, -2);
             if (lua_istable(m_State, -1))
             {
-                lua_pushstring(m_State, "x");
+                lua_pushstring(m_State, "Translation");
                 lua_gettable(m_State, -2);
-                translation.x = lua_tonumber(m_State, -1);
+                if (lua_istable(m_State, -1))
+                {
+                    lua_pushstring(m_State, "x");
+                    lua_gettable(m_State, -2);
+                    translation.x = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    lua_pushstring(m_State, "y");
+                    lua_gettable(m_State, -2);
+                    translation.y = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    lua_pushstring(m_State, "z");
+                    lua_gettable(m_State, -2);
+                    translation.z = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    comp->Translation = translation;
+                }
                 lua_pop(m_State, 1);
 
-                lua_pushstring(m_State, "y");
+                lua_pushstring(m_State, "Scale");
                 lua_gettable(m_State, -2);
-                translation.y = lua_tonumber(m_State, -1);
+                if (lua_istable(m_State, -1))
+                {
+                    lua_pushstring(m_State, "x");
+                    lua_gettable(m_State, -2);
+                    scale.x = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    lua_pushstring(m_State, "y");
+                    lua_gettable(m_State, -2);
+                    scale.y = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    lua_pushstring(m_State, "z");
+                    lua_gettable(m_State, -2);
+                    scale.z = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    comp->Scale = scale;
+                }
                 lua_pop(m_State, 1);
 
-                lua_pushstring(m_State, "z");
+                lua_pushstring(m_State, "Rotation");
                 lua_gettable(m_State, -2);
-                translation.z = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
+                if (lua_istable(m_State, -1))
+                {
+                    lua_pushstring(m_State, "x");
+                    lua_gettable(m_State, -2);
+                    rotation.x = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
 
-                comp->Translation = translation;
+                    lua_pushstring(m_State, "y");
+                    lua_gettable(m_State, -2);
+                    rotation.y = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    lua_pushstring(m_State, "z");
+                    lua_gettable(m_State, -2);
+                    rotation.z = lua_tonumber(m_State, -1);
+                    lua_pop(m_State, 1);
+
+                    comp->Rotation = rotation;
+                }
+                lua_pop(m_State, 1);
             }
-            lua_pop(m_State, 1);
-
-            lua_pushstring(m_State, "Scale");
-            lua_gettable(m_State, -2);
-            if (lua_istable(m_State, -1))
-            {
-                lua_pushstring(m_State, "x");
-                lua_gettable(m_State, -2);
-                scale.x = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
-
-                lua_pushstring(m_State, "y");
-                lua_gettable(m_State, -2);
-                scale.y = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
-
-                lua_pushstring(m_State, "z");
-                lua_gettable(m_State, -2);
-                scale.z = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
-
-                comp->Scale = scale;
-            }
-            lua_pop(m_State, 1);
-
-            lua_pushstring(m_State, "Rotation");
-            lua_gettable(m_State, -2);
-            if (lua_istable(m_State, -1))
-            {
-                lua_pushstring(m_State, "x");
-                lua_gettable(m_State, -2);
-                rotation.x = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
-
-                lua_pushstring(m_State, "y");
-                lua_gettable(m_State, -2);
-                rotation.y = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
-
-                lua_pushstring(m_State, "z");
-                lua_gettable(m_State, -2);
-                rotation.z = lua_tonumber(m_State, -1);
-                lua_pop(m_State, 1);
-
-                comp->Rotation = rotation;
-            }
-            lua_pop(m_State, 1);
         }
     }
 
@@ -173,6 +179,22 @@ namespace Durian
                 lua_getglobal(state, "Durian_DataPointer");
                 UserData* data = (UserData*)lua_touserdata(state, -1);
                 data->Ent.RemoveComponent<TransformComponent>();
+                return 0;
+            });
+        // Sprite
+        lua_register(m_State, "Durian_AttachSprite", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                const char* texPath = lua_tostring(state, 1);
+                data->Ent.AddComponent<SpriteComponent>(CreateRef<Texture>(texPath));
+                return 0;
+            });
+        lua_register(m_State, "Durian_DetachSprite", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                data->Ent.RemoveComponent<SpriteComponent>();
                 return 0;
             });
 
