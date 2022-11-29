@@ -33,17 +33,26 @@ namespace Durian
         struct UserData
         {
             Entity Ent;
+
             int KeyDown = 0, KeyUp = 0;
+
             int MouseX = 0, MouseY = 0;
             int ButtonDown = 0, ButtonUp = 0;
             float ScrollX = 0.0f, ScrollY = 0.0f;
+
+            int WindowX = 0, WindowY = 0;
+            int WindowWidth = 0, WindowHeight = 0;
         } m_UserData;
 
         void OnKeyDown(KeyDownEvent* event);
         void OnKeyUp(KeyUpEvent* event);
+
         void OnMouseMoved(MouseMovedEvent* event);
         void OnMouseButtonDown(MouseButtonDownEvent* event);
         void OnMouseButtonUp(MouseButtonUpEvent* event);
         void OnMouseScrolled(MouseScrolledEvent* event);
+
+        void OnWindowMoved(WindowMovedEvent* event);
+        void OnWindowResized(WindowResizedEvent* event);
     };
 }

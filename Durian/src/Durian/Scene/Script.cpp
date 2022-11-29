@@ -8,6 +8,18 @@ namespace Durian
     LuaScript::LuaScript(Entity ent, const std::string& filePath)
         : m_Path(filePath)
     {
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyDown);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyUp);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseMoved);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseButtonDown);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseButtonUp);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseScrolled);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnWindowMoved);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnWindowResized);
+
+        m_UserData.WindowWidth = Application::Get().GetWindowSpec().Width;
+        m_UserData.WindowHeight = Application::Get().GetWindowSpec().Height;
+
         m_State = luaL_newstate();
         luaL_openlibs(m_State);
         if (!CheckLua(luaL_dofile(m_State, m_Path.c_str())))
@@ -19,14 +31,6 @@ namespace Durian
         lua_setglobal(m_State, "Durian_DataPointer");
 
         SetCppFunctions();
-
-        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyDown);
-        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyUp);
-        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseMoved);
-        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseButtonDown);
-        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseButtonUp);
-        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseScrolled);
-
         OnStart();
     }
 
@@ -219,6 +223,23 @@ namespace Durian
                 lua_pushnumber(state, data->ScrollY);
                 return 2;
             });
+        // Window
+        lua_register(m_State, "Durian_EventWindowPos", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->WindowX);
+                lua_pushnumber(state, data->WindowY);
+                return 2;
+            });
+        lua_register(m_State, "Durian_EventWindowSize", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->WindowWidth);
+                lua_pushnumber(state, data->WindowHeight);
+                return 2;
+            });
     }
 
     void LuaScript::OnKeyDown(KeyDownEvent* event)
@@ -231,6 +252,7 @@ namespace Durian
         m_UserData.KeyDown = 0;
         m_UserData.KeyUp = event->Keycode;
     }
+
     void LuaScript::OnMouseMoved(MouseMovedEvent* event)
     {
         m_UserData.MouseX = event->x;
@@ -250,5 +272,16 @@ namespace Durian
     {
         m_UserData.ScrollX = event->xOffset;
         m_UserData.ScrollY = event->yOffset;
+    }
+
+    void LuaScript::OnWindowMoved(WindowMovedEvent* event)
+    {
+        m_UserData.WindowX = event->x;
+        m_UserData.WindowY = event->y;
+    }
+    void LuaScript::OnWindowResized(WindowResizedEvent* event)
+    {
+        m_UserData.WindowWidth = event->Width;
+        m_UserData.WindowHeight = event->Height;
     }
 }
