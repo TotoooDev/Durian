@@ -16,54 +16,16 @@ namespace Durian
         m_UserData.Ent = ent;
 
         lua_pushlightuserdata(m_State, &m_UserData);
-        lua_setglobal(m_State, "Durian_EntityPointer");
+        lua_setglobal(m_State, "Durian_DataPointer");
 
-        lua_register(m_State, "Durian_LogInfo", [](lua_State* state)
-        {
-            DURIAN_LOG_INFO(lua_tostring(state, 1));
-            return 0;
-        });
-        lua_register(m_State, "Durian_LogWarn", [](lua_State* state)
-        {
-            DURIAN_LOG_WARN(lua_tostring(state, 1));
-            return 0;
-        });
-        lua_register(m_State, "Durian_LogError", [](lua_State* state)
-        {
-            DURIAN_LOG_ERROR(lua_tostring(state, 1));
-            return 0;
-        });
-        lua_register(m_State, "Durian_AttachTransform", [](lua_State* state)
-        {
-            lua_getglobal(state, "Durian_EntityPointer");
-            UserData* data = (UserData*)lua_touserdata(state, -1);
-            data->Ent.AddComponent<TransformComponent>();
-            return 0;
-        });
-        lua_register(m_State, "Durian_DetachTransform", [](lua_State* state)
-            {
-                lua_getglobal(state, "Durian_EntityPointer");
-                UserData* data = (UserData*)lua_touserdata(state, -1);
-                data->Ent.RemoveComponent<TransformComponent>();
-                return 0;
-            });
-        lua_register(m_State, "Durian_EventKeyDown", [](lua_State* state)
-            {
-                lua_getglobal(state, "Durian_EntityPointer");
-                UserData* data = (UserData*)lua_touserdata(state, -1);
-                lua_pushnumber(state, data->KeyDown);
-                return 1;
-            });
-        lua_register(m_State, "Durian_EventKeyUp", [](lua_State* state)
-            {
-                lua_getglobal(state, "Durian_EntityPointer");
-                UserData* data = (UserData*)lua_touserdata(state, -1);
-                lua_pushnumber(state, data->KeyUp);
-                return 1;
-            });
+        SetCppFunctions();
 
         Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyDown);
         Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnKeyUp);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseMoved);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseButtonDown);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseButtonUp);
+        Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnMouseScrolled);
 
         OnStart();
     }
@@ -174,6 +136,91 @@ namespace Durian
         return true;
     }
 
+    void LuaScript::SetCppFunctions()
+    {
+        // Logging
+        lua_register(m_State, "Durian_LogInfo", [](lua_State* state)
+            {
+                DURIAN_LOG_INFO(lua_tostring(state, 1));
+                return 0;
+            });
+        lua_register(m_State, "Durian_LogWarn", [](lua_State* state)
+            {
+                DURIAN_LOG_WARN(lua_tostring(state, 1));
+                return 0;
+            });
+        lua_register(m_State, "Durian_LogError", [](lua_State* state)
+            {
+                DURIAN_LOG_ERROR(lua_tostring(state, 1));
+                return 0;
+            });
+
+        // Components
+        // Transform
+        lua_register(m_State, "Durian_AttachTransform", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                data->Ent.AddComponent<TransformComponent>();
+                return 0;
+            });
+        lua_register(m_State, "Durian_DetachTransform", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                data->Ent.RemoveComponent<TransformComponent>();
+                return 0;
+            });
+
+        // Events
+        // Keyboard
+        lua_register(m_State, "Durian_EventKeyDown", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->KeyDown);
+                return 1;
+            });
+        lua_register(m_State, "Durian_EventKeyUp", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->KeyUp);
+                return 1;
+            });
+        // Mouse
+        lua_register(m_State, "Durian_EventMouseMoved", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->MouseX);
+                lua_pushnumber(state, data->MouseY);
+                return 2;
+            });
+        lua_register(m_State, "Durian_EventMouseButtonDown", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->ButtonDown);
+                return 1;
+            });
+        lua_register(m_State, "Durian_EventMouseButtonUp", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->ButtonUp);
+                return 1;
+            });
+        lua_register(m_State, "Durian_EventMouseScrolled", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                lua_pushnumber(state, data->ScrollX);
+                lua_pushnumber(state, data->ScrollY);
+                return 2;
+            });
+    }
+
     void LuaScript::OnKeyDown(KeyDownEvent* event)
     {
         m_UserData.KeyDown = event->Keycode;
@@ -183,5 +230,25 @@ namespace Durian
     {
         m_UserData.KeyDown = 0;
         m_UserData.KeyUp = event->Keycode;
+    }
+    void LuaScript::OnMouseMoved(MouseMovedEvent* event)
+    {
+        m_UserData.MouseX = event->x;
+        m_UserData.MouseY = event->y;
+    }
+    void LuaScript::OnMouseButtonDown(MouseButtonDownEvent* event)
+    {
+        m_UserData.ButtonDown = event->Button;
+        m_UserData.ButtonUp = 0;
+    }
+    void LuaScript::OnMouseButtonUp(MouseButtonUpEvent* event)
+    {
+        m_UserData.ButtonDown = 0;
+        m_UserData.ButtonUp = event->Button;
+    }
+    void LuaScript::OnMouseScrolled(MouseScrolledEvent* event)
+    {
+        m_UserData.ScrollX = event->xOffset;
+        m_UserData.ScrollY = event->yOffset;
     }
 }

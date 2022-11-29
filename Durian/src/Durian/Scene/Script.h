@@ -24,6 +24,7 @@ namespace Durian
         void GetTransformComponent(TransformComponent* comp);
 
     private:
+        void SetCppFunctions();
         bool CheckLua(int r);
 
         lua_State* m_State;
@@ -32,11 +33,17 @@ namespace Durian
         struct UserData
         {
             Entity Ent;
-            int KeyDown = 0;
-            int KeyUp = 0;
+            int KeyDown = 0, KeyUp = 0;
+            int MouseX = 0, MouseY = 0;
+            int ButtonDown = 0, ButtonUp = 0;
+            float ScrollX = 0.0f, ScrollY = 0.0f;
         } m_UserData;
 
         void OnKeyDown(KeyDownEvent* event);
         void OnKeyUp(KeyUpEvent* event);
+        void OnMouseMoved(MouseMovedEvent* event);
+        void OnMouseButtonDown(MouseButtonDownEvent* event);
+        void OnMouseButtonUp(MouseButtonUpEvent* event);
+        void OnMouseScrolled(MouseScrolledEvent* event);
     };
 }
