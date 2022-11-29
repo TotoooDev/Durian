@@ -8,9 +8,9 @@ Transform =
     },
     Scale =
     {
-        x = 0,
-        y = 0,
-        z = 0
+        x = 1,
+        y = 1,
+        z = 1
     },
     Rotation =
     {
@@ -26,7 +26,7 @@ Durian =
     {
         -- I copied all of this from the Durian source by hand and now I want to fucking die
         DURIAN_SCANCODE_UNKNOWN = 0,
-        DURIAN_SCANCODE_A = 4.0,
+        DURIAN_SCANCODE_A = 4,
         DURIAN_SCANCODE_B = 5,
         DURIAN_SCANCODE_C = 6,
         DURIAN_SCANCODE_D = 7,
