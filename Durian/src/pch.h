@@ -28,6 +28,7 @@
 #include <unordered_set>
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/rotating_file_sink.h>

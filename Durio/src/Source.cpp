@@ -1,6 +1,7 @@
 #include <Durian/Core/Application.h>
 #include <Durian/Core/Window.h>
 #include <Durian/Core/Ref.h>
+#include <Durian/Audio/SoundPool.h>
 #include <Durian/Event/Events.h>
 #include <Durian/Event/EventBus.h>
 #include <Durian/Graphics/Texture.h>
@@ -18,12 +19,17 @@ public:
 		// auto& transformComp = m_SpriteEntity.AddComponent<Durian::TransformComponent>();
 		// transformComp.Scale = glm::vec3(64.0f, 64.0f, 64.0f);
 		// auto& texComp = m_SpriteEntity.AddComponent<Durian::SpriteComponent>(Durian::CreateRef<Durian::Texture>("img.png"));
-		// m_SpriteEntity.AddComponent<Durian::ScriptComponent>(m_SpriteEntity, "Script.lua");
+		m_SpriteEntity.AddComponent<Durian::ScriptComponent>(m_SpriteEntity, "Script.lua");
+		auto& emitterComp = m_SpriteEntity.AddComponent<Durian::SoundEmitterComponent>();
+		Durian::Ref<Durian::Sound> sound = Durian::CreateRef<Durian::Sound>("baow.mp3");
+		Durian::Application::Get().GetSoundPool().AddSound(sound);
+		emitterComp.SoundQueue.push(sound);
 
 		m_CameraEntity = m_Scene.CreateEntity("Camera");
 		m_CameraEntity.AddComponent<Durian::TransformComponent>();
 		Durian::OrthoCamera cam;
 		m_CameraEntity.AddComponent<Durian::OrthoCameraComponent>(cam);
+		m_CameraEntity.AddComponent<Durian::SoundListenerComponent>();
 	}
 
 	virtual void OnUpdate(double timestep) override

@@ -18,6 +18,7 @@ namespace Durian
         Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnWindowMoved);
         Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnWindowResized);
 
+        m_UserData.Sounds = &Application::Get().GetSoundPool();
         m_UserData.WindowWidth = Application::Get().GetWindowSpec().Width;
         m_UserData.WindowHeight = Application::Get().GetWindowSpec().Height;
 
@@ -196,6 +197,31 @@ namespace Durian
                 UserData* data = (UserData*)lua_touserdata(state, -1);
                 data->Ent.RemoveComponent<SpriteComponent>();
                 return 0;
+            });
+        // Sound emitter
+        lua_register(m_State, "Durian_AttachSoundEmitter", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                const char* texPath = lua_tostring(state, 1);
+                data->Ent.AddComponent<SoundEmitterComponent>();
+                return 0;
+            });
+        lua_register(m_State, "Durian_DetachSoundEmitter", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                data->Ent.RemoveComponent<SpriteComponent>();
+                return 0;
+            });
+        lua_register(m_State, "Durian_LoadSound", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                const char* path = lua_tostring(state, 1);
+                Ref<Sound> sound = CreateRef<Sound>(path);
+                data->Sounds->AddSound(sound);
+                return 1;
             });
 
         // Events

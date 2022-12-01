@@ -1,6 +1,7 @@
 #pragma once
 #include <Durian/Scene/Entity.h>
 #include <Durian/Event/Events.h>
+#include <Durian/Audio/SoundPool.h>
 extern "C"
 {
     #include "Lua/lua.h"
@@ -33,6 +34,7 @@ namespace Durian
         struct UserData
         {
             Entity Ent;
+            SoundPool* Sounds;
 
             int KeyDown = 0, KeyUp = 0;
 

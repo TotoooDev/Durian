@@ -146,6 +146,7 @@ project "Durio"
 		{
 			"SDL2",
 			"SDL2main",
+			"SDL2_mixer",
 			"glew32",
 			"opengl32",
 			"lua54"
@@ -163,6 +164,7 @@ project "Durio"
 		{
 			"SDL2",
 			"SDL2main",
+			"SDL2_mixer",
 			"GLEW",
 			"GL",
 			"lua"

@@ -23,6 +23,21 @@ Durian =
         }
     },
 
+    Sound =
+    {
+        Path = "",
+        Channel = 0,
+        Loops = 0,
+        Volume = 128,
+        ID = -1;
+    },
+
+    SoundEmitter =
+    {
+        Emit = true,
+        IgnoreDistance = true
+    }
+
     Keycode =
     {
         -- I copied all of this from the Durian source by hand and now I want to fucking die

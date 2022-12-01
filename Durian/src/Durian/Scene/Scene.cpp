@@ -23,6 +23,7 @@ namespace Durian
 
 	void Scene::UpdateScene(double timestep)
 	{
+		// Execute scripts
 		auto scriptView = m_Registry.view<ScriptComponent>();
 		for (auto&& [id, script] : scriptView.each())
 		{
@@ -34,6 +35,7 @@ namespace Durian
 			}
 		}
 
+		// Rendering
 		auto camView = m_Registry.view<TransformComponent, OrthoCameraComponent>();
 		for (auto&& [id, transform, camera] : camView.each())
 		{
@@ -51,6 +53,61 @@ namespace Durian
 					Renderer::Get()->DrawRectColor(transform.GetTransfrom(), sprite.Color);
 				else
 					Renderer::Get()->DrawRectTextured(transform.GetTransfrom(), sprite.Tex);
+			}
+		}
+
+		// Sounds
+		auto listenerView = m_Registry.view<SoundListenerComponent>();
+		for (auto&& [id, listener] : listenerView.each())
+		{
+			if (!listener.Listen)
+				continue;
+
+			if (m_Registry.any_of<TransformComponent>(id) && !listener.IgnoreDistance)
+			{
+				auto emitterView = m_Registry.view<SoundEmitterComponent>();
+				for (auto&& [id1, emitter] : emitterView.each())
+				{
+					// Play every sound in the queue
+					while (!emitter.SoundQueue.empty())
+					{
+						Ref<Sound> sound = emitter.SoundQueue.front();
+						bool resetDistance = false;
+
+						// Set the distance if the emitter has a transform
+						if (m_Registry.any_of<TransformComponent>(id1) && !emitter.IgnoreDistance)
+						{
+							glm::vec3 listenerPos = m_Registry.get<TransformComponent>(id).Translation;
+							glm::vec3 emitterPos = m_Registry.get<TransformComponent>(id1).Translation;
+							float distance = glm::distance(listenerPos, emitterPos);
+							Mix_SetDistance(sound->GetChannel(), (unsigned char)distance);
+							resetDistance = true;
+						}
+
+						Mix_VolumeChunk(sound->GetChunk(), sound->GetVolume());
+						Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
+
+						if (resetDistance)
+							Mix_SetDistance(sound->GetLoops(), 0);
+						
+						emitter.SoundQueue.pop();
+					}
+				}
+			}
+			else
+			{
+				auto emitterView = m_Registry.view<SoundEmitterComponent>();
+				for (auto&& [id1, emitter] : emitterView.each())
+				{
+					// Play every sound in the queue
+					while (!emitter.SoundQueue.empty())
+					{
+						Ref<Sound> sound = emitter.SoundQueue.front();
+						Mix_Volume(sound->GetChannel(), sound->GetVolume());
+						Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
+						emitter.SoundQueue.pop();
+					}
+				}
 			}
 		}
 	}

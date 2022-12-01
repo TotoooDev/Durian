@@ -1,8 +1,10 @@
 #pragma once
 #include <Durian/Graphics/Texture.h>
 #include <Durian/Graphics/Camera.h>
+#include <Durian/Audio/Sound.h>
 #include <Durian/Scene/Script.h>
 #include <string>
+#include <queue>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -61,6 +63,25 @@ namespace Durian
 			: Cam(cam) {}
 		OrthoCameraComponent(const OrthoCameraComponent&) = default;
     };
+
+	struct SoundEmitterComponent
+	{
+		bool Emit = true;
+		bool IgnoreDistance = false;
+		std::queue<Ref<Sound>> SoundQueue;
+
+		SoundEmitterComponent() {}
+		SoundEmitterComponent(const SoundEmitterComponent&) = default;
+	};
+
+	struct SoundListenerComponent
+	{
+		bool Listen = true;
+		bool IgnoreDistance = false;
+
+		SoundListenerComponent() {}
+		SoundListenerComponent(const SoundListenerComponent&) = default;
+	};
 
 	struct ScriptComponent
 	{
