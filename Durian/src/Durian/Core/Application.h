@@ -4,7 +4,7 @@
 #include <Durian/Core/Layer.h>
 #include <Durian/Event/EventBus.h>
 #include <Durian/Event/WindowEvents.h>
-#include <Durian/Audio/SoundPool.h>
+#include <Durian/Audio/AudioEngine.h>
 
 #include <vector>
 
@@ -30,7 +30,7 @@ namespace Durian
 		Window GetWindow() { return m_Window; }
 		WindowSpecification GetWindowSpec() { return m_Window.GetSpecification(); }
 		EventBus* GetEventBus() { return m_Window.GetSpecification().Bus; }
-		SoundPool& GetSoundPool() { return m_SoundPool; }
+		AudioEngine& GetAudioEngine() { return m_AudioEngine; }
 		double GetTimestep() { return m_Timestep; }
 
 	private:
@@ -42,7 +42,7 @@ namespace Durian
 		Window m_Window;
 		std::vector<Layer*> m_Layers;
 
-		SoundPool m_SoundPool;
+		AudioEngine m_AudioEngine;
 
 		bool m_IsRunning = true;
 		bool m_Minimized = false;

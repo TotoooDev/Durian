@@ -7,7 +7,7 @@ namespace Durian
 	class Sound
 	{
 	public:
-		Sound(const std::string& path, int loops = 0, int volume = MIX_MAX_VOLUME, int channels = 0);
+		Sound(const std::string& path, int loops = 0, int volume = MIX_MAX_VOLUME, int channel = 0);
 		~Sound();
 
 		void SetVolume(int volume);
@@ -16,6 +16,7 @@ namespace Durian
 		int GetChannel() { return m_Channel; }
 		int GetLoops() { return m_Loops; }
 		int GetVolume() { return m_Volume; }
+		std::string GetPath() { return m_Path; }
 
 	private:
 		Mix_Chunk* m_Chunk;

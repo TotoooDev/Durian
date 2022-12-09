@@ -8,8 +8,13 @@ namespace Durian
 	class SoundPool
 	{
 	public:
-		void AddSound(Ref<Sound> sound) { m_Sounds.push_back(sound); }
+		unsigned int AddSound(Ref<Sound> sound);
 		void RemoveSound(Ref<Sound> sound);
+		Ref<Sound> GetSound(unsigned int id) { return m_Sounds.at(id); }
+
+		unsigned int GetSize() { return m_Sounds.size(); }
+		std::vector<Ref<Sound>>::iterator begin() { return m_Sounds.begin(); }
+		std::vector<Ref<Sound>>::iterator end() { return m_Sounds.end(); }
 
 	private:
 		std::vector<Ref<Sound>> m_Sounds;

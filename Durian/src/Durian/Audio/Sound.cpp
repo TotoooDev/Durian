@@ -4,8 +4,8 @@
 
 namespace Durian
 {
-	Sound::Sound(const std::string& path, int loops, int volume, int channels)
-		: m_Path(path), m_Loops(loops), m_Volume(volume), m_Channel(channels)
+	Sound::Sound(const std::string& path, int loops, int volume, int channel)
+		: m_Path(path), m_Loops(loops), m_Volume(volume), m_Channel(channel)
 	{
 		m_Chunk = Mix_LoadWAV(path.c_str());
 		if (!m_Chunk)

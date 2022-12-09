@@ -1,4 +1,5 @@
 #include <pch.h>
+#include <Durian/Core/Application.h>
 #include <Durian/Scene/Scene.h>
 #include <Durian/Scene/Entity.h>
 #include <Durian/Scene/Components.h>
@@ -57,6 +58,7 @@ namespace Durian
 		}
 
 		// Sounds
+		Application::Get().GetAudioEngine().Update();
 		auto listenerView = m_Registry.view<SoundListenerComponent>();
 		for (auto&& [id, listener] : listenerView.each())
 		{
@@ -80,15 +82,14 @@ namespace Durian
 							glm::vec3 listenerPos = m_Registry.get<TransformComponent>(id).Translation;
 							glm::vec3 emitterPos = m_Registry.get<TransformComponent>(id1).Translation;
 							float distance = glm::distance(listenerPos, emitterPos);
-							Mix_SetDistance(sound->GetChannel(), (unsigned char)distance);
+							Application::Get().GetAudioEngine().SetSoundDistance(sound, (unsigned char)distance);
 							resetDistance = true;
 						}
 
-						Mix_VolumeChunk(sound->GetChunk(), sound->GetVolume());
-						Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
+						Application::Get().GetAudioEngine().PlaySound(sound);
 
 						if (resetDistance)
-							Mix_SetDistance(sound->GetLoops(), 0);
+							Application::Get().GetAudioEngine().SetSoundDistance(sound, 0);
 						
 						emitter.SoundQueue.pop();
 					}
@@ -103,8 +104,7 @@ namespace Durian
 					while (!emitter.SoundQueue.empty())
 					{
 						Ref<Sound> sound = emitter.SoundQueue.front();
-						Mix_Volume(sound->GetChannel(), sound->GetVolume());
-						Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
+						Application::Get().GetAudioEngine().PlaySound(sound);
 						emitter.SoundQueue.pop();
 					}
 				}
