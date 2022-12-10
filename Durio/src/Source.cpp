@@ -10,6 +10,8 @@
 #include <Durian/Scene/Entity.h>
 #include <Durian/Scene/Components.h>
 
+#include <imgui/imgui.h>
+
 class CustomLayer : public Durian::Layer
 {
 public:
@@ -29,6 +31,13 @@ public:
 	{
 		Durian::Renderer::Get()->Clear(0.2f, 0.2f, 0.2f);
 		m_Scene.UpdateScene(timestep);
+	}
+
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("bonjour");
+		ImGui::Text("bonsoir");
+		ImGui::End();
 	}
 
 private:

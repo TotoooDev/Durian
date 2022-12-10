@@ -48,7 +48,7 @@ project "Durian"
 	}
 
 	pchheader "pch.h"
-	pchsource "pch.cpp"
+	pchsource "Durian/src/pch.cpp"
 
 	filter "system:windows"
 		cppdialect "C++17"

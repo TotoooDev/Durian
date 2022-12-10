@@ -46,7 +46,7 @@ namespace Durian
         bool Draw = true;
 		bool UseColor = false;
         Ref<Texture> Tex;
-		glm::vec4 Color;
+		glm::vec4 Color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
         SpriteComponent(Ref<Texture> tex) 
             : Tex(tex) {}

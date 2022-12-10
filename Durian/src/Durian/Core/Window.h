@@ -18,6 +18,7 @@ namespace Durian
 		bool VSync = true;
 		
 		SDL_Window* NativeWindow = nullptr;
+		SDL_GLContext ContextGL = nullptr;
 	};
 
 	class Window

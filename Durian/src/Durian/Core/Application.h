@@ -2,6 +2,7 @@
 
 #include <Durian/Core/Window.h>
 #include <Durian/Core/Layer.h>
+#include <Durian/Core/ImGuiLayer.h>
 #include <Durian/Event/EventBus.h>
 #include <Durian/Event/WindowEvents.h>
 #include <Durian/Audio/AudioEngine.h>
@@ -25,8 +26,6 @@ namespace Durian
 		// Close and clean the application
 		void Stop();
 
-		// void LockMouse(bool lock);
-
 		Window GetWindow() { return m_Window; }
 		WindowSpecification GetWindowSpec() { return m_Window.GetSpecification(); }
 		EventBus* GetEventBus() { return m_Window.GetSpecification().Bus; }
@@ -41,6 +40,7 @@ namespace Durian
 
 		Window m_Window;
 		std::vector<Layer*> m_Layers;
+		ImGuiLayer* m_ImGuiLayer;
 
 		AudioEngine m_AudioEngine;
 

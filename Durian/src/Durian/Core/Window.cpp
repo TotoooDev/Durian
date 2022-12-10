@@ -1,6 +1,7 @@
 #include <pch.h>
 #include <Durian/Core/Window.h>
 #include <Durian/Event/Events.h>
+#include <imgui/imgui_impl_sdl.h>
 
 namespace Durian
 {
@@ -43,8 +44,10 @@ namespace Durian
 
 	void Window::PollEvents()
 	{
+		// Poll events, this is needed so SDL calls the event callback
 		SDL_Event event;
-		while (SDL_PollEvent(&event)); // Poll events, this is needed so SDL calls the event callback
+		while (SDL_PollEvent(&event))
+			ImGui_ImplSDL2_ProcessEvent(&event);
 	}
 
 	void Window::Init()
@@ -83,6 +86,7 @@ namespace Durian
     	SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 3); //OpenGL 3.3
 		auto context = SDL_GL_CreateContext(m_NativeWindow);
 		DURIAN_ASSERT(context, "Failed to create OpenGL context!");
+		m_Spec.ContextGL = context;
 
 		if (m_Spec.VSync)
 			SDL_GL_SetSwapInterval(1); // Set VSync

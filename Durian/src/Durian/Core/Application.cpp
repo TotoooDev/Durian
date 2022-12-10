@@ -32,6 +32,9 @@ namespace Durian
 		spdlog::logger logger("Default Logger", { consoleSink, fileSink });
 		spdlog::set_default_logger(std::make_shared<spdlog::logger>(logger));
 
+		m_ImGuiLayer = new ImGuiLayer;
+		m_ImGuiLayer->OnCreate();
+
 		// Sub to the window events
 		m_Window.GetSpecification().Bus->Subscribe(this, &Application::OnWindowClosedEvent);
 		m_Window.GetSpecification().Bus->Subscribe(this, &Application::OnWindowResizedEvent);
@@ -69,12 +72,12 @@ namespace Durian
 			}
 
 			// ImGui
-			// m_ImGuiLayer->Begin();
-			// for (auto& layer : m_Layers)
-			// {
-			// 	layer->OnImGuiRender();
-			// }
-			// m_ImGuiLayer->End();
+			m_ImGuiLayer->Begin();
+			for (auto& layer : m_Layers)
+			{
+				layer->OnImGuiRender();
+			}
+			m_ImGuiLayer->End();
 
 			m_Window.Present();
 
@@ -89,11 +92,6 @@ namespace Durian
 	{
 		m_IsRunning = false;
 	}
-
-	// void Application::LockMouse(bool lock)
-	// {
-	// 	m_Window.LockMouse(lock);
-	// }
 
 	void Application::OnWindowClosedEvent(WindowClosedEvent* event)
 	{

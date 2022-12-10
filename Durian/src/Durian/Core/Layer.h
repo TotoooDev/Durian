@@ -8,6 +8,6 @@ namespace Durian
 	public:
 		virtual void OnCreate() {}
 		virtual void OnUpdate(double timestep) {}
-		// virtual void OnImGuiRender() {}
+		virtual void OnImGuiRender() {}
 	};
 }
