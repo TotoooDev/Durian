@@ -12,7 +12,6 @@ namespace Durian
 
 		// You need to call this method after updating one of the camera's parameters
 		void UpdateMatrices();
-		bool Fullscreen = true; // Controls whether the camera will cover the entire window or not. If set to true, x and y values are ignored
 		float xMin = -400; float xMax = 400;
 		float yMin = 300; float yMax = -300;
 		float Near = -1;

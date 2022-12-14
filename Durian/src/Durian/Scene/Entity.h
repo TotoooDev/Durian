@@ -20,7 +20,8 @@ namespace Durian
 		template <typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{
-			DURIAN_ASSERT(!HasComponent<T>(), "Entity already has component!");
+			if (HasComponent<T>())
+				return m_Scene->m_Registry.get<T>(m_Identifier);
 			return m_Scene->m_Registry.emplace<T>(m_Identifier, std::forward<Args>(args)...);
 		}
 

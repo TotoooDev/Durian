@@ -4,6 +4,7 @@
 #include <Durian/Graphics/Texture.h>
 #include <Durian/Graphics/VertexObjects.h>
 #include <Durian/Graphics/Camera.h>
+#include <Durian/Graphics/Framebuffer.h>
 #include <glm/glm.hpp>
 
 namespace Durian
@@ -12,8 +13,6 @@ namespace Durian
 	{
 	public:
 		static Renderer* Get();
-
-		void Init();
 
 		void Clear(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f);
 		void SetCurrentCamera(const OrthoCamera& cam, const glm::mat4& view);
@@ -29,6 +28,8 @@ namespace Durian
 		static void InitOpenGLDebugOutput();
 
 		static Renderer* m_Instance;
+
+		Ref<Framebuffer> m_FramebufferTarget;
 
 		Shader m_ShaderColor;
 		Shader m_ShaderTexture;

@@ -57,6 +57,7 @@ namespace Durian
     {
         bool PrimaryCamera = false;
 		bool Use = true;
+		bool Resizable = true;
         OrthoCamera Cam;
 
         OrthoCameraComponent(const OrthoCamera& cam)

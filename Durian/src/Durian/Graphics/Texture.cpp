@@ -46,7 +46,7 @@ namespace Durian
 			format = GL_RGBA;
 
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-		// glGenerateMipmap(GL_TEXTURE_2D); // Crashes for no fucking reason and I can't figure out why, so no mipmaps for you
+		glGenerateMipmap(GL_TEXTURE_2D);
 
 		stbi_image_free(data);
 	}

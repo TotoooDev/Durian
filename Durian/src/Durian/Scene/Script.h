@@ -18,13 +18,17 @@ namespace Durian
     {
     public:
         LuaScript(Entity ent, const std::string& filePath = "");
+        ~LuaScript();
         
         void OnStart();
         void OnUpdate(float timestep);
 
+        void Recompile();
+
         void GetTransformComponent(TransformComponent* comp);
 
     private:
+        void Create();
         void SetCppFunctions();
         bool CheckLua(int r);
 

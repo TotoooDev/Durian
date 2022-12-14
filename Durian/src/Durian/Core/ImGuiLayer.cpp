@@ -45,7 +45,7 @@ namespace Durian
         ImGui_ImplOpenGL3_Init("#version 130");
 
 		// Add the font
-		// io.Fonts->AddFontFromFileTTF("fonts/opensans/OpenSans-Regular.ttf", 18.0f); // Crashes and I don't understand why
+		io.Fonts->AddFontFromFileTTF("fonts/opensans/OpenSans-Regular.ttf", 18.0f);
 	}
 
     void ImGuiLayer::Begin()

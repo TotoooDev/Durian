@@ -20,19 +20,14 @@ namespace Durian
 
         m_UserData.WindowWidth = Application::Get().GetWindowSpec().Width;
         m_UserData.WindowHeight = Application::Get().GetWindowSpec().Height;
-
-        m_State = luaL_newstate();
-        luaL_openlibs(m_State);
-        if (!CheckLua(luaL_dofile(m_State, m_Path.c_str())))
-            return;
-
         m_UserData.Ent = ent;
 
-        lua_pushlightuserdata(m_State, &m_UserData);
-        lua_setglobal(m_State, "Durian_DataPointer");
+        Create();
+    }
 
-        SetCppFunctions();
-        OnStart();
+    LuaScript::~LuaScript()
+    {
+        lua_close(m_State);
     }
 
     void LuaScript::OnStart()
@@ -50,6 +45,12 @@ namespace Durian
             lua_pushnumber(m_State, timestep);
             CheckLua(lua_pcall(m_State, 1, 0, 0));
         }
+    }
+
+    void LuaScript::Recompile()
+    {
+        lua_close(m_State);
+        Create();
     }
 
     void LuaScript::GetTransformComponent(TransformComponent* comp)
@@ -133,6 +134,20 @@ namespace Durian
                 lua_pop(m_State, 1);
             }
         }
+    }
+
+    void LuaScript::Create()
+    {
+        m_State = luaL_newstate();
+        luaL_openlibs(m_State);
+        if (!CheckLua(luaL_dofile(m_State, m_Path.c_str())))
+            return;
+
+        lua_pushlightuserdata(m_State, &m_UserData);
+        lua_setglobal(m_State, "Durian_DataPointer");
+
+        SetCppFunctions();
+        OnStart();
     }
 
     bool LuaScript::CheckLua(int r)

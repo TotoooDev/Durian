@@ -1,4 +1,5 @@
 #include <pch.h>
+#include <Durian/Graphics/Renderer.h>
 #include <Durian/Core/Window.h>
 #include <Durian/Event/Events.h>
 #include <imgui/imgui_impl_sdl.h>
@@ -74,7 +75,7 @@ namespace Durian
 
 	void Window::CreateSDLWindow()
 	{
-		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 		m_Spec.NativeWindow = m_NativeWindow;
 
 		#if defined DURIAN_OPENGL_DEBUG
@@ -90,6 +91,9 @@ namespace Durian
 
 		if (m_Spec.VSync)
 			SDL_GL_SetSwapInterval(1); // Set VSync
+
+		// Call Renderer::Get to init glew
+		Renderer::Get();
 	}
 
 	void Window::SetCallbacks()

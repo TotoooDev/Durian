@@ -9,6 +9,12 @@
 
 namespace Durian
 {
+	Scene::Scene()
+	{
+		Application::Get().GetEventBus()->Subscribe(this, &Scene::OnKeyDown);
+		Application::Get().GetEventBus()->Subscribe(this, &Scene::OnWindowClosedEvent);
+	}
+
 	Entity Scene::CreateEntity(const std::string& name)
 	{
 		entt::entity id = m_Registry.create();
@@ -110,5 +116,61 @@ namespace Durian
 				}
 			}
 		}
+	}
+
+	void Scene::RunSceneInEditor()
+	{
+		WindowSpecification spec(Application::Get().GetEventBus(), "Durian In-Scene Player");
+		Window window(spec);
+
+		m_RunSceneInEditor = true;
+		while (m_RunSceneInEditor)
+		{
+			window.PollEvents();
+
+			UpdateScene(m_Timestep);
+
+			window.Present();
+
+			double currentFrame = (double)SDL_GetTicks() * 0.001f;
+			m_Timestep = currentFrame - m_LastFrame;
+			m_LastFrame = currentFrame;
+		}
+	}
+
+	void Scene::OnViewportResize(float width, float height)
+	{
+		auto view = m_Registry.view<OrthoCameraComponent>();
+		for (auto&& [id, cam] : view.each())
+		{
+			if (!cam.Resizable)
+				continue;
+
+			cam.Cam.xMin = -width / 2.0f;
+			cam.Cam.xMax = width / 2.0f;
+			cam.Cam.yMin = height / 2.0f;
+			cam.Cam.yMax = -height / 2.0f;
+
+			cam.Cam.UpdateMatrices();
+		}
+	}
+
+	void Scene::OnKeyDown(KeyDownEvent* event)
+	{
+		if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
+			m_RunSceneInEditor = false;
+	}
+
+	void Scene::OnWindowClosedEvent(WindowClosedEvent* event)
+	{
+		m_RunSceneInEditor = false;
+	}
+	void Scene::OnWindowResizedEvent(WindowResizedEvent* event)
+	{
+		// if (event->Width == 0 && event->Height == 0)
+		// 	m_Minimized = true;
+		// else
+		// 	m_Minimized = false;
+		// glViewport(0, 0, m_Window.GetSpecification().Width, m_Window.GetSpecification().Height);
 	}
 }

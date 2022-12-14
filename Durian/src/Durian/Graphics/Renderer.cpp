@@ -7,11 +7,10 @@ namespace Durian
 	Renderer* Renderer::m_Instance = nullptr;
 
 	Renderer::Renderer()
-		: m_ShaderColor("shaders/color.vert", "shaders/color.frag"),
-		  m_ShaderTexture("shaders/texture.vert", "shaders/texture.frag")
+		: m_ShaderColor("shaders/color.vert", "shaders/color.frag"), m_ShaderTexture("shaders/texture.vert", "shaders/texture.frag")
 	{
 		#if defined DURIAN_OPENGL_DEBUG
-				InitOpenGLDebugOutput();
+			InitOpenGLDebugOutput();
 		#endif
 
 		// Setup rect VAO
@@ -39,7 +38,8 @@ namespace Durian
 	{
 		if (!m_Instance)
 		{
-			DURIAN_ASSERT(glewInit() == GLEW_OK, glewGetErrorString(glewInit()));
+			// DURIAN_ASSERT(glewInit() == GLEW_OK, glewGetErrorString(glewInit()));
+			glewInit();
 			m_Instance = new Renderer;
 		}
 		return m_Instance;
@@ -47,6 +47,9 @@ namespace Durian
 
 	void Renderer::Clear(float r, float g, float b, float a)
 	{
+		if (m_FramebufferTarget)
+			m_FramebufferTarget->Bind();
+
 		glClearColor(r, g, b, a);
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
@@ -73,6 +76,9 @@ namespace Durian
 
 	void Renderer::DrawVerticesTextured(const glm::mat4& transform, Ref<Texture> texture, const VAO& vao, const EBO& ebo)
 	{
+		if (m_FramebufferTarget)
+			m_FramebufferTarget->Bind();
+
 		m_ShaderTexture.Bind();
 		m_ShaderTexture.SetMat4(transform, "uModel");
 		m_ShaderTexture.SetInt(0, "uTexture");
@@ -87,6 +93,9 @@ namespace Durian
 
 	void Renderer::DrawVerticesColor(const glm::mat4& transform, const glm::vec4& color, const VAO& vao, const EBO& ebo)
 	{
+		if (m_FramebufferTarget)
+			m_FramebufferTarget->Bind();
+
 		m_ShaderColor.Bind();
 		m_ShaderColor.SetMat4(transform, "uModel");
 		m_ShaderColor.SetVec4(color, "uColor");
