@@ -164,7 +164,6 @@ project "Durio"
 		{
 			"SDL2",
 			"SDL2main",
-			"SDL2_mixer",
 			"GLEW",
 			"GL",
 			"lua"

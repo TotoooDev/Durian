@@ -43,7 +43,7 @@ namespace Durian
 				{
 					auto& tagComp = m_SelectedEntity->GetComponent<TagComponent>();
 					char buf[128];
-					strcpy_s(buf, 128, tagComp.Tag.c_str());
+					strcpy(buf, tagComp.Tag.c_str());
 					if (ImGui::InputText("Name", buf, 128))
 					{
 						tagComp.Tag = buf;

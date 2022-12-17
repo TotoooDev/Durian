@@ -21,17 +21,17 @@ namespace Durian
 	{
 		for (auto& sound : m_SoundPool)
 		{
-			Mix_VolumeChunk(sound->GetChunk(), sound->GetVolume());
+			// Mix_VolumeChunk(sound->GetChunk(), sound->GetVolume());
 		}
 	}
 
 	void AudioEngine::PlaySound(Ref<Sound> sound)
 	{
-		Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
+		// Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
 	}
 
 	void AudioEngine::SetSoundDistance(Ref<Sound> sound, unsigned char distance)
 	{
-		Mix_SetDistance(sound->GetChannel(), distance);
+		// Mix_SetDistance(sound->GetChannel(), distance);
 	}
 }

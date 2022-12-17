@@ -7,7 +7,7 @@ namespace Durian
 	class AudioEngine
 	{
 	public:
-		unsigned int LoadSound(const std::string& path, int loops = 0, int volume = MIX_MAX_VOLUME, int channel = 0);
+		unsigned int LoadSound(const std::string& path, int loops = 0, int volume = 128, int channel = 0);
 		
 		void Update();
 		void PlaySound(Ref<Sound> sound);
