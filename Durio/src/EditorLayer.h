@@ -22,10 +22,12 @@ namespace Durian
 	private:
 		void BeginDockSpace();
 
-		Durian::Scene m_Scene;
-		Durian::Entity m_SpriteEntity;
-		Durian::Entity m_CameraEntity;
-		Durian::Ref<Durian::Framebuffer> m_Framebuffer;
+		Scene m_Scene;
+		Entity m_SpriteEntity;
+		Entity m_CameraEntity;
+		Ref<Framebuffer> m_Framebuffer;
+
+		Entity* m_SelectedEntity;
 
 		ImVec2 m_ViewportSize;
 

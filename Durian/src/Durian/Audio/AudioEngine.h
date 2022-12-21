@@ -1,21 +1,23 @@
 #pragma once
-#include <Durian/Audio/SoundPool.h>
-#include <string>
+#include <Durian/Audio/Sound.h>
+#include <Durian/Core/Ref.h>
+#include <map>
+#include <AL/alc.h>
 
 namespace Durian
 {
 	class AudioEngine
 	{
 	public:
-		unsigned int LoadSound(const std::string& path, int loops = 0, int volume = 128, int channel = 0);
-		
-		void Update();
-		void PlaySound(Ref<Sound> sound);
-		void SetSoundDistance(Ref<Sound> sound, unsigned char distance);
+		AudioEngine();
+		~AudioEngine();
 
-		Ref<Sound> GetSoundByID(unsigned int id) { return m_SoundPool.GetSound(id); }
+		void PlaySound(Ref<Sound> sound);
+		bool IsPlaying();
 
 	private:
-		SoundPool m_SoundPool;
+		ALCdevice* m_Device = nullptr;
+		ALCcontext* m_Context = nullptr;
+		std::map<Ref<Sound>, unsigned int> m_Sources;
 	};
 }

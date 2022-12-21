@@ -1,37 +1,56 @@
 #include <pch.h>
 #include <Durian/Audio/AudioEngine.h>
+#include <AL/al.h>
 
 namespace Durian
 {
-	unsigned int AudioEngine::LoadSound(const std::string& path, int loops, int volume, int channel)
+	AudioEngine::AudioEngine()
 	{
-		unsigned int i = 0;
-		for (auto& sound : m_SoundPool)
+		m_Device = alcOpenDevice(nullptr);
+		if (!m_Device)
 		{
-			if (sound->GetPath() == path)
-				return i;
-			i++;
+			DURIAN_LOG_ERROR("Failed to open audio device!");
+			return;
 		}
 
-		Ref<Sound> sound = CreateRef<Sound>(path, loops, volume, channel);
-		return m_SoundPool.AddSound(sound);
+		m_Context = alcCreateContext(m_Device, nullptr);
+		alcMakeContextCurrent(m_Context);
 	}
 
-	void AudioEngine::Update()
+	AudioEngine::~AudioEngine()
 	{
-		for (auto& sound : m_SoundPool)
-		{
-			// Mix_VolumeChunk(sound->GetChunk(), sound->GetVolume());
-		}
+		alcDestroyContext(m_Context);
+		alcCloseDevice(m_Device);
 	}
 
 	void AudioEngine::PlaySound(Ref<Sound> sound)
 	{
-		// Mix_PlayChannel(sound->GetChannel(), sound->GetChunk(), sound->GetLoops());
+		if (!sound->m_Registered)
+		{
+			unsigned int source;
+			alGenSources(1, &source);
+			alSourcei(source, AL_BUFFER, sound->GetID());
+
+			m_Sources[sound] = source;
+			sound->m_Registered = true;
+
+			alSourcePlay(source);
+		}
+		else
+		{
+			alSourcePlay(m_Sources[sound]);
+		}
 	}
 
-	void AudioEngine::SetSoundDistance(Ref<Sound> sound, unsigned char distance)
+	bool AudioEngine::IsPlaying()
 	{
-		// Mix_SetDistance(sound->GetChannel(), distance);
+		for (auto const& x : m_Sources)
+		{
+			int status;
+			alGetSourcei(x.second, AL_SOURCE_STATE, &status);
+			if (status == AL_PLAYING)
+				return true;
+		}
+		return false;
 	}
 }

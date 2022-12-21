@@ -5,7 +5,7 @@
 int main(int argc, char* argv[])
 {
 	Durian::EventBus bus;
-	Durian::WindowSpecification spec(&bus, "Durian Window");
+	Durian::WindowSpecification spec(&bus, "Durian Editor");
 	Durian::Application* app = new Durian::Application(spec);
 	app->AddLayer(new Durian::EditorLayer());
 

@@ -1,27 +1,53 @@
 #include <pch.h>
 #include <Durian/Audio/Sound.h>
-#include <Durian/Core/Application.h>
+#include <AL/al.h>
+#include <sndfile.h>
 
 namespace Durian
 {
-	Sound::Sound(const std::string& path, int loops, int volume, int channel)
-		: m_Path(path), m_Loops(loops), m_Volume(volume), m_Channel(channel)
+	Sound::Sound(const std::string& path)
 	{
-		// m_Chunk = Mix_LoadWAV(path.c_str());
-		// if (!m_Chunk)
-		// {
-		// 	DURIAN_LOG_ERROR("Failed to load chunk at {}!", path);
-		// }
+		SF_INFO fileInfo;
+		SNDFILE* file = sf_open(path.c_str(), SFM_READ, &fileInfo);
+		if (!file)
+		{
+			DURIAN_LOG_ERROR("Failed to load {}!", path);
+			DURIAN_LOG_ERROR(sf_strerror(file));
+			return;
+		}
+
+		unsigned int numSamples = fileInfo.samplerate * fileInfo.frames;
+		unsigned int sampleRate = fileInfo.samplerate;
+
+		std::vector<short> samples(numSamples);
+		if (sf_read_short(file, samples.data(), numSamples) < numSamples)
+		{
+			DURIAN_LOG_ERROR(sf_strerror(file));
+			return;
+		}
+
+		sf_close(file);
+
+		ALenum format;
+		switch (fileInfo.channels)
+		{
+		case 1:
+			format = AL_FORMAT_MONO16;
+			break;
+		case 2:
+			format = AL_FORMAT_STEREO16;
+			break;
+		default:
+			DURIAN_LOG_ERROR("Unknown format!");
+			return;
+		}
+
+		alGenBuffers(1, &m_ID);
+		alBufferData(m_ID, format, samples.data(), numSamples * sizeof(short), sampleRate);
 	}
 
 	Sound::~Sound()
 	{
-		// Mix_FreeChunk(m_Chunk);
-	}
-
-	void Sound::SetVolume(int volume)
-	{
-		m_Volume = volume;
-		// Mix_VolumeChunk(m_Chunk, m_Volume);
+		alDeleteBuffers(1, &m_ID);
 	}
 }

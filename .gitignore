@@ -368,3 +368,5 @@ Makefile
 *.sln
 *.vcxproj
 *.vcxproj.filters
+# and the vscode stuff
+.vscode/

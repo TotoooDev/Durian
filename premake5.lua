@@ -77,7 +77,9 @@ project "Durian"
 			"SDL2main",
 			"GLEW",
 			"GL",
-			"lua"
+			"lua",
+			"openal",
+			"sndfile"
 		}
 
 	filter "configurations:Debug"
@@ -166,7 +168,9 @@ project "Durio"
 			"SDL2main",
 			"GLEW",
 			"GL",
-			"lua"
+			"lua",
+			"openal",
+			"sndfile"
 		}
 
 	filter "configurations:Debug"

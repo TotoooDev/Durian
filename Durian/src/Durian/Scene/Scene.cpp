@@ -64,7 +64,7 @@ namespace Durian
 		}
 
 		// Sounds
-		Application::Get().GetAudioEngine().Update();
+		// Application::Get().GetAudioEngine().Update();
 		auto listenerView = m_Registry.view<SoundListenerComponent>();
 		for (auto&& [id, listener] : listenerView.each())
 		{
@@ -88,14 +88,14 @@ namespace Durian
 							glm::vec3 listenerPos = m_Registry.get<TransformComponent>(id).Translation;
 							glm::vec3 emitterPos = m_Registry.get<TransformComponent>(id1).Translation;
 							float distance = glm::distance(listenerPos, emitterPos);
-							Application::Get().GetAudioEngine().SetSoundDistance(sound, (unsigned char)distance);
+							// Application::Get().GetAudioEngine().SetSoundDistance(sound, (unsigned char)distance);
 							resetDistance = true;
 						}
 
 						Application::Get().GetAudioEngine().PlaySound(sound);
 
-						if (resetDistance)
-							Application::Get().GetAudioEngine().SetSoundDistance(sound, 0);
+						// if (resetDistance)
+						// 	Application::Get().GetAudioEngine().SetSoundDistance(sound, 0);
 						
 						emitter.SoundQueue.pop();
 					}

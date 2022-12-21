@@ -14,12 +14,17 @@ namespace Durian
 		spec.AddTexture(FramebufferTexture::RGBA16);
 		m_Framebuffer = CreateRef<Framebuffer>(spec);
 
+        m_SelectedEntity = &m_SpriteEntity;
+
 		m_Viewport = ViewportPanel(m_Framebuffer, &m_ViewportSize);
-		m_SceneView = ScenePanel(&m_Scene);
-        m_ComponentsView = PropertiesPanel(&m_SpriteEntity);
+		m_SceneView = ScenePanel(&m_Scene, m_SelectedEntity);
+        m_ComponentsView = PropertiesPanel(m_SelectedEntity);
 
 		m_SpriteEntity = m_Scene.CreateEntity("Sprite");
 		m_SpriteEntity.AddComponent<ScriptComponent>(m_SpriteEntity, "Script.lua");
+        auto& soundEmitter = m_SpriteEntity.AddComponent<SoundEmitterComponent>();
+        Sound sound("grr.wav");
+        soundEmitter.SoundQueue.push(CreateRef<Sound>(sound));
 
 		m_CameraEntity = m_Scene.CreateEntity("Camera");
 		m_CameraEntity.AddComponent<TransformComponent>();

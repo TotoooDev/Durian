@@ -8,8 +8,8 @@ namespace Durian
 	class ScenePanel
 	{
 	public:
-		ScenePanel(Scene* scene = nullptr)
-			: m_Scene(scene) {}
+		ScenePanel(Scene* scene = nullptr, Entity* selected = nullptr)
+			: m_Scene(scene), m_SelectedEntity(selected) {}
 
 		void Draw(bool* isOpen)
 		{
@@ -27,8 +27,35 @@ namespace Durian
 			auto view = m_Scene->m_Registry.view<TagComponent>();
 			for (auto&& [id, tag] : view.each())
 			{
-				if (ImGui::TreeNodeEx(tag.Tag.c_str(), ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_Leaf))
+				Entity ent(id, m_Scene);
+
+				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_FramePadding;
+				
+				if (m_SelectedEntity->GetID() == id)
+        		{
+          			flags |= ImGuiTreeNodeFlags_Selected;
+        		}
+
+				if (ImGui::TreeNodeEx(tag.Tag.c_str(), flags))
+				{
+          			if (ImGui::IsItemClicked() || ImGui::IsItemClicked(ImGuiMouseButton_Right))
+						m_SelectedEntity = &ent;
+
+					if (m_SelectedEntity->GetID() == id)
+					{
+						if (ImGui::BeginPopupContextItem())
+						{
+							if (ImGui::MenuItem("Delete Entity"))
+							{
+								// m_Scene->DeleteEntity(*m_SelectedEntity);
+								// *m_SelectedEntity = { entt::null, nullptr };
+							}
+							ImGui::EndPopup();
+						}
+					}
+
 					ImGui::TreePop();
+				}
 			}
 			
 			ImGui::End();
@@ -36,5 +63,6 @@ namespace Durian
 
 	private:
 		Scene* m_Scene;
+		Entity* m_SelectedEntity;
 	};
 }

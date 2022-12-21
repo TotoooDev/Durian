@@ -8,14 +8,14 @@ namespace Durian
 {
 	struct WindowSpecification
 	{
-		WindowSpecification(EventBus* bus, const std::string& title = "Durian Window", unsigned int width = 800, unsigned int height = 600, bool vsync = true)
+		WindowSpecification(EventBus* bus, const std::string& title = "Durian Window", unsigned int width = 1280, unsigned int height = 720, bool vsync = true)
 			: Bus(bus), Title(title), Width(width), Height(height), VSync(vsync) {}
 
-		std::string Title = "Durian Window";
-		unsigned int Width = 800;
-		unsigned int Height = 600;
+		std::string Title;
+		unsigned int Width;
+		unsigned int Height;
 		EventBus* Bus = nullptr;
-		bool VSync = true;
+		bool VSync;
 		
 		SDL_Window* NativeWindow = nullptr;
 		SDL_GLContext ContextGL = nullptr;
