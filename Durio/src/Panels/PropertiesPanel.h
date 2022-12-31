@@ -28,7 +28,7 @@ namespace Durian
 				DisplayComponents();
 
 			ImGui::End();
-		}
+        }
 
 	private:
 		Entity* m_SelectedEntity;
@@ -75,6 +75,29 @@ namespace Durian
 					ImGui::TreePop();
 				}
 			}
-		}
+		
+
+            if (m_SelectedEntity->HasComponent<SoundEmitterComponent>())
+            {
+                if (ImGui::TreeNodeEx("Sound Emitter", flags))
+                {
+                    auto& soundEmitComp = m_SelectedEntity->GetComponent<SoundEmitterComponent>();
+                    ImGui::Checkbox("Emit", &soundEmitComp.Emit);
+                    ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
+                    ImGui::TreePop();
+                }
+            }
+
+            if (m_SelectedEntity->HasComponent<SoundListenerComponent>())
+            {
+                if (ImGui::TreeNodeEx("Sound Listener", flags))
+                {
+                    auto& soundListenComp = m_SelectedEntity->GetComponent<SoundListenerComponent>();
+                    ImGui::Checkbox("Listen", &soundListenComp.Listen);
+                    ImGui::Checkbox("Ignore distance", &soundListenComp.IgnoreDistance);
+                    ImGui::TreePop();
+                }
+            }
+        }
 	};
 }

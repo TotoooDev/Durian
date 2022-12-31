@@ -39,7 +39,7 @@ namespace Durian
 				if (ImGui::TreeNodeEx(tag.Tag.c_str(), flags))
 				{
           			if (ImGui::IsItemClicked() || ImGui::IsItemClicked(ImGuiMouseButton_Right))
-						m_SelectedEntity = &ent;
+						*m_SelectedEntity = ent;
 
 					if (m_SelectedEntity->GetID() == id)
 					{

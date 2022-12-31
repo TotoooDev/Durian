@@ -1,3 +1,4 @@
+require "export-compile-commands"
 
 -- Ripped from Cherno's video on premake
 -- https://www.youtube.com/watch?v=sULV3aB2qeU

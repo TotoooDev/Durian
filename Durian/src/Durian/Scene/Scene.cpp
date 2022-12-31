@@ -69,13 +69,22 @@ namespace Durian
 		for (auto&& [id, listener] : listenerView.each())
 		{
 			if (!listener.Listen)
-				continue;
+            {
+                // Tell the audio engine to stop playing sounds coming from this listener
+                continue;
+            }
 
 			if (m_Registry.any_of<TransformComponent>(id) && !listener.IgnoreDistance)
 			{
 				auto emitterView = m_Registry.view<SoundEmitterComponent>();
 				for (auto&& [id1, emitter] : emitterView.each())
 				{
+                    if (!emitter.Emit)
+                    {
+                        // Tell the audio engine to stop playing sounds coming from this emitter
+                        continue;
+                    }
+
 					// Play every sound in the queue
 					while (!emitter.SoundQueue.empty())
 					{
@@ -106,6 +115,12 @@ namespace Durian
 				auto emitterView = m_Registry.view<SoundEmitterComponent>();
 				for (auto&& [id1, emitter] : emitterView.each())
 				{
+                    if (!emitter.Emit)
+                    {
+                        // Tell the audio engine to stop playing sounds coming from this emitter
+                        continue;
+                    }
+
 					// Play every sound in the queue
 					while (!emitter.SoundQueue.empty())
 					{

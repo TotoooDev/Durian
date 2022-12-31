@@ -14,8 +14,8 @@ namespace Durian
 		}
 
 		m_Context = alcCreateContext(m_Device, nullptr);
-		alcMakeContextCurrent(m_Context);
-	}
+		alcMakeContextCurrent(m_Context); 
+    }
 
 	AudioEngine::~AudioEngine()
 	{

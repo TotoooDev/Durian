@@ -1,4 +1,5 @@
 #pragma once
+#include <Durian/Core/Ref.h>
 #include <Durian/Graphics/Texture.h>
 #include <Durian/Graphics/Camera.h>
 #include <Durian/Audio/Sound.h>

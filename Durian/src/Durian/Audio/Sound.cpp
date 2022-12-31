@@ -16,15 +16,15 @@ namespace Durian
 			return;
 		}
 
-		unsigned int numSamples = fileInfo.samplerate * fileInfo.frames;
+		unsigned int numSamples = fileInfo.channels * fileInfo.frames;
 		unsigned int sampleRate = fileInfo.samplerate;
 
 		std::vector<short> samples(numSamples);
-		if (sf_read_short(file, samples.data(), numSamples) < numSamples)
-		{
-			DURIAN_LOG_ERROR(sf_strerror(file));
-			return;
-		}
+        if (sf_read_short(file, samples.data(), numSamples) < numSamples)
+        {
+            DURIAN_LOG_ERROR(sf_strerror(file));
+            return;
+        }
 
 		sf_close(file);
 
