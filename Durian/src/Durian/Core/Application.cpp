@@ -71,6 +71,10 @@ namespace Durian
 				}
 			}
 
+			#ifdef DURIAN_DEBUG
+				m_AudioEngine.PrintErrors();
+			#endif
+
 			// ImGui
 			m_ImGuiLayer->Begin();
 			for (auto& layer : m_Layers)

@@ -25,6 +25,9 @@ namespace Durian
         auto& soundEmitter = m_SpriteEntity.AddComponent<SoundEmitterComponent>();
         Ref<Sound> sound = CreateRef<Sound>("grr.wav");
         // soundEmitter.SoundQueue.push(sound);
+        SoundProperties prop;
+        prop.Sound = sound;
+        soundEmitter.AttachedSounds.push_back(prop);
 
 		m_CameraEntity = m_Scene.CreateEntity("Camera");
 		m_CameraEntity.AddComponent<TransformComponent>();
@@ -57,10 +60,7 @@ namespace Durian
         if (ImGui::BeginMenu("Scene"))
         {
             if (ImGui::MenuItem("Play scene"))
-            {
                 m_Scene.RunSceneInEditor();
-                Application::Get().GetWindow().SetContextCurrent();
-            }
             ImGui::EndMenu();
         }
 		ImGui::EndMainMenuBar();

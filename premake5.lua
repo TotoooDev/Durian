@@ -1,5 +1,3 @@
-require "export-compile-commands"
-
 -- Ripped from Cherno's video on premake
 -- https://www.youtube.com/watch?v=sULV3aB2qeU
 
@@ -65,7 +63,9 @@ project "Durian"
 			"SDL2main",
 			"glew32",
 			"opengl32",
-			"lua54"
+			"lua54",
+			"OpenAL32",
+			"sndfile"
 		}
 
 	filter "system:linux"
@@ -152,7 +152,9 @@ project "Durio"
 			"SDL2_mixer",
 			"glew32",
 			"opengl32",
-			"lua54"
+			"lua54",
+			"OpenAL32",
+			"sndfile"
 		}
 
 	filter "system:linux"

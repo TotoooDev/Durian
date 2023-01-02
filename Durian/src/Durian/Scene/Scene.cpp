@@ -135,22 +135,7 @@ namespace Durian
 
 	void Scene::RunSceneInEditor()
 	{
-		WindowSpecification spec(&m_SceneBus, "Durian In-Scene Player");
-		Window window(spec);
-
-		m_RunSceneInEditor = true;
-		while (m_RunSceneInEditor)
-		{
-			window.PollEvents();
-
-			UpdateScene(m_Timestep);
-
-			window.Present();
-
-			double currentFrame = (double)SDL_GetTicks() * 0.001f;
-			m_Timestep = currentFrame - m_LastFrame;
-			m_LastFrame = currentFrame;
-		}
+		
 	}
 
 	void Scene::OnViewportResize(float width, float height)

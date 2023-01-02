@@ -13,7 +13,10 @@ namespace Durian
 		~AudioEngine();
 
 		void PlaySound(Ref<Sound> sound);
+		void StopSound(Ref<Sound> sound);
 		bool IsPlaying();
+
+		void PrintErrors();
 
 	private:
 		ALCdevice* m_Device = nullptr;

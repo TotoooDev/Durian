@@ -1,4 +1,5 @@
 #pragma once
+#include <Durian/Core/Ref.h>
 #include <string>
 
 namespace Durian
@@ -21,5 +22,13 @@ namespace Durian
 		bool m_Registered = false;
 
 		friend class AudioEngine;
+	};
+
+	struct SoundProperties
+	{
+		float Volume = 1.0f;
+		bool Loop = false; // TODO: Change this to a number of loops
+		std::string Name = "New sound";
+		Ref<Sound> Sound;
 	};
 }

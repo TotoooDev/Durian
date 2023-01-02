@@ -42,6 +42,11 @@ namespace Durian
 		}
 	}
 
+	void AudioEngine::StopSound(Ref<Sound> sound)
+	{
+		alSourceStop(m_Sources[sound]);
+	}
+
 	bool AudioEngine::IsPlaying()
 	{
 		for (auto const& x : m_Sources)
@@ -52,5 +57,14 @@ namespace Durian
 				return true;
 		}
 		return false;
+	}
+
+	void AudioEngine::PrintErrors()
+	{
+		ALenum error;
+		while ((error = alGetError()) != AL_NO_ERROR)
+		{
+			DURIAN_LOG_ERROR("OpenAL: {}", error);
+		}
 	}
 }

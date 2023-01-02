@@ -71,6 +71,7 @@ namespace Durian
 		bool Emit = true;
 		bool IgnoreDistance = false;
 		std::queue<Ref<Sound>> SoundQueue;
+		std::vector<SoundProperties> AttachedSounds;
 
 		SoundEmitterComponent() {}
 		SoundEmitterComponent(const SoundEmitterComponent&) = default;

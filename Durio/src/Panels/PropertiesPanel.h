@@ -1,6 +1,7 @@
 #pragma once
 #include <Durian/Scene/Entity.h>
 #include <Durian/Scene/Components.h>
+#include <Durian/Core/Application.h>
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -84,6 +85,24 @@ namespace Durian
                     auto& soundEmitComp = m_SelectedEntity->GetComponent<SoundEmitterComponent>();
                     ImGui::Checkbox("Emit", &soundEmitComp.Emit);
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
+					if (ImGui::TreeNodeEx("Attached sounds", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						for (auto& soundProp : soundEmitComp.AttachedSounds)
+						{
+							if (ImGui::TreeNodeEx(soundProp.Name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+							{
+								ImGui::SliderFloat("Volume", &soundProp.Volume, 0.0f, 2.0f);
+								ImGui::Checkbox("Loop", &soundProp.Loop);
+								if (ImGui::Button("Play sound"))
+									Application::Get().GetAudioEngine().PlaySound(soundProp.Sound);
+								ImGui::SameLine();
+								if (ImGui::Button("Stop sound"))
+									Application::Get().GetAudioEngine().StopSound(soundProp.Sound);
+								ImGui::TreePop();
+							}
+						}
+						ImGui::TreePop();
+					}
                     ImGui::TreePop();
                 }
             }
