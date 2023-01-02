@@ -38,6 +38,11 @@ namespace Durian
 			SDL_GL_SetSwapInterval(0);
 	}
 
+    void Window::SetContextCurrent()
+    {
+        SDL_GL_MakeCurrent(m_NativeWindow, m_Spec.ContextGL);
+    }
+
 	void Window::Present()
 	{
 		SDL_GL_SwapWindow(m_NativeWindow);

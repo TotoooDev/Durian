@@ -11,8 +11,8 @@ namespace Durian
 {
 	Scene::Scene()
 	{
-		Application::Get().GetEventBus()->Subscribe(this, &Scene::OnKeyDown);
-		Application::Get().GetEventBus()->Subscribe(this, &Scene::OnWindowClosedEvent);
+		m_SceneBus.Subscribe(this, &Scene::OnKeyDown);
+	    m_SceneBus.Subscribe(this, &Scene::OnWindowClosedEvent);
 	}
 
 	Entity Scene::CreateEntity(const std::string& name)
@@ -135,7 +135,7 @@ namespace Durian
 
 	void Scene::RunSceneInEditor()
 	{
-		WindowSpecification spec(Application::Get().GetEventBus(), "Durian In-Scene Player");
+		WindowSpecification spec(&m_SceneBus, "Durian In-Scene Player");
 		Window window(spec);
 
 		m_RunSceneInEditor = true;
@@ -173,11 +173,15 @@ namespace Durian
 	void Scene::OnKeyDown(KeyDownEvent* event)
 	{
 		if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
-			m_RunSceneInEditor = false;
+        {
+            DURIAN_LOG_INFO("grr");
+            m_RunSceneInEditor = false;
+        }
 	}
 
 	void Scene::OnWindowClosedEvent(WindowClosedEvent* event)
 	{
+        DURIAN_LOG_INFO("grr");
 		m_RunSceneInEditor = false;
 	}
 	void Scene::OnWindowResizedEvent(WindowResizedEvent* event)

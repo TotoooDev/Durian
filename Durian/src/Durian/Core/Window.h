@@ -30,6 +30,7 @@ namespace Durian
 		WindowSpecification GetSpecification() const { return m_Spec; }
 
 		void SetVSync(bool flag);
+        void SetContextCurrent();
 
 		void Present();
 		void PollEvents();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Durian/Event/Events.h>
+#include <Durian/Event/EventBus.h>
 #include <string>
 #include <entt/entt.hpp>
 
@@ -24,7 +25,8 @@ namespace Durian
 	private:
 		entt::registry m_Registry;
 
-		bool m_RunSceneInEditor = false;
+		EventBus m_SceneBus;
+        bool m_RunSceneInEditor = false;
 		double m_Timestep = 0.0f;
 		double m_LastFrame = 0.0f;
 
