@@ -14,7 +14,10 @@ namespace Durian
 
 		void PlaySound(Ref<Sound> sound);
 		void StopSound(Ref<Sound> sound);
+		void PauseSound(Ref<Sound> sound);
 		bool IsPlaying();
+
+		void SetVolume(Ref<Sound> sound, float volume);
 
 		void PrintErrors();
 

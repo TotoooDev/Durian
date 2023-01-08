@@ -38,6 +38,6 @@ namespace Durian
 		bool m_OpenComponentsView = true;
 		PropertiesPanel m_ComponentsView;
 
-		bool m_RunScene = false;
+		bool m_Runtime = false;
 	};
 }

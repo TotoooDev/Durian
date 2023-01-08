@@ -3,6 +3,7 @@
 #include <Durian/Core/Application.h>
 #include <Durian/Scene/Script.h>
 #include <Durian/Scene/Components.h>
+#include <algorithm>
 
 namespace Durian
 {
@@ -228,39 +229,42 @@ namespace Durian
                 data->Ent.RemoveComponent<SpriteComponent>();
                 return 0;
             });
-        // lua_register(m_State, "Durian_SoundLoad", [](lua_State* state)
-        //     {
-        //         lua_getglobal(state, "Durian_DataPointer");
-        //         UserData* data = (UserData*)lua_touserdata(state, -1);
-        //         const char* path = lua_tostring(state, 1);
-        //         unsigned int id = Application::Get().GetAudioEngine().LoadSound(path);
-        //         lua_pushnumber(state, id);
-        //         return 1;
-        //     });
-        // lua_register(m_State, "Durian_SoundPlay", [](lua_State* state)
-        //     {
-        //         lua_getglobal(state, "Durian_DataPointer");
-        //         UserData* data = (UserData*)lua_touserdata(state, -1);
-        //         unsigned int soundId = (unsigned int)lua_tonumber(state, 1);
-        //         float volume = (float)lua_tonumber(state, 2);
-        //         auto& emitter = data->Ent.GetComponent<SoundEmitterComponent>();
-        //         Ref<Sound> sound = Application::Get().GetAudioEngine().GetSoundByID(soundId);
-        //         sound->SetVolume(volume * 255.0f);
-        //         emitter.SoundQueue.push(sound);
-        //         return 0;
-        //     });
-        // lua_register(m_State, "Durian_SoundVolume", [](lua_State* state) // Does not work atm
-        //     {
-        //         lua_getglobal(state, "Durian_DataPointer");
-        //         UserData* data = (UserData*)lua_touserdata(state, -1);
-        //         unsigned int soundId = (unsigned int)lua_tonumber(state, 1);
-        //         float volume = (float)lua_tonumber(state, 2);
-        //         auto& emitter = data->Ent.GetComponent<SoundEmitterComponent>();
-        //         Ref<Sound> sound = Application::Get().GetAudioEngine().GetSoundByID(soundId);
-        //         sound->SetVolume(volume * 255.0f);
-        //         emitter.SoundQueue.push(sound);
-        //         return 0;
-        //     });
+        lua_register(m_State, "Durian_SoundLoad", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                const char* path = lua_tostring(state, 1);
+                Ref<Sound> sound = CreateRef<Sound>(path);
+                auto& soundEmitComp = data->Ent.GetComponent<SoundEmitterComponent>();
+                SoundProperties prop;
+                prop.Sound = sound;
+                soundEmitComp.AttachedSounds.push_back(prop);
+                lua_pushnumber(state, soundEmitComp.AttachedSounds.size() - 1);
+                return 1;
+            });
+        lua_register(m_State, "Durian_SoundPlay", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                unsigned int soundId = (unsigned int)lua_tonumber(state, 1);
+                float volume = (float)lua_tonumber(state, 2);
+                auto& soundEmitComp = data->Ent.GetComponent<SoundEmitterComponent>();
+                Ref<Sound> sound = soundEmitComp.AttachedSounds[soundId].Sound;
+                soundEmitComp.SoundQueue.push(sound);
+                return 0;
+            });
+        lua_register(m_State, "Durian_SoundVolume", [](lua_State* state) // Does not work atm
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                unsigned int soundId = (unsigned int)lua_tonumber(state, 1);
+                float volume = (float)lua_tonumber(state, 2);
+                auto& emitter = data->Ent.GetComponent<SoundEmitterComponent>();
+                Ref<Sound> sound = emitter.AttachedSounds[soundId].Sound;
+                Application::Get().GetAudioEngine().SetVolume(sound, volume);
+                emitter.AttachedSounds[soundId].Volume = volume;
+                return 0;
+            });
 
         // Events
         // Keyboard

@@ -47,6 +47,11 @@ namespace Durian
 		alSourceStop(m_Sources[sound]);
 	}
 
+	void AudioEngine::PauseSound(Ref<Sound> sound)
+	{
+		alSourcePause(m_Sources[sound]);
+	}
+
 	bool AudioEngine::IsPlaying()
 	{
 		for (auto const& x : m_Sources)
@@ -57,6 +62,11 @@ namespace Durian
 				return true;
 		}
 		return false;
+	}
+
+	void AudioEngine::SetVolume(Ref<Sound> sound, float volume)
+	{
+		alSourcef(m_Sources[sound], AL_GAIN, volume);
 	}
 
 	void AudioEngine::PrintErrors()

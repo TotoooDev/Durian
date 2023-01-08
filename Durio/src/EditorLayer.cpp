@@ -41,7 +41,7 @@ namespace Durian
 		m_Framebuffer->Bind();
 		Renderer::Get()->Clear(0.1f, 0.1f, 0.1f);
 
-		m_Scene.UpdateScene(timestep);
+		m_Scene.UpdateScene(timestep, &m_Runtime);
 	}
 
 	void EditorLayer::OnImGuiRender() 
@@ -60,7 +60,7 @@ namespace Durian
         if (ImGui::BeginMenu("Scene"))
         {
             if (ImGui::MenuItem("Play scene"))
-                m_Scene.RunSceneInEditor();
+                m_Runtime = true;
             ImGui::EndMenu();
         }
 		ImGui::EndMainMenuBar();

@@ -12,7 +12,6 @@ namespace Durian
 	Scene::Scene()
 	{
 		m_SceneBus.Subscribe(this, &Scene::OnKeyDown);
-	    m_SceneBus.Subscribe(this, &Scene::OnWindowClosedEvent);
 	}
 
 	Entity Scene::CreateEntity(const std::string& name)
@@ -28,17 +27,92 @@ namespace Durian
 		m_Registry.destroy(entity.m_Identifier);
 	}
 
-	void Scene::UpdateScene(double timestep)
+	void Scene::UpdateScene(double timestep, bool* runtime)
 	{
-		// Execute scripts
-		auto scriptView = m_Registry.view<ScriptComponent>();
-		for (auto&& [id, script] : scriptView.each())
+		if (m_QuitRuntime)
+			*runtime = false;
+
+		if (*runtime)
 		{
-			script.Script.OnUpdate(timestep);
-			if (m_Registry.any_of<TransformComponent>(id))
+			// Execute scripts
+			auto scriptView = m_Registry.view<ScriptComponent>();
+			for (auto&& [id, script] : scriptView.each())
 			{
-				auto& transform = m_Registry.get<TransformComponent>(id);
-				script.Script.GetTransformComponent(&transform);
+				script.Script.OnUpdate(timestep);
+				if (m_Registry.any_of<TransformComponent>(id))
+				{
+					auto& transform = m_Registry.get<TransformComponent>(id);
+					script.Script.GetTransformComponent(&transform);
+				}
+			}
+
+			// Sounds
+			// Application::Get().GetAudioEngine().Update();
+			auto listenerView = m_Registry.view<SoundListenerComponent>();
+			for (auto&& [id, listener] : listenerView.each())
+			{
+				if (!listener.Listen)
+				{
+					// Tell the audio engine to stop playing sounds coming from this listener
+					continue;
+				}
+
+				if (m_Registry.any_of<TransformComponent>(id) && !listener.IgnoreDistance)
+				{
+					auto emitterView = m_Registry.view<SoundEmitterComponent>();
+					for (auto&& [id1, emitter] : emitterView.each())
+					{
+						if (!emitter.Emit)
+						{
+							// Tell the audio engine to stop playing sounds coming from this emitter
+							continue;
+						}
+
+						// Play every sound in the queue
+						while (!emitter.SoundQueue.empty())
+						{
+							Ref<Sound> sound = emitter.SoundQueue.front();
+							bool resetDistance = false;
+
+							// Set the distance if the emitter has a transform
+							if (m_Registry.any_of<TransformComponent>(id1) && !emitter.IgnoreDistance)
+							{
+								glm::vec3 listenerPos = m_Registry.get<TransformComponent>(id).Translation;
+								glm::vec3 emitterPos = m_Registry.get<TransformComponent>(id1).Translation;
+								float distance = glm::distance(listenerPos, emitterPos);
+								// Application::Get().GetAudioEngine().SetSoundDistance(sound, (unsigned char)distance);
+								resetDistance = true;
+							}
+
+							Application::Get().GetAudioEngine().PlaySound(sound);
+
+							// if (resetDistance)
+							// 	Application::Get().GetAudioEngine().SetSoundDistance(sound, 0);
+
+							emitter.SoundQueue.pop();
+						}
+					}
+				}
+				else
+				{
+					auto emitterView = m_Registry.view<SoundEmitterComponent>();
+					for (auto&& [id1, emitter] : emitterView.each())
+					{
+						if (!emitter.Emit)
+						{
+							// Tell the audio engine to stop playing sounds coming from this emitter
+							continue;
+						}
+
+						// Play every sound in the queue
+						while (!emitter.SoundQueue.empty())
+						{
+							Ref<Sound> sound = emitter.SoundQueue.front();
+							Application::Get().GetAudioEngine().PlaySound(sound);
+							emitter.SoundQueue.pop();
+						}
+					}
+				}
 			}
 		}
 
@@ -48,7 +122,7 @@ namespace Durian
 		{
 			if (!camera.Use)
 				continue;
-			
+
 			// TODO: Store this somewhere and only update it when the camera gets updated
 			glm::mat4 view = glm::lookAt(transform.Translation, transform.Translation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			Renderer::Get()->SetCurrentCamera(camera.Cam, view);
@@ -62,80 +136,6 @@ namespace Durian
 					Renderer::Get()->DrawRectTextured(transform.GetTransfrom(), sprite.Tex);
 			}
 		}
-
-		// Sounds
-		// Application::Get().GetAudioEngine().Update();
-		auto listenerView = m_Registry.view<SoundListenerComponent>();
-		for (auto&& [id, listener] : listenerView.each())
-		{
-			if (!listener.Listen)
-            {
-                // Tell the audio engine to stop playing sounds coming from this listener
-                continue;
-            }
-
-			if (m_Registry.any_of<TransformComponent>(id) && !listener.IgnoreDistance)
-			{
-				auto emitterView = m_Registry.view<SoundEmitterComponent>();
-				for (auto&& [id1, emitter] : emitterView.each())
-				{
-                    if (!emitter.Emit)
-                    {
-                        // Tell the audio engine to stop playing sounds coming from this emitter
-                        continue;
-                    }
-
-					// Play every sound in the queue
-					while (!emitter.SoundQueue.empty())
-					{
-						Ref<Sound> sound = emitter.SoundQueue.front();
-						bool resetDistance = false;
-
-						// Set the distance if the emitter has a transform
-						if (m_Registry.any_of<TransformComponent>(id1) && !emitter.IgnoreDistance)
-						{
-							glm::vec3 listenerPos = m_Registry.get<TransformComponent>(id).Translation;
-							glm::vec3 emitterPos = m_Registry.get<TransformComponent>(id1).Translation;
-							float distance = glm::distance(listenerPos, emitterPos);
-							// Application::Get().GetAudioEngine().SetSoundDistance(sound, (unsigned char)distance);
-							resetDistance = true;
-						}
-
-						Application::Get().GetAudioEngine().PlaySound(sound);
-
-						// if (resetDistance)
-						// 	Application::Get().GetAudioEngine().SetSoundDistance(sound, 0);
-						
-						emitter.SoundQueue.pop();
-					}
-				}
-			}
-			else
-			{
-				auto emitterView = m_Registry.view<SoundEmitterComponent>();
-				for (auto&& [id1, emitter] : emitterView.each())
-				{
-                    if (!emitter.Emit)
-                    {
-                        // Tell the audio engine to stop playing sounds coming from this emitter
-                        continue;
-                    }
-
-					// Play every sound in the queue
-					while (!emitter.SoundQueue.empty())
-					{
-						Ref<Sound> sound = emitter.SoundQueue.front();
-						Application::Get().GetAudioEngine().PlaySound(sound);
-						emitter.SoundQueue.pop();
-					}
-				}
-			}
-		}
-	}
-
-	void Scene::RunSceneInEditor()
-	{
-		
 	}
 
 	void Scene::OnViewportResize(float width, float height)
@@ -159,22 +159,7 @@ namespace Durian
 	{
 		if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
         {
-            DURIAN_LOG_INFO("grr");
-            m_RunSceneInEditor = false;
+			m_QuitRuntime = true;
         }
-	}
-
-	void Scene::OnWindowClosedEvent(WindowClosedEvent* event)
-	{
-        DURIAN_LOG_INFO("grr");
-		m_RunSceneInEditor = false;
-	}
-	void Scene::OnWindowResizedEvent(WindowResizedEvent* event)
-	{
-		// if (event->Width == 0 && event->Height == 0)
-		// 	m_Minimized = true;
-		// else
-		// 	m_Minimized = false;
-		// glViewport(0, 0, m_Window.GetSpecification().Width, m_Window.GetSpecification().Height);
 	}
 }

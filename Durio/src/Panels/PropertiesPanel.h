@@ -24,9 +24,24 @@ namespace Durian
 			{
 				ImGui::Text("No entity selected");
 				ImGui::Text("Select an entity to diplay its properties");
+				ImGui::End();
+				return;
 			}
-			else
-				DisplayComponents();
+
+			if (ImGui::Button("Add component"))
+				ImGui::OpenPopup("Component list");
+
+			if (ImGui::BeginPopup("Component list"))
+			{
+				if (ImGui::MenuItem("Transform"))
+					m_SelectedEntity->AddComponent<TransformComponent>();
+				if (ImGui::MenuItem("Sprite"))
+					m_SelectedEntity->AddComponent<SpriteComponent>(CreateRef<Texture>("img.png"));
+
+				ImGui::EndPopup();
+			}
+
+			DisplayComponents();
 
 			ImGui::End();
         }
@@ -65,6 +80,15 @@ namespace Durian
 				}
 			}
 
+			if (m_SelectedEntity->HasComponent<SpriteComponent>())
+			{
+				if (ImGui::TreeNodeEx("Sprite", flags))
+				{
+					ImGui::Text("coucou");
+					ImGui::TreePop();
+				}
+			}
+
 			if (m_SelectedEntity->HasComponent<ScriptComponent>())
 			{
 				if (ImGui::TreeNodeEx("Script", flags))
@@ -83,7 +107,7 @@ namespace Durian
                 if (ImGui::TreeNodeEx("Sound Emitter", flags))
                 {
                     auto& soundEmitComp = m_SelectedEntity->GetComponent<SoundEmitterComponent>();
-                    ImGui::Checkbox("Emit", &soundEmitComp.Emit);
+					ImGui::Checkbox("Emit", &soundEmitComp.Emit);
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
 					if (ImGui::TreeNodeEx("Attached sounds", ImGuiTreeNodeFlags_DefaultOpen))
 					{
@@ -91,7 +115,8 @@ namespace Durian
 						{
 							if (ImGui::TreeNodeEx(soundProp.Name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 							{
-								ImGui::SliderFloat("Volume", &soundProp.Volume, 0.0f, 2.0f);
+								if (ImGui::SliderFloat("Volume", &soundProp.Volume, 0.0f, 1.0f))
+									Application::Get().GetAudioEngine().SetVolume(soundProp.Sound, soundProp.Volume);
 								ImGui::Checkbox("Loop", &soundProp.Loop);
 								if (ImGui::Button("Play sound"))
 									Application::Get().GetAudioEngine().PlaySound(soundProp.Sound);
