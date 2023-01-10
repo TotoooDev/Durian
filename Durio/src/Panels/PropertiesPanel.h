@@ -116,13 +116,13 @@ namespace Durian
 							if (ImGui::TreeNodeEx(soundProp.Name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 							{
 								if (ImGui::SliderFloat("Volume", &soundProp.Volume, 0.0f, 1.0f))
-									Application::Get().GetAudioEngine().SetVolume(soundProp.Sound, soundProp.Volume);
+									Application::Get().GetAudioEngine().SetVolume(soundProp.SoundVar, soundProp.Volume);
 								ImGui::Checkbox("Loop", &soundProp.Loop);
 								if (ImGui::Button("Play sound"))
-									Application::Get().GetAudioEngine().PlaySound(soundProp.Sound);
+									Application::Get().GetAudioEngine().PlaySound(soundProp.SoundVar);
 								ImGui::SameLine();
 								if (ImGui::Button("Stop sound"))
-									Application::Get().GetAudioEngine().StopSound(soundProp.Sound);
+									Application::Get().GetAudioEngine().StopSound(soundProp.SoundVar);
 								ImGui::TreePop();
 							}
 						}

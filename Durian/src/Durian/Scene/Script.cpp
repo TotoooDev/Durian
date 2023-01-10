@@ -237,7 +237,7 @@ namespace Durian
                 Ref<Sound> sound = CreateRef<Sound>(path);
                 auto& soundEmitComp = data->Ent.GetComponent<SoundEmitterComponent>();
                 SoundProperties prop;
-                prop.Sound = sound;
+                prop.SoundVar = sound;
                 soundEmitComp.AttachedSounds.push_back(prop);
                 lua_pushnumber(state, soundEmitComp.AttachedSounds.size() - 1);
                 return 1;
@@ -249,7 +249,7 @@ namespace Durian
                 unsigned int soundId = (unsigned int)lua_tonumber(state, 1);
                 float volume = (float)lua_tonumber(state, 2);
                 auto& soundEmitComp = data->Ent.GetComponent<SoundEmitterComponent>();
-                Ref<Sound> sound = soundEmitComp.AttachedSounds[soundId].Sound;
+                Ref<Sound> sound = soundEmitComp.AttachedSounds[soundId].SoundVar;
                 soundEmitComp.SoundQueue.push(sound);
                 return 0;
             });
@@ -260,7 +260,7 @@ namespace Durian
                 unsigned int soundId = (unsigned int)lua_tonumber(state, 1);
                 float volume = (float)lua_tonumber(state, 2);
                 auto& emitter = data->Ent.GetComponent<SoundEmitterComponent>();
-                Ref<Sound> sound = emitter.AttachedSounds[soundId].Sound;
+                Ref<Sound> sound = emitter.AttachedSounds[soundId].SoundVar;
                 Application::Get().GetAudioEngine().SetVolume(sound, volume);
                 emitter.AttachedSounds[soundId].Volume = volume;
                 return 0;

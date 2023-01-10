@@ -80,7 +80,9 @@ project "Durian"
 			"GL",
 			"lua",
 			"openal",
-			"sndfile"
+			"sndfile",
+            "vorbis",
+            "vorbisfile"
 		}
 
 	filter "configurations:Debug"
@@ -173,7 +175,9 @@ project "Durio"
 			"GL",
 			"lua",
 			"openal",
-			"sndfile"
+			"sndfile",
+            "vorbis",
+            "vorbisfile"
 		}
 
 	filter "configurations:Debug"

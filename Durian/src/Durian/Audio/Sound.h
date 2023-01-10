@@ -18,6 +18,10 @@ namespace Durian
 		}
 
 	private:
+        void LoadMP3(const std::string& path);
+        void LoadOGG(const std::string& path);
+        void LoadOther(const std::string& path);
+
 		unsigned int m_ID;
 		bool m_Registered = false;
 
@@ -29,6 +33,6 @@ namespace Durian
 		float Volume = 1.0f;
 		bool Loop = false; // TODO: Change this to a number of loops
 		std::string Name = "New sound";
-		Ref<Sound> Sound;
+		Ref<Sound> SoundVar; // TODO: Find a new name
 	};
 }
