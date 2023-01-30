@@ -23,10 +23,14 @@ namespace Durian
 		m_SpriteEntity = m_Scene.CreateEntity("Sprite");
 		m_SpriteEntity.AddComponent<ScriptComponent>(m_SpriteEntity, "Script.lua");
         auto& soundEmitter = m_SpriteEntity.AddComponent<SoundEmitterComponent>();
-        Ref<Sound> sound = CreateRef<Sound>("bonk.ogg");
-        // soundEmitter.SoundQueue.push(sound);
         SoundProperties prop;
-        prop.SoundVar = sound;
+        Ref<Sound> soundmp3 = CreateRef<Sound>("bonk.mp3");
+        prop.SoundVar = soundmp3;
+        prop.Name = "MP3";
+        soundEmitter.AttachedSounds.push_back(prop);
+        Ref<Sound> soundwav = CreateRef<Sound>("grr.wav");
+        prop.SoundVar = soundwav;
+        prop.Name = "WAV";
         soundEmitter.AttachedSounds.push_back(prop);
 
 		m_CameraEntity = m_Scene.CreateEntity("Camera");

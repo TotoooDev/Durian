@@ -8,6 +8,9 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 #endif
+#define MINIMP3_IMPLEMENTATION
+#include <minimp3.h>
+#include <minimp3_ex.h>
 
 namespace Durian
 {
@@ -29,51 +32,38 @@ namespace Durian
 
     void Sound::LoadMP3(const std::string& path)
     {
-        DURIAN_LOG_WARN("MP3 format is not supported yet!");
+        mp3dec_t decoder;
+        mp3dec_file_info_t info;
+        if (mp3dec_load(&decoder, path.c_str(), &info, nullptr, nullptr))
+        {
+            DURIAN_LOG_ERROR("Failed to load {}!", path);
+            return;
+        }
+
+        ALenum format;
+        switch (info.channels)
+        {
+        case 1:
+            format = AL_FORMAT_MONO16;
+            break;
+        case 2:
+            format = AL_FORMAT_STEREO16;
+            break;
+        default:
+            DURIAN_LOG_ERROR("Unknown format!");
+            break;
+        }
+
+        alGenBuffers(1, &m_ID);
+        alBufferData(m_ID, format, info.buffer, info.samples * sizeof(mp3d_sample_t), info.hz);
+
+        free(info.buffer);
     }
 
     void Sound::LoadOGG(const std::string& path)
-    {        
-#ifndef DURIAN_WINDOWS
-        // Shamelessly stolen from https://xiph.org/vorbis/doc/vorbisfile/example.html
-        char pcmout[4096];
-
-        OggVorbis_File vf;
-        int eof = 0;
-        int currentSection;
-
-        if (ov_fopen(path.c_str(), &vf) < 0)
-        {
-            DURIAN_LOG_WARN("{} is not an OGG bitstream!", path);
-            // LoadNotMP3(path);
-        }
-        
-        // Print cool informations
-        char** ptr = ov_comment(&vf, -1)->user_comments;
-        vorbis_info* vi = ov_info(&vf, -1);
-        while (*ptr)
-        {
-            DURIAN_LOG_INFO(*ptr);
-            ++ptr;
-        }
-        DURIAN_LOG_INFO("Bitstream is {0} channel, {1}hz", vi->channels, vi->rate);
-        DURIAN_LOG_INFO("Decoded length: {} samples", ov_pcm_total(&vf, -1));
-        DURIAN_LOG_INFO("Encoded by {}", ov_comment(&vf, -1)->vendor);
-    
-        while (!eof)
-        {
-            long ret = ov_read(&vf, pcmout, sizeof(pcmout), 0, 2, 1, &currentSection);
-            if (ret == 0)
-                eof = 1; // End of file
-            else if (ret < 0)
-                DURIAN_LOG_ERROR("Error in the stream!");
-            else
-                DURIAN_LOG_INFO("so apparently i have to do something here but the example doesn't tell me what it is :(");
-        }
-
-        ov_clear(&vf);
-#endif
-    }
+    {
+        DURIAN_LOG_ERROR("OGG format is not supported!");
+    } 
 
     void Sound::LoadOther(const std::string& path)
     {
