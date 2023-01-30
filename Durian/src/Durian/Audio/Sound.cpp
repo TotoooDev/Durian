@@ -2,8 +2,12 @@
 #include <Durian/Audio/Sound.h>
 #include <AL/al.h>
 #include <sndfile.h>
+
+#include <Durian/Core/OS.h>
+#ifndef DURIAN_WINDOWS // I'm too lazy to implement this for Windows
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
+#endif
 
 namespace Durian
 {
@@ -30,6 +34,7 @@ namespace Durian
 
     void Sound::LoadOGG(const std::string& path)
     {        
+#ifndef DURIAN_WINDOWS
         // Shamelessly stolen from https://xiph.org/vorbis/doc/vorbisfile/example.html
         char pcmout[4096];
 
@@ -67,6 +72,7 @@ namespace Durian
         }
 
         ov_clear(&vf);
+#endif
     }
 
     void Sound::LoadOther(const std::string& path)
