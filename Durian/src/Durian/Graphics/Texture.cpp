@@ -6,6 +6,7 @@
 namespace Durian
 {
 	Texture::Texture(const std::string& path)
+		: m_Path(path)
 	{
 		stbi_set_flip_vertically_on_load(false); // So for some reason I don't need to flip texture vertically????????
 		glGenTextures(1, &m_ID);

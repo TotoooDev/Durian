@@ -15,6 +15,7 @@
 namespace Durian
 {
 	Sound::Sound(const std::string& path)
+        : m_Path(path)
 	{
         std::string extension = path.substr(path.find_last_of(".") + 1);
         if (extension == "mp3")

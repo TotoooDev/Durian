@@ -36,6 +36,7 @@ namespace Durian
         lua_getglobal(m_State, "OnStart");
         if (lua_isfunction(m_State, -1))
             CheckLua(lua_pcall(m_State, 0, 0, 0));
+        m_WasStarted = true;
     }
 
     void LuaScript::OnUpdate(float timestep)
@@ -148,7 +149,6 @@ namespace Durian
         lua_setglobal(m_State, "Durian_DataPointer");
 
         SetCppFunctions();
-        OnStart();
     }
 
     bool LuaScript::CheckLua(int r)

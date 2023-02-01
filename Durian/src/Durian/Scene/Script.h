@@ -25,11 +25,14 @@ namespace Durian
         void Recompile();
 
         void GetTransformComponent(TransformComponent* comp);
+        bool WasStarted() { return m_WasStarted; }
 
     private:
         void Create();
         void SetCppFunctions();
         bool CheckLua(int r);
+
+        bool m_WasStarted = false;
 
         lua_State* m_State;
         std::string m_Path;

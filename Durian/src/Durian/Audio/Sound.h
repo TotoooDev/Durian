@@ -11,6 +11,7 @@ namespace Durian
 		~Sound();
 
 		unsigned int GetID() const { return m_ID; }
+		std::string GetPath() const { return m_Path; }
 
 		friend bool operator<(const Sound& rhs, const Sound& lhs)
 		{
@@ -24,6 +25,7 @@ namespace Durian
 
 		unsigned int m_ID;
 		bool m_Registered = false;
+		std::string m_Path;
 
 		friend class AudioEngine;
 	};

@@ -15,6 +15,8 @@ namespace Durian
 	class EditorLayer : public Layer
 	{
 	public:
+		EditorLayer();
+
 		void OnCreate() override;
 		void OnUpdate(double timestep) override;
 		void OnImGuiRender() override;
@@ -39,5 +41,7 @@ namespace Durian
 		PropertiesPanel m_ComponentsView;
 
 		bool m_Runtime = false;
+
+		void OnKeyDown(KeyDownEvent* event);
 	};
 }

@@ -142,6 +142,32 @@ namespace Durian
                     ImGui::TreePop();
                 }
             }
+
+			if (m_SelectedEntity->HasComponent<OrthoCameraComponent>())
+			{
+				if (ImGui::TreeNodeEx("Ortho Camera", flags))
+				{
+					auto& camComp = m_SelectedEntity->GetComponent<OrthoCameraComponent>();
+
+					ImGui::DragFloat("X Min", &camComp.Cam.xMin);
+					ImGui::SameLine();
+					ImGui::DragFloat("X Max", &camComp.Cam.xMax);
+
+					ImGui::DragFloat("Y Min", &camComp.Cam.yMin);
+					ImGui::SameLine();
+					ImGui::DragFloat("Y Max", &camComp.Cam.yMax);
+
+					ImGui::DragFloat("Near", &camComp.Cam.Near);
+					ImGui::SameLine();
+					ImGui::DragFloat("Far", &camComp.Cam.Far);
+
+					ImGui::Checkbox("Primary camera", &camComp.PrimaryCamera);
+					ImGui::Checkbox("Resizable", &camComp.Resizable);
+					ImGui::Checkbox("Use", &camComp.Use);
+
+					ImGui::TreePop();
+				}
+			}
         }
 	};
 }

@@ -34,5 +34,6 @@ namespace Durian
 
 		friend class Entity;
 		friend class ScenePanel;
+		friend class Serializer;
 	};
 }

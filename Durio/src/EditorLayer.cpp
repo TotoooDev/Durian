@@ -4,9 +4,15 @@
 
 #include <Durian/Scene/Components.h>
 #include <Durian/Graphics/Renderer.h>
+#include <Durian/Scene/Serializer.h>
 
 namespace Durian
 {
+    EditorLayer::EditorLayer()
+    {
+        Application::Get().GetEventBus()->Subscribe(this, &EditorLayer::OnKeyDown);
+    }
+
 	void EditorLayer::OnCreate() 
 	{
 		FramebufferSpecification spec;
@@ -57,6 +63,18 @@ namespace Durian
 		ImGui::BeginMenuBar();
 		if (ImGui::BeginMenu("File"))
 		{
+            if (ImGui::MenuItem("Save", "Ctrl+S"))
+            {
+                Serializer serializer(&m_Scene);
+                serializer.SerializeJson("Scene.durian");
+            }
+            if (ImGui::MenuItem("Open", "Ctrl+O"))
+            {
+                m_Scene = Scene();
+                Serializer serializer(&m_Scene);
+                serializer.ImportJson("Scene.durian");
+            }
+            ImGui::Separator();
             if (ImGui::MenuItem("Close", "Alt+F4"))
                 Application::Get().Stop();
 			ImGui::EndMenu();
@@ -131,5 +149,11 @@ namespace Durian
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
         }
+    }
+
+    void EditorLayer::OnKeyDown(KeyDownEvent* event)
+    {
+        if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
+            m_Runtime = false;
     }
 }

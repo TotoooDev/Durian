@@ -25,7 +25,7 @@ Durian =
 
     Keycode =
     {
-        -- I copied all of this from the Durian source by hand and now I want to fucking die
+        -- I had to copy all of this from the Durian source by hand and now I want to fucking die
         DURIAN_SCANCODE_UNKNOWN = 0,
         DURIAN_SCANCODE_A = 4,
         DURIAN_SCANCODE_B = 5,
