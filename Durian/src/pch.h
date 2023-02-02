@@ -7,6 +7,8 @@
 #ifndef PCH_H
 #define PCH_H
 
+#include <Durian/Core/OS.h>
+
 // See github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
 #define NOMINMAX
 
@@ -36,7 +38,7 @@
 
 #include <nlohmann/json.hpp>
 
-#if defined _WIN32
+#if defined DURIAN_WINDOWS
 #include <windows.h>
 #endif
 

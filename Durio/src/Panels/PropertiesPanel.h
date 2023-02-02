@@ -2,6 +2,7 @@
 #include <Durian/Scene/Entity.h>
 #include <Durian/Scene/Components.h>
 #include <Durian/Core/Application.h>
+#include <Durian/Utils/FileManagement.h>
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -20,7 +21,7 @@ namespace Durian
 
 			ImGui::Begin("Properties", isOpen);
 
-			if (!m_SelectedEntity)
+			if (!m_SelectedEntity->IsValid())
 			{
 				ImGui::Text("No entity selected");
 				ImGui::Text("Select an entity to diplay its properties");
@@ -31,13 +32,36 @@ namespace Durian
 			if (ImGui::Button("Add component"))
 				ImGui::OpenPopup("Component list");
 
+			// TODO: Make this not look like shit
+			// Graphic design is my ~passion~
 			if (ImGui::BeginPopup("Component list"))
 			{
+				ImGui::Text("Essentials");
 				if (ImGui::MenuItem("Transform"))
 					m_SelectedEntity->AddComponent<TransformComponent>();
+				ImGui::Separator();
+
+				ImGui::Text("Graphics");
 				if (ImGui::MenuItem("Sprite"))
 					m_SelectedEntity->AddComponent<SpriteComponent>(CreateRef<Texture>("img.png"));
+				ImGui::Separator();
 
+				ImGui::Text("Cameras");
+				if (ImGui::MenuItem("Ortho Camera"))
+					m_SelectedEntity->AddComponent<OrthoCameraComponent>(OrthoCamera());
+				ImGui::Separator();
+
+				ImGui::Text("Sound");
+				if (ImGui::MenuItem("Sound Emitter"))
+					m_SelectedEntity->AddComponent<SoundEmitterComponent>();
+				if (ImGui::MenuItem("Sound Listener"))
+					m_SelectedEntity->AddComponent<SoundListenerComponent>();
+				ImGui::Separator();
+
+				ImGui::Text("Scripting");
+				if (ImGui::MenuItem("Lua Script"))
+					m_SelectedEntity->AddComponent<ScriptComponent>(*m_SelectedEntity);
+				
 				ImGui::EndPopup();
 			}
 
@@ -97,11 +121,12 @@ namespace Durian
 					ImGui::Text("Path: %s", scriptComp.ScriptPath.c_str());
 					if (ImGui::Button("Recompile script"))
 						scriptComp.Script.Recompile();
+					if (ImGui::Button("Select file..."))
+						scriptComp = ScriptComponent(*m_SelectedEntity, Utils::OpenFileDialog("Lua source file (*.lua)\0*.lua\0"));
 					ImGui::TreePop();
 				}
 			}
 		
-
             if (m_SelectedEntity->HasComponent<SoundEmitterComponent>())
             {
                 if (ImGui::TreeNodeEx("Sound Emitter", flags))
@@ -109,6 +134,16 @@ namespace Durian
                     auto& soundEmitComp = m_SelectedEntity->GetComponent<SoundEmitterComponent>();
 					ImGui::Checkbox("Emit", &soundEmitComp.Emit);
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
+					if (ImGui::Button("Attach new sound"))
+					{
+						std::string path = Utils::OpenFileDialog("");
+						if (!path.empty())
+						{
+							SoundProperties prop;
+							prop.SoundVar = CreateRef<Sound>(path); // TODO: Add a filter
+							soundEmitComp.AttachedSounds.push_back(prop);
+						}
+					}
 					if (ImGui::TreeNodeEx("Attached sounds", ImGuiTreeNodeFlags_DefaultOpen))
 					{
 						for (auto& soundProp : soundEmitComp.AttachedSounds)

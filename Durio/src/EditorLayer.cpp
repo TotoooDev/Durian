@@ -5,10 +5,12 @@
 #include <Durian/Scene/Components.h>
 #include <Durian/Graphics/Renderer.h>
 #include <Durian/Scene/Serializer.h>
+#include <Durian/Utils/FileManagement.h>
 
 namespace Durian
 {
     EditorLayer::EditorLayer()
+        : m_SceneView(&m_Scene, m_SelectedEntity)
     {
         Application::Get().GetEventBus()->Subscribe(this, &EditorLayer::OnKeyDown);
     }
@@ -20,30 +22,11 @@ namespace Durian
 		spec.AddTexture(FramebufferTexture::RGBA16);
 		m_Framebuffer = CreateRef<Framebuffer>(spec);
 
-        m_SelectedEntity = &m_SpriteEntity;
+        m_SelectedEntity = new Entity(entt::null, &m_Scene);
 
 		m_Viewport = ViewportPanel(m_Framebuffer, &m_ViewportSize);
 		m_SceneView = ScenePanel(&m_Scene, m_SelectedEntity);
         m_ComponentsView = PropertiesPanel(m_SelectedEntity);
-
-		m_SpriteEntity = m_Scene.CreateEntity("Sprite");
-		m_SpriteEntity.AddComponent<ScriptComponent>(m_SpriteEntity, "Script.lua");
-        auto& soundEmitter = m_SpriteEntity.AddComponent<SoundEmitterComponent>();
-        SoundProperties prop;
-        Ref<Sound> soundmp3 = CreateRef<Sound>("bonk.mp3");
-        prop.SoundVar = soundmp3;
-        prop.Name = "MP3";
-        soundEmitter.AttachedSounds.push_back(prop);
-        Ref<Sound> soundwav = CreateRef<Sound>("grr.wav");
-        prop.SoundVar = soundwav;
-        prop.Name = "WAV";
-        soundEmitter.AttachedSounds.push_back(prop);
-
-		m_CameraEntity = m_Scene.CreateEntity("Camera");
-		m_CameraEntity.AddComponent<TransformComponent>();
-		OrthoCamera cam;
-		m_CameraEntity.AddComponent<OrthoCameraComponent>(cam);
-		m_CameraEntity.AddComponent<SoundListenerComponent>();
 	}
 
 	void EditorLayer::OnUpdate(double timestep)
@@ -70,9 +53,13 @@ namespace Durian
             }
             if (ImGui::MenuItem("Open", "Ctrl+O"))
             {
-                m_Scene = Scene();
-                Serializer serializer(&m_Scene);
-                serializer.ImportJson("Scene.durian");
+                std::string path = Utils::OpenFileDialog("Durian Scene file (*.durian)\0*.durian\0");
+                if (!path.empty())
+                {
+                    m_Scene = Scene();
+                    Serializer serializer(&m_Scene);
+                    serializer.ImportJson(path);
+                }
             }
             ImGui::Separator();
             if (ImGui::MenuItem("Close", "Alt+F4"))

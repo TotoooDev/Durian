@@ -25,8 +25,6 @@ namespace Durian
 		void BeginDockSpace();
 
 		Scene m_Scene;
-		Entity m_SpriteEntity;
-		Entity m_CameraEntity;
 		Ref<Framebuffer> m_Framebuffer;
 
 		Entity* m_SelectedEntity;

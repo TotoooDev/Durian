@@ -8,7 +8,7 @@ namespace Durian
 	class ScenePanel
 	{
 	public:
-		ScenePanel(Scene* scene = nullptr, Entity* selected = nullptr)
+		ScenePanel(Scene* scene, Entity* selected)
 			: m_Scene(scene), m_SelectedEntity(selected) {}
 
 		void Draw(bool* isOpen)
@@ -31,31 +31,30 @@ namespace Durian
 
 				ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_FramePadding;
 				
-				if (m_SelectedEntity->GetID() == id)
+				if (m_SelectedEntity && m_SelectedEntity->GetID() == id)
         		{
           			flags |= ImGuiTreeNodeFlags_Selected;
         		}
 
 				if (ImGui::TreeNodeEx(tag.Tag.c_str(), flags))
 				{
-          			if (ImGui::IsItemClicked() || ImGui::IsItemClicked(ImGuiMouseButton_Right))
-						*m_SelectedEntity = ent;
-
-					if (m_SelectedEntity->GetID() == id)
+					if (ImGui::IsItemClicked() || ImGui::IsItemClicked(ImGuiMouseButton_Right))
 					{
-						if (ImGui::BeginPopupContextItem())
-						{
-							if (ImGui::MenuItem("Delete Entity"))
-							{
-								// m_Scene->DeleteEntity(*m_SelectedEntity);
-								// *m_SelectedEntity = { entt::null, nullptr };
-							}
-							ImGui::EndPopup();
-						}
+						if (m_SelectedEntity->IsValid())
+							*m_SelectedEntity = ent;
+						else
+							*m_SelectedEntity = Entity(ent.GetID(), m_Scene);
 					}
 
 					ImGui::TreePop();
 				}
+			}
+
+			if (ImGui::BeginPopupContextWindow("Entity Context"))
+			{
+				if (ImGui::MenuItem("Add entity"))
+					m_Scene->CreateEntity("New Entity");
+				ImGui::EndPopup();
 			}
 			
 			ImGui::End();
