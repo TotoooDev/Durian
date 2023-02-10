@@ -122,7 +122,14 @@ namespace Durian
 					if (ImGui::Button("Recompile script"))
 						scriptComp.Script.Recompile();
 					if (ImGui::Button("Select file..."))
-						scriptComp = ScriptComponent(*m_SelectedEntity, Utils::OpenFileDialog("Lua source file (*.lua)\0*.lua\0"));
+					{
+						std::string path = Utils::OpenFileDialog("Lua source file (*.lua)\0*.lua\0");
+						if (!path.empty())
+						{
+							m_SelectedEntity->RemoveComponent<ScriptComponent>();
+							m_SelectedEntity->AddComponent<ScriptComponent>(*m_SelectedEntity, path);
+						}
+					}
 					ImGui::TreePop();
 				}
 			}
@@ -136,11 +143,13 @@ namespace Durian
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
 					if (ImGui::Button("Attach new sound"))
 					{
-						std::string path = Utils::OpenFileDialog("");
+						std::string path = Utils::OpenFileDialog(""); // TODO: Add a filter
 						if (!path.empty())
 						{
 							SoundProperties prop;
-							prop.SoundVar = CreateRef<Sound>(path); // TODO: Add a filter
+							prop.Name = "New Sound" + std::to_string(soundEmitComp.AttachedSounds.size());
+							Ref<Sound> sound = CreateRef<Sound>(path);
+							prop.SoundVar = sound;
 							soundEmitComp.AttachedSounds.push_back(prop);
 						}
 					}
@@ -150,6 +159,13 @@ namespace Durian
 						{
 							if (ImGui::TreeNodeEx(soundProp.Name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 							{
+								// TODO: Fix the focus problem
+								char buf[128];
+								strcpy(buf, soundProp.Name.c_str());
+								if (ImGui::InputText("Name", buf, 128))
+								{
+									soundProp.Name = buf;
+								}
 								if (ImGui::SliderFloat("Volume", &soundProp.Volume, 0.0f, 1.0f))
 									Application::Get().GetAudioEngine().SetVolume(soundProp.SoundVar, soundProp.Volume);
 								ImGui::Checkbox("Loop", &soundProp.Loop);

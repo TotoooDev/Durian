@@ -36,7 +36,8 @@ namespace Durian
           			flags |= ImGuiTreeNodeFlags_Selected;
         		}
 
-				if (ImGui::TreeNodeEx(tag.Tag.c_str(), flags))
+				std::string name = tag.Tag.empty() ? "Unnamed entity" : tag.Tag;
+				if (ImGui::TreeNodeEx(name.c_str(), flags))
 				{
 					if (ImGui::IsItemClicked() || ImGui::IsItemClicked(ImGuiMouseButton_Right))
 					{
