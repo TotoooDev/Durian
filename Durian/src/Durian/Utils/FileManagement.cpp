@@ -3,7 +3,9 @@
 #include <Durian/Core/Application.h>
 #include <SDL2/SDL_syswm.h>
 #include <string>
+#ifdef DURIAN_WINDOWS
 #include <commdlg.h>
+#endif
 
 namespace Durian
 {
@@ -32,9 +34,9 @@ namespace Durian
 				{
 					return openFileName.lpstrFile;
 				}
-				return "";
-			#endif
-		}
+            #endif
+			return "";
+			}
 
 		std::string OpenFileDialog(const char* filter)
 		{
@@ -58,9 +60,9 @@ namespace Durian
 				if (GetOpenFileNameA(&openFileName) == TRUE)
 				{
 					return openFileName.lpstrFile;
-				}
-				return "";
+                }
 			#endif
+            return "";
 		}
 	}
 }

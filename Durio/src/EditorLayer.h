@@ -24,6 +24,9 @@ namespace Durian
 	private:
 		void BeginDockSpace();
 
+		void Save();
+		void Open();
+
 		Scene m_Scene;
 		Ref<Framebuffer> m_Framebuffer;
 

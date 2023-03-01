@@ -1,5 +1,6 @@
 #pragma once
 #include <Durian/Core/OS.h>
+#include <string>
 
 #ifdef DURIAN_WINDOWS
 #endif

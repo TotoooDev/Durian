@@ -1,4 +1,5 @@
 #include <EditorLayer.h>
+#include <FileDialogLayer.h>
 #include <Durian/Core/Application.h>
 #include <imgui/imgui.h>
 
@@ -47,20 +48,9 @@ namespace Durian
 		if (ImGui::BeginMenu("File"))
 		{
             if (ImGui::MenuItem("Save", "Ctrl+S"))
-            {
-                Serializer serializer(&m_Scene);
-                serializer.SerializeJson("Scene.durian");
-            }
+                Save();
             if (ImGui::MenuItem("Open", "Ctrl+O"))
-            {
-                std::string path = Utils::OpenFileDialog("Durian Scene file (*.durian)\0*.durian\0");
-                if (!path.empty())
-                {
-                    m_Scene = Scene();
-                    Serializer serializer(&m_Scene);
-                    serializer.ImportJson(path);
-                }
-            }
+                Open();
             ImGui::Separator();
             if (ImGui::MenuItem("Close", "Alt+F4"))
                 Application::Get().Stop();
@@ -142,5 +132,26 @@ namespace Durian
     {
         if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
             m_Runtime = false;
+    }
+
+    void EditorLayer::Save()
+    {
+        Serializer serializer(&m_Scene);
+        serializer.SerializeJson("Scene.durian");
+    }
+
+    void EditorLayer::Open()
+    {
+        // std::string path = Utils::OpenFileDialog("Durian Scene file (*.durian)\0*.durian\0");
+        // if (!path.empty())
+        // {
+        //     m_Scene = Scene();
+        //     Serializer serializer(&m_Scene);
+        //     serializer.ImportJson(path);
+        // }
+
+        std::string path;
+        FileDialogLayer* dialog = new FileDialogLayer(FileDialogAction::OpenFile, &path);
+        Application::Get().AddLayer(dialog);
     }
 }
