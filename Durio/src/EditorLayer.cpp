@@ -1,5 +1,4 @@
 #include <EditorLayer.h>
-#include <FileDialogLayer.h>
 #include <Durian/Core/Application.h>
 #include <imgui/imgui.h>
 
@@ -142,16 +141,14 @@ namespace Durian
 
     void EditorLayer::Open()
     {
+        FileDialog dialog(FileDialogAction::Open);
         // std::string path = Utils::OpenFileDialog("Durian Scene file (*.durian)\0*.durian\0");
-        // if (!path.empty())
-        // {
-        //     m_Scene = Scene();
-        //     Serializer serializer(&m_Scene);
-        //     serializer.ImportJson(path);
-        // }
-
-        std::string path;
-        FileDialogLayer* dialog = new FileDialogLayer(FileDialogAction::OpenFile, &path);
-        Application::Get().AddLayer(dialog);
+        std::string path = dialog.GetPath();
+        if (!path.empty())
+        {
+            m_Scene = Scene();
+            Serializer serializer(&m_Scene);
+            serializer.ImportJson(path);
+        }
     }
 }
