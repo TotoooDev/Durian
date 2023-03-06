@@ -21,7 +21,7 @@ namespace Durian
 	class FileDialog
 	{
 	public:
-		FileDialog(FileDialogAction action, const std::string& filter = "");
+		FileDialog(FileDialogAction action, const char* filter = "");
 
 		std::string GetPath() { return m_FilePath; }
 		std::string GetObjectName();
@@ -32,7 +32,7 @@ namespace Durian
 		void OpenFolderDialog();
 
 		FileDialogAction m_Action;
-		std::string m_Filter;
+		const char* m_Filter;
 		std::string m_FilePath;
 
 		#ifdef DURIAN_LINUX

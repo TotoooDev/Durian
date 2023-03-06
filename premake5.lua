@@ -11,6 +11,8 @@ workspace "Durian"
 		"Distribution"
 	}
 
+	startproject "Durio"
+
 outputDir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Durian"

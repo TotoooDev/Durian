@@ -141,7 +141,7 @@ namespace Durian
 
     void EditorLayer::Open()
     {
-        FileDialog dialog(FileDialogAction::Open);
+        FileDialog dialog(FileDialogAction::Open, "Durian Scene file (*.durian)\0*.durian\0");
         // std::string path = Utils::OpenFileDialog("Durian Scene file (*.durian)\0*.durian\0");
         std::string path = dialog.GetPath();
         if (!path.empty())

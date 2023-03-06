@@ -54,7 +54,10 @@ namespace Durian
 			if (ImGui::BeginPopupContextWindow("Entity Context"))
 			{
 				if (ImGui::MenuItem("Add entity"))
-					m_Scene->CreateEntity("New Entity");
+				{
+					Entity ent = m_Scene->CreateEntity("New Entity");
+					*m_SelectedEntity = ent;
+				}
 				ImGui::EndPopup();
 			}
 			

@@ -92,7 +92,7 @@ namespace Durian
 		}
 	}
 
-	FileDialog::FileDialog(FileDialogAction action, const std::string& filter)
+	FileDialog::FileDialog(FileDialogAction action, const char* filter)
 		: m_Action(action), m_Filter(filter)
 	{
 		switch (action)
@@ -111,7 +111,7 @@ namespace Durian
 
 	std::string FileDialog::GetObjectName()
 	{
-
+		return "";
 	}
 
 	void FileDialog::SaveDialog()
@@ -130,7 +130,7 @@ namespace Durian
 			openFileName.hwndOwner = hwnd;
 			openFileName.lpstrFile = szFile;
 			openFileName.nMaxFile = sizeof(szFile);
-			openFileName.lpstrFilter = m_Filter.c_str();
+			openFileName.lpstrFilter = m_Filter;
 			openFileName.nFilterIndex = 1;
 			openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 			if (GetSaveFileNameA(&openFileName) == TRUE)

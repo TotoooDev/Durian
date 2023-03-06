@@ -32,36 +32,36 @@ namespace Durian
 			if (ImGui::Button("Add component"))
 				ImGui::OpenPopup("Component list");
 
-			// TODO: Make this not look like shit
-			// Graphic design is my ~passion~
 			if (ImGui::BeginPopup("Component list"))
 			{
-				ImGui::Text("Essentials");
-				if (ImGui::MenuItem("Transform"))
-					m_SelectedEntity->AddComponent<TransformComponent>();
-				ImGui::Separator();
-
-				ImGui::Text("Graphics");
-				if (ImGui::MenuItem("Sprite"))
-					m_SelectedEntity->AddComponent<SpriteComponent>(CreateRef<Texture>("img.png"));
-				ImGui::Separator();
-
-				ImGui::Text("Cameras");
-				if (ImGui::MenuItem("Ortho Camera"))
-					m_SelectedEntity->AddComponent<OrthoCameraComponent>(OrthoCamera());
-				ImGui::Separator();
-
-				ImGui::Text("Sound");
-				if (ImGui::MenuItem("Sound Emitter"))
-					m_SelectedEntity->AddComponent<SoundEmitterComponent>();
-				if (ImGui::MenuItem("Sound Listener"))
-					m_SelectedEntity->AddComponent<SoundListenerComponent>();
-				ImGui::Separator();
-
-				ImGui::Text("Scripting");
-				if (ImGui::MenuItem("Lua Script"))
-					m_SelectedEntity->AddComponent<ScriptComponent>(*m_SelectedEntity);
-				
+				if (ImGui::BeginMenu("Essentials"))
+				{
+					if (ImGui::MenuItem("Transform"))
+						m_SelectedEntity->AddComponent<TransformComponent>();
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Graphics"))
+				{
+					if (ImGui::MenuItem("Sprite"))
+						m_SelectedEntity->AddComponent<SpriteComponent>(CreateRef<Texture>("sprites/default.png"));
+					if (ImGui::MenuItem("Ortho Camera"))
+						m_SelectedEntity->AddComponent<OrthoCameraComponent>(OrthoCamera());
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Sound"))
+				{
+					if (ImGui::MenuItem("Sound Emitter"))
+						m_SelectedEntity->AddComponent<SoundEmitterComponent>();
+					if (ImGui::MenuItem("Sound Listener"))
+						m_SelectedEntity->AddComponent<SoundListenerComponent>();
+					ImGui::EndMenu();
+				}
+				if (ImGui::BeginMenu("Scripting"))
+				{
+					if (ImGui::MenuItem("Lua Script"))
+						m_SelectedEntity->AddComponent<ScriptComponent>(*m_SelectedEntity);
+					ImGui::EndMenu();
+				}
 				ImGui::EndPopup();
 			}
 
@@ -97,6 +97,8 @@ namespace Durian
 				if (ImGui::TreeNodeEx("Transform", flags))
 				{
 					auto& transformComp = m_SelectedEntity->GetComponent<TransformComponent>();
+					DisplayRemoveComponent<TransformComponent>();
+
 					ImGui::DragFloat3("Position", glm::value_ptr(transformComp.Translation), 0.1f);
 					ImGui::DragFloat3("Rotation", glm::value_ptr(transformComp.Rotation), 0.1f);
 					ImGui::DragFloat3("Scale", glm::value_ptr(transformComp.Scale), 0.01f);
@@ -108,7 +110,15 @@ namespace Durian
 			{
 				if (ImGui::TreeNodeEx("Sprite", flags))
 				{
-					ImGui::Text("coucou");
+					auto& spriteComp = m_SelectedEntity->GetComponent<SpriteComponent>();
+					DisplayRemoveComponent<SpriteComponent>();
+					ImGui::Text("Current loaded sprite:");
+					ImGui::Text(spriteComp.Tex->GetPath().c_str());
+					if (ImGui::Button("Select sprite..."))
+					{
+						std::string path = Utils::OpenFileDialog(""); // TODO: Add a filter
+						spriteComp.Tex = CreateRef<Texture>(path);
+					}
 					ImGui::TreePop();
 				}
 			}
@@ -118,6 +128,7 @@ namespace Durian
 				if (ImGui::TreeNodeEx("Script", flags))
 				{
 					auto& scriptComp = m_SelectedEntity->GetComponent<ScriptComponent>();
+					DisplayRemoveComponent<ScriptComponent>();
 					ImGui::Text("Path: %s", scriptComp.ScriptPath.c_str());
 					if (ImGui::Button("Recompile script"))
 						scriptComp.Script.Recompile();
@@ -139,6 +150,7 @@ namespace Durian
                 if (ImGui::TreeNodeEx("Sound Emitter", flags))
                 {
                     auto& soundEmitComp = m_SelectedEntity->GetComponent<SoundEmitterComponent>();
+					DisplayRemoveComponent<SoundEmitterComponent>();
 					ImGui::Checkbox("Emit", &soundEmitComp.Emit);
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
 					if (ImGui::Button("Attach new sound"))
@@ -188,6 +200,7 @@ namespace Durian
                 if (ImGui::TreeNodeEx("Sound Listener", flags))
                 {
                     auto& soundListenComp = m_SelectedEntity->GetComponent<SoundListenerComponent>();
+					DisplayRemoveComponent<SoundListenerComponent>();
                     ImGui::Checkbox("Listen", &soundListenComp.Listen);
                     ImGui::Checkbox("Ignore distance", &soundListenComp.IgnoreDistance);
                     ImGui::TreePop();
@@ -199,6 +212,7 @@ namespace Durian
 				if (ImGui::TreeNodeEx("Ortho Camera", flags))
 				{
 					auto& camComp = m_SelectedEntity->GetComponent<OrthoCameraComponent>();
+					DisplayRemoveComponent<OrthoCameraComponent>();
 
 					ImGui::DragFloat("X Min", &camComp.Cam.xMin);
 					ImGui::SameLine();
@@ -220,5 +234,16 @@ namespace Durian
 				}
 			}
         }
+
+		template <typename T>
+		void DisplayRemoveComponent()
+		{
+			if (ImGui::BeginPopupContextItem("RemoveComponent"))
+			{
+				if (ImGui::MenuItem("Remove component"))
+					m_SelectedEntity->RemoveComponent<T>();
+				ImGui::EndPopup();
+			}
+		}
 	};
 }
