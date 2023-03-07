@@ -43,6 +43,11 @@ namespace Durian
         SDL_GL_MakeCurrent(m_NativeWindow, m_Spec.ContextGL);
     }
 
+	void Window::SetTitle(const std::string& title)
+	{
+		SDL_SetWindowTitle(m_NativeWindow, title.c_str());
+	}
+
 	void Window::Present()
 	{
 		SDL_GL_SwapWindow(m_NativeWindow);

@@ -27,10 +27,11 @@ namespace Durian
 		void Save();
 		void Open();
 
+		std::string m_ScenePath = "";
 		Scene m_Scene;
 		Ref<Framebuffer> m_Framebuffer;
-
 		Entity* m_SelectedEntity;
+
 
 		ImVec2 m_ViewportSize;
 

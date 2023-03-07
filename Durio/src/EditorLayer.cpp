@@ -58,9 +58,20 @@ namespace Durian
         if (ImGui::BeginMenu("Scene"))
         {
             if (ImGui::MenuItem("Play scene"))
+            {
                 m_Runtime = true;
+                // Set menu bar color to red to indicate runtime mode
+                ImGuiStyle& style = ImGui::GetStyle();
+                style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.501960813999176, 0.07450980693101883, 0.2549019753932953, 1.0);
+                // Application::Get().GetWindow().SetTitle("Durian Editor (RUNTIME MODE)"); // Crashes ImGui for some reason?????
+                m_Viewport.SetTitle("Viewport (RUNTIME MODE)");
+            }
             ImGui::EndMenu();
         }
+
+        if (m_Runtime)
+            ImGui::Text("RUNTIME MODE IS ON, PRESS ESCAPE TO EXIT");
+
 		ImGui::EndMainMenuBar();
 
 		ImVec2 oldSize = m_ViewportSize;
@@ -130,7 +141,23 @@ namespace Durian
     void EditorLayer::OnKeyDown(KeyDownEvent* event)
     {
         if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
+        {
             m_Runtime = false;
+            // Reset menu bar color
+            ImGuiStyle& style = ImGui::GetStyle();
+            style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.2000000029802322, 0.2196078449487686, 0.2666666805744171, 1.0);
+            // Application::Get().GetWindow().SetTitle("Durian Editor"); // Crashes ImGui too lol
+            m_Viewport.SetTitle("Viewport");
+
+            // Reload scene
+            if (!m_ScenePath.empty())
+            {
+                m_Scene = Scene();
+                Serializer serializer(&m_Scene);
+                serializer.ImportJson(m_ScenePath);
+                m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+            }
+        }
     }
 
     void EditorLayer::Save()
@@ -146,9 +173,11 @@ namespace Durian
         std::string path = dialog.GetPath();
         if (!path.empty())
         {
+            m_ScenePath = path;
             m_Scene = Scene();
             Serializer serializer(&m_Scene);
             serializer.ImportJson(path);
+            m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
         }
     }
 }

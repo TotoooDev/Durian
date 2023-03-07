@@ -31,6 +31,7 @@ namespace Durian
 
 		void SetVSync(bool flag);
         void SetContextCurrent();
+		void SetTitle(const std::string& title);
 
 		void Present();
 		void PollEvents();

@@ -20,7 +20,7 @@ namespace Durian
 			m_FramebufferSize->y = m_Framebuffer->GetSpec().Height;
 			
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
-			ImGui::Begin("Viewport", isOpen);
+			ImGui::Begin(m_Title.c_str(), isOpen);
 			ImVec2 regionAvail = ImGui::GetContentRegionAvail();
 			if (m_FramebufferSize->x != regionAvail.x || m_FramebufferSize->y != regionAvail.y)
 			{
@@ -33,9 +33,11 @@ namespace Durian
 		}
 
 		void SetFramebuffer(Ref<Framebuffer> framebuffer) { m_Framebuffer = framebuffer; }
+		void SetTitle(const std::string& title) { m_Title = title; }
 
 	private:
 		Ref<Framebuffer> m_Framebuffer;
 		ImVec2* m_FramebufferSize;
+		std::string m_Title = "Viewport";
 	};
 }
