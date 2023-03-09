@@ -27,7 +27,7 @@ namespace Durian
 		// spdlog setup
 		auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 		consoleSink->set_pattern("[%D %T] [%^%l%$] %v");
-		auto fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("logs/TOE_Logs.log", 1048576 * 5, 3);
+		auto fileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("logs/Durian_Logs.log", 1048576 * 5, 3);
 		fileSink->set_pattern("[%D %T] [%^%l%$] %v");
 		spdlog::logger logger("Default Logger", { consoleSink, fileSink });
 		spdlog::set_default_logger(std::make_shared<spdlog::logger>(logger));
