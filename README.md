@@ -16,7 +16,7 @@ First you'll need to install a few depedencies:
 - sdl2
 - glew
 
-You'll also need to compile Lua from source since the pre-compiled binaries from their website are dynamicly-linked and I can't figure out how to put that in premake :(
+You'll also need to compile Lua from source since the pre-compiled binaries from their website are dynamically-linked and I can't figure out how to put that in premake :(
 
 Once you've compiled Lua, place the ``liblua.a`` file in the ``libs/linux`` folder.
 
