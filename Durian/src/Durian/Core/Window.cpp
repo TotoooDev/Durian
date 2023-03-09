@@ -129,7 +129,11 @@ namespace Durian
 						break;
 					case SDL_WINDOWEVENT_RESIZED:
 						if (SDL_GetWindowID(spec->NativeWindow) == event->window.windowID)
-							spec->Bus->Publish(new WindowResizedEvent(event->window.data1, event->window.data1));
+						{
+							spec->Width = event->window.data1;
+							spec->Width = event->window.data2;
+							spec->Bus->Publish(new WindowResizedEvent(event->window.data1, event->window.data2));
+						}
 						break;
 					}
 					break;

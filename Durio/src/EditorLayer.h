@@ -9,6 +9,7 @@
 #include <Panels/ViewportPanel.h>
 #include <Panels/ScenePanel.h>
 #include <Panels/PropertiesPanel.h>
+#include <Panels/LogPanel.h>
 
 namespace Durian
 {
@@ -35,12 +36,14 @@ namespace Durian
 
 		ImVec2 m_ViewportSize;
 
-		bool m_OpenViewport = true;
 		ViewportPanel m_Viewport;
-		bool m_OpenSceneView = true;
 		ScenePanel m_SceneView;
-		bool m_OpenComponentsView = true;
 		PropertiesPanel m_ComponentsView;
+		LogPanel m_LogPanel;
+		bool m_OpenViewport = true;
+		bool m_OpenSceneView = true;
+		bool m_OpenComponentsView = true;
+		bool m_OpenLogPanel = true;
 
 		bool m_Runtime = false;
 

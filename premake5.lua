@@ -205,7 +205,5 @@ project "Durio"
 
 	postbuildcommands
 	{
-		"{COPYFILE} shaders/*.vert bin/" .. outputDir .. "/%{prj.name}/shaders/",
-		"{COPYFILE} shaders/*.frag bin/" .. outputDir .. "/%{prj.name}/shaders/",
-		"{COPYFILE} lua/DurianEngine.lua bin/" .. outputDir .. "/%{prj.name}/"
+		"{COPYFILE} dev-assets/* bin/" .. outputDir .. "/%{prj.name}/"
 	}

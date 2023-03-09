@@ -1,0 +1,93 @@
+{
+    "scene": {
+        "entities": [
+            {
+                "ortho_cam": {
+                    "cam": {
+                        "far": 1.0,
+                        "near": -1.0,
+                        "x_max": 688.5,
+                        "x_min": -688.5,
+                        "y_max": -484.5,
+                        "y_min": 484.5
+                    },
+                    "primary": true,
+                    "resizable": true,
+                    "use": true
+                },
+                "sound_listener": {
+                    "ignore_distance": false,
+                    "listen": true
+                },
+                "tag": {
+                    "tag": "Camera"
+                },
+                "transform": {
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    },
+                    "translation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            },
+            {
+                "script": {
+                    "path": "lua/Script.lua"
+                },
+                "sound_emitter": {
+                    "attached_sounds": [
+                        {
+                            "loop": false,
+                            "name": "Bonk",
+                            "path": "C:\\Dev\\Projects\\Durian\\bin\\Debug-windows-x86_64\\Durio\\sounds\\bonk.mp3",
+                            "volume": 1.0
+                        }
+                    ],
+                    "emit": true,
+                    "ignore_distance": false
+                },
+                "sprite": {
+                    "color": {
+                        "w": 1.0,
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "draw": true,
+                    "path": "C:\\Dev\\Projects\\Durian\\bin\\Debug-windows-x86_64\\Durio\\sprites\\default.png",
+                    "use_color": false
+                },
+                "tag": {
+                    "tag": "Sprite"
+                },
+                "transform": {
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 64.0,
+                        "y": 64.0,
+                        "z": 0.0
+                    },
+                    "translation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

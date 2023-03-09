@@ -6,6 +6,7 @@
 #include <Durian/Graphics/Renderer.h>
 #include <Durian/Scene/Serializer.h>
 #include <Durian/Utils/FileManagement.h>
+#include <EditorSink.h>
 
 namespace Durian
 {
@@ -17,6 +18,11 @@ namespace Durian
 
 	void EditorLayer::OnCreate() 
 	{
+        // Add the editor sink to spdlog
+        auto sink = std::make_shared<EditorSink>(&m_LogPanel);
+        sink->set_pattern("[%D %T] [%^%l%$] %v");
+        spdlog::get("Default Logger")->sinks().push_back(sink);
+
 		FramebufferSpecification spec;
 		spec.Width = 800; spec.Height = 600;
 		spec.AddTexture(FramebufferTexture::RGBA16);
@@ -68,9 +74,11 @@ namespace Durian
             }
             ImGui::EndMenu();
         }
-
         if (m_Runtime)
+        {
+            ImGui::Separator();
             ImGui::Text("RUNTIME MODE IS ON, PRESS ESCAPE TO EXIT");
+        }
 
 		ImGui::EndMainMenuBar();
 
@@ -83,6 +91,7 @@ namespace Durian
 
 		m_SceneView.Draw(&m_OpenSceneView);
         m_ComponentsView.Draw(&m_OpenComponentsView);
+        m_LogPanel.Draw(&m_OpenLogPanel);
 	}
 
     void EditorLayer::BeginDockSpace()
@@ -142,20 +151,23 @@ namespace Durian
     {
         if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
         {
-            m_Runtime = false;
-            // Reset menu bar color
-            ImGuiStyle& style = ImGui::GetStyle();
-            style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.2000000029802322, 0.2196078449487686, 0.2666666805744171, 1.0);
-            // Application::Get().GetWindow().SetTitle("Durian Editor"); // Crashes ImGui too lol
-            m_Viewport.SetTitle("Viewport");
-
-            // Reload scene
-            if (!m_ScenePath.empty())
+            if (m_Runtime)
             {
-                m_Scene = Scene();
-                Serializer serializer(&m_Scene);
-                serializer.ImportJson(m_ScenePath);
-                m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+                m_Runtime = false;
+                // Reset menu bar color
+                ImGuiStyle& style = ImGui::GetStyle();
+                style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.2000000029802322, 0.2196078449487686, 0.2666666805744171, 1.0);
+                // Application::Get().GetWindow().SetTitle("Durian Editor"); // Crashes ImGui too lol
+                m_Viewport.SetTitle("Viewport");
+
+                // Reload scene
+                if (!m_ScenePath.empty())
+                {
+                    m_Scene = Scene();
+                    Serializer serializer(&m_Scene);
+                    serializer.ImportJson(m_ScenePath);
+                    m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+                }
             }
         }
     }
@@ -173,6 +185,7 @@ namespace Durian
         std::string path = dialog.GetPath();
         if (!path.empty())
         {
+            DURIAN_LOG_INFO("Loading {}", path);
             m_ScenePath = path;
             m_Scene = Scene();
             Serializer serializer(&m_Scene);
