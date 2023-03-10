@@ -14,87 +14,22 @@
 
 namespace Durian
 {
-	namespace Utils
-	{
-		std::string SaveFileDialog(const char* filter)
-		{
-			#ifdef DURIAN_WINDOWS
-				SDL_SysWMinfo wmInfo;
-				SDL_VERSION(&wmInfo.version);
-				if (SDL_GetWindowWMInfo(Application::Get().GetWindowSpec().NativeWindow, &wmInfo) == SDL_FALSE)
-					DURIAN_LOG_ERROR(SDL_GetError());
-				HWND hwnd = wmInfo.info.win.window;
-	
-				OPENFILENAMEA openFileName;
-				CHAR szFile[260] = { 0 };
-				ZeroMemory(&openFileName, sizeof(OPENFILENAME));
-				openFileName.lStructSize = sizeof(OPENFILENAME);
-				openFileName.hwndOwner = hwnd;
-				openFileName.lpstrFile = szFile;
-				openFileName.nMaxFile = sizeof(szFile);
-				openFileName.lpstrFilter = filter;
-				openFileName.nFilterIndex = 1;
-				openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-				if (GetSaveFileNameA(&openFileName) == TRUE)
-				{
-					return openFileName.lpstrFile;
-				}
-			#endif
-            #ifdef DURIAN_LINUX
-				DURIAN_LOG_INFO("poggers");
-			#endif
-			return "";
-		}
-
-		std::string OpenFileDialog(const char* filter)
-		{
-			#ifdef DURIAN_WINDOWS
-				SDL_SysWMinfo wmInfo;
-				SDL_VERSION(&wmInfo.version);
-				if (SDL_GetWindowWMInfo(Application::Get().GetWindowSpec().NativeWindow, &wmInfo) == SDL_FALSE)
-					DURIAN_LOG_ERROR(SDL_GetError());
-				HWND hwnd = wmInfo.info.win.window;
-				
-				OPENFILENAMEA openFileName;
-				CHAR szFile[260] = { 0 };
-				ZeroMemory(&openFileName, sizeof(OPENFILENAME));
-				openFileName.lStructSize = sizeof(OPENFILENAME);
-				openFileName.hwndOwner = hwnd;
-				openFileName.lpstrFile = szFile;
-				openFileName.nMaxFile = sizeof(szFile);
-				openFileName.lpstrFilter = filter;
-				openFileName.nFilterIndex = 1;
-				openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
-				if (GetOpenFileNameA(&openFileName) == TRUE)
-				{
-					return openFileName.lpstrFile;
-                }
-			#endif
-			#ifdef DURIAN_LINUX
-				DURIAN_LOG_INFO("poggers");
-				ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Open file...", "", ".");
-				while (ImGuiFileDialog::Instance()->IsOpened("ChooseFileDlgKey"))
-				{
-					if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
-					{
-						// action if OK
-    					if (ImGuiFileDialog::Instance()->IsOk())
-    					{
-    					  std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-    					  std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-    					  // action
-    					}
-					}
-				}
-				ImGuiFileDialog::Instance()->Close();
-			#endif
-            return "";
-		}
-	}
-
 	FileDialog::FileDialog(FileDialogAction action, const char* filter)
-		: m_Action(action), m_Filter(filter)
+		: m_Action(action)
 	{
+		#ifdef DURIAN_USE_IMGUI_DIALOGS
+			// Trim the filter string for ImGuiFileDialog because it takes only the extension
+			int i;
+			for (i = 0; i < 1024; i++)
+			{
+				if (filter[i] == '\0')
+					break;
+			}
+			m_Filter = &filter[i + 1]; // Dangerous but C++ wouldn't be fun without segfaults
+		#else
+			m_Filter = filter;
+		#endif
+
 		switch (action)
 		{
 		case FileDialogAction::Open:
@@ -107,6 +42,11 @@ namespace Durian
 			SaveDialog();
 			break;
 		}
+	}
+
+	std::string FileDialog::GetPath()
+	{
+		return ImGuiFileDialog::Instance()->GetFilePathName();
 	}
 
 	std::string FileDialog::GetObjectName()
@@ -138,7 +78,7 @@ namespace Durian
 				m_FilePath = openFileName.lpstrFile;
 			}
 		#endif
-        #ifdef DURIAN_LINUX
+        #ifdef DURIAN_USE_IMGUI_DIALOGS
 			DURIAN_LOG_INFO("poggers");
 		#endif
 	}
@@ -167,21 +107,8 @@ namespace Durian
 				m_FilePath = openFileName.lpstrFile;
             }
 		#endif
-		#ifdef DURIAN_LINUX
-			ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Open file...", m_Filter.c_str(), ".");
-			if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey", 32, ImVec2(800.0f, 600.0f)))
-			{
-				DURIAN_LOG_INFO("proute");
-				// action if OK
-				if (ImGuiFileDialog::Instance()->IsOk())
-				{
-					DURIAN_LOG_INFO("pouf");
-					std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-					std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-					// action
-				}
-				ImGuiFileDialog::Instance()->Close();
-			}
+		#ifdef DURIAN_USE_IMGUI_DIALOGS
+			ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Open file...", m_Filter, ".");
 		#endif
 	}
 	void FileDialog::OpenFolderDialog()

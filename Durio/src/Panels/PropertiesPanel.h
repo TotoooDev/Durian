@@ -116,8 +116,10 @@ namespace Durian
 					ImGui::Text(spriteComp.Tex->GetPath().c_str());
 					if (ImGui::Button("Select sprite..."))
 					{
-						std::string path = Utils::OpenFileDialog(""); // TODO: Add a filter
-						spriteComp.Tex = CreateRef<Texture>(path);
+						FileDialog dialog(FileDialogAction::Open, ""); // TODO: Add a filter
+						std::string path = dialog.GetPath();
+						if (!path.empty())
+							spriteComp.Tex = CreateRef<Texture>(path);
 					}
 					ImGui::TreePop();
 				}
@@ -134,7 +136,8 @@ namespace Durian
 						scriptComp.Script.Recompile();
 					if (ImGui::Button("Select file..."))
 					{
-						std::string path = Utils::OpenFileDialog("Lua source file (*.lua)\0*.lua\0");
+						FileDialog dialog(FileDialogAction::Open, "Lua source file (*.lua)\0*.lua\0");
+						std::string path = dialog.GetPath();
 						if (!path.empty())
 						{
 							m_SelectedEntity->RemoveComponent<ScriptComponent>();
@@ -155,7 +158,8 @@ namespace Durian
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
 					if (ImGui::Button("Attach new sound"))
 					{
-						std::string path = Utils::OpenFileDialog(""); // TODO: Add a filter
+						FileDialog dialog(FileDialogAction::Open, "");// TODO: add a filter
+						std::string path = dialog.GetPath();
 						if (!path.empty())
 						{
 							SoundProperties prop;

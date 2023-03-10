@@ -23,7 +23,7 @@ namespace Durian
 	public:
 		FileDialog(FileDialogAction action, const char* filter = "");
 
-		std::string GetPath() { return m_FilePath; }
+		std::string GetPath();
 		std::string GetObjectName();
 
 	private:
