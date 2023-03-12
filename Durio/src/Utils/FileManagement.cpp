@@ -8,13 +8,13 @@
 #include <commdlg.h>
 #endif
 
-#ifdef DURIAN_LINUX
+#ifdef DURIAN_USE_TINYFILEDIALOGS
 #include <tinyfiledialogs/tinyfiledialogs.h>
 #endif
 
 namespace Durian
 {
-	FileDialog::FileDialog(FileDialogAction action, const char* filter)
+	FileDialog::FileDialog(FileDialogAction action, FileDialogFilter filter)
 		: m_Action(action), m_Filter(filter)
 	{
 		switch (action)
@@ -33,51 +33,50 @@ namespace Durian
 
 	std::string FileDialog::GetFileName()
 	{
-		// return ImGuiFileDialog::Instance()->GetCurrentFileName();
 		return m_FilePath;
 	}
 
-	const char* FileDialog::GetDurianSceneFilter()
+	FileDialogFilter FileDialog::GetDurianSceneFilter()
 	{
 		#ifdef DURIAN_WINDOWS
-			return "Durian scene file (*.durian)\0*.durian\0";
+			return { {"Durian scene file (*.durian)\0*.durian\0"}, 1 };
 		#endif
 		#ifdef DURIAN_USE_TINYFILEDIALOGS
-			return ".durian";
+			return { {"*.durian"}, 1 };
 		#endif
-		return "";
+		return {};
 	}
-	const char* FileDialog::GetImagesFilter()
+	FileDialogFilter FileDialog::GetImagesFilter()
 	{
 		// TODO: Add the other formats
 		#ifdef DURIAN_WINDOWS
-			return "Image files\0*.jpg;*.jpeg;*.png;*.bmp\0";
+			return { {"Image files\0*.jpg;*.jpeg;*.png;*.bmp\0"}, 4 };
 		#endif
 		#ifdef DURIAN_USE_TINYFILEDIALOGS
-			return ".jpg,.jpeg,.png,.bmp";
+			return { {"*.jpg","*.jpeg","*.png","*.bmp"}, 4 };
 		#endif
-		return "";
+		return {};
 	}
-	const char* FileDialog::GetSoundsFilter()
+	FileDialogFilter FileDialog::GetSoundsFilter()
 	{
 		// TODO: Add the other formats
 		#ifdef DURIAN_WINDOWS
-			return "Sound files\0*.wav;*.mp3;*.ogg\0";
+			return { {"Sound files\0*.wav;*.mp3;*.ogg\0"}, 3 };
 		#endif
 		#ifdef DURIAN_USE_TINYFILEDIALOGS
-			return ".wav,.mp3,.ogg";
+			return { {"*.wav","*.mp3","*.ogg"}, 3 };
 		#endif
-		return "";
+		return {};
 	}
-	const char* FileDialog::GetLuaScriptFilter()
+	FileDialogFilter FileDialog::GetLuaScriptFilter()
 	{
 		#ifdef DURIAN_WINDOWS
-			return "Lua script file\0*.lua\0";
+			return { {"Lua script file\0*.lua\0"}, 1 };
 		#endif
 		#ifdef DURIAN_USE_TINYFILEDIALOGS
-			return ".lua";
+			return { {"*.lua"}, 1 };
 		#endif
-		return "";
+		return {};
 	}
 
 	void FileDialog::SaveDialog()
@@ -96,7 +95,7 @@ namespace Durian
 			openFileName.hwndOwner = hwnd;
 			openFileName.lpstrFile = szFile;
 			openFileName.nMaxFile = sizeof(szFile);
-			openFileName.lpstrFilter = m_Filter;
+			openFileName.lpstrFilter = m_Filter.Filter[0];
 			openFileName.nFilterIndex = 1;
 			openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 			if (GetSaveFileNameA(&openFileName) == TRUE)
@@ -105,7 +104,9 @@ namespace Durian
 			}
 		#endif
         #ifdef DURIAN_USE_TINYFILEDIALOGS
-			m_FilePath = tinyfd_saveFileDialog("Save as...", ".", 0, nullptr, nullptr);
+			const char* path = tinyfd_saveFileDialog("Save as...", ".", m_Filter.NumFilters, m_Filter.Filter.data(), nullptr);
+			if (path != nullptr)
+				m_FilePath = path;
 		#endif
 	}
 
@@ -125,7 +126,7 @@ namespace Durian
 			openFileName.hwndOwner = hwnd;
 			openFileName.lpstrFile = szFile;
 			openFileName.nMaxFile = sizeof(szFile);
-			openFileName.lpstrFilter = m_Filter;
+			openFileName.lpstrFilter = m_Filter.Filter[0];
 			openFileName.nFilterIndex = 1;
 			openFileName.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 			if (GetOpenFileNameA(&openFileName) == TRUE)
@@ -134,7 +135,9 @@ namespace Durian
             }
 		#endif
 		#ifdef DURIAN_USE_TINYFILEDIALOGS
-			m_FilePath = tinyfd_openFileDialog("Open file...", ".", 0, nullptr, nullptr, 0);
+			const char* path =  tinyfd_openFileDialog("Open file...", ".", m_Filter.NumFilters, m_Filter.Filter.data(), nullptr, 0);
+			if (path != nullptr)
+				m_FilePath = path;
 		#endif
 	}
 	void FileDialog::OpenFolderDialog()
