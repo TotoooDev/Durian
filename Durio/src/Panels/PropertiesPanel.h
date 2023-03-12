@@ -2,7 +2,7 @@
 #include <Durian/Scene/Entity.h>
 #include <Durian/Scene/Components.h>
 #include <Durian/Core/Application.h>
-#include <Durian/Utils/FileManagement.h>
+#include <Utils/FileManagement.h>
 #include <imgui/imgui.h>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -116,8 +116,8 @@ namespace Durian
 					ImGui::Text(spriteComp.Tex->GetPath().c_str());
 					if (ImGui::Button("Select sprite..."))
 					{
-						FileDialog dialog(FileDialogAction::Open, ""); // TODO: Add a filter
-						std::string path = dialog.GetPath();
+						FileDialog dialog(FileDialogAction::Open, FileDialog::GetImagesFilter());
+						std::string path = dialog.GetFileName();
 						if (!path.empty())
 							spriteComp.Tex = CreateRef<Texture>(path);
 					}
@@ -136,8 +136,8 @@ namespace Durian
 						scriptComp.Script.Recompile();
 					if (ImGui::Button("Select file..."))
 					{
-						FileDialog dialog(FileDialogAction::Open, "Lua source file (*.lua)\0*.lua\0");
-						std::string path = dialog.GetPath();
+						FileDialog dialog(FileDialogAction::Open, FileDialog::GetLuaScriptFilter());
+						std::string path = dialog.GetFileName();
 						if (!path.empty())
 						{
 							m_SelectedEntity->RemoveComponent<ScriptComponent>();
@@ -158,8 +158,8 @@ namespace Durian
                     ImGui::Checkbox("Ignore distance", &soundEmitComp.IgnoreDistance);
 					if (ImGui::Button("Attach new sound"))
 					{
-						FileDialog dialog(FileDialogAction::Open, "");// TODO: add a filter
-						std::string path = dialog.GetPath();
+						FileDialog dialog(FileDialogAction::Open, FileDialog::GetSoundsFilter());
+						std::string path = dialog.GetFileName();
 						if (!path.empty())
 						{
 							SoundProperties prop;

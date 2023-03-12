@@ -25,6 +25,7 @@ namespace Durian
 	private:
 		void BeginDockSpace();
 
+		void SaveAs();
 		void Save();
 		void Open();
 

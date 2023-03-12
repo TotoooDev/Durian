@@ -5,12 +5,8 @@
 #include <Durian/Scene/Components.h>
 #include <Durian/Graphics/Renderer.h>
 #include <Durian/Scene/Serializer.h>
-#include <Durian/Utils/FileManagement.h>
+#include <Utils/FileManagement.h>
 #include <EditorSink.h>
-
-#ifdef DURIAN_LINUX
-#include <ImGuiFileDialog/ImGuiFileDialog.h>
-#endif
 
 namespace Durian
 {
@@ -58,7 +54,9 @@ namespace Durian
 		{
             if (ImGui::MenuItem("Save", "Ctrl+S"))
                 Save();
-            if (ImGui::MenuItem("Open", "Ctrl+O"))
+            if (ImGui::MenuItem("Save as...", "Ctrl+Maj+S"))
+                SaveAs();
+            if (ImGui::MenuItem("Open...", "Ctrl+O"))
                 Open();
             ImGui::Separator();
             if (ImGui::MenuItem("Close", "Alt+F4"))
@@ -96,29 +94,6 @@ namespace Durian
 		m_SceneView.Draw(&m_OpenSceneView);
         m_ComponentsView.Draw(&m_OpenComponentsView);
         m_LogPanel.Draw(&m_OpenLogPanel);
-
-        #ifdef DURIAN_USE_IMGUI_DIALOGS
-            if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey", 32, ImVec2(800.0f, 600.0f)))
-		    {
-		    	// action if OK
-		    	if (ImGuiFileDialog::Instance()->IsOk())
-		    	{
-		    		std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-		    		std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-                    m_ScenePath = filePathName;
-		    		// action
-                    // Reload scene
-                    if (!m_ScenePath.empty())
-                    {
-                        m_Scene = Scene();
-                        Serializer serializer(&m_Scene);
-                        serializer.ImportJson(m_ScenePath);
-                        m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-                    }
-		    	}
-		    	ImGuiFileDialog::Instance()->Close();
-		    }
-        #endif
 	}
 
     void EditorLayer::BeginDockSpace()
@@ -202,24 +177,27 @@ namespace Durian
     void EditorLayer::Save()
     {
         Serializer serializer(&m_Scene);
-        serializer.SerializeJson("Scene.durian");
+        serializer.SerializeJson(m_ScenePath);
+    }
+
+    void EditorLayer::SaveAs()
+    {
+        FileDialog dialog(FileDialogAction::Save, FileDialog::GetDurianSceneFilter());
     }
 
     void EditorLayer::Open()
     {
-        FileDialog dialog(FileDialogAction::Open, "Durian scene file (*.durian)\0.durian\0");
+        FileDialog dialog(FileDialogAction::Open, FileDialog::GetDurianSceneFilter());
         
-        #ifndef DURIAN_USE_IMGUI_DIALOGS
-            std::string path = dialog.GetPath();
-            if (!path.empty())
-            {
-                DURIAN_LOG_INFO("Loading {}", path);
-                m_ScenePath = path;
-                m_Scene = Scene();
-                Serializer serializer(&m_Scene);
-                serializer.ImportJson(path);
-                m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-            }
-        #endif
+        std::string path = dialog.GetFileName();
+        if (!path.empty())
+        {
+            DURIAN_LOG_INFO("Loading {}", path);
+            m_ScenePath = path;
+            m_Scene = Scene();
+            Serializer serializer(&m_Scene);
+            serializer.ImportJson(path);
+            m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+        }
     }
 }

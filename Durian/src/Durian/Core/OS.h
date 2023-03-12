@@ -18,4 +18,4 @@
 #endif
 
 // Since I'm too lazy to implement a dialog thing on Linux I just use ImGui for it
-#define DURIAN_USE_IMGUI_DIALOGS DURIAN_LINUX
+#define DURIAN_USE_TINYFILEDIALOGS DURIAN_LINUX

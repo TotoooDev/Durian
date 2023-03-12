@@ -1,5 +1,5 @@
 #include <pch.h>
-#include <Durian/Utils/FileManagement.h>
+#include <Utils/FileManagement.h>
 #include <Durian/Core/Application.h>
 #include <SDL2/SDL_syswm.h>
 #include <string>
@@ -9,27 +9,14 @@
 #endif
 
 #ifdef DURIAN_LINUX
-#include <ImGuiFileDialog/ImGuiFileDialog.h>
+#include <tinyfiledialogs/tinyfiledialogs.h>
 #endif
 
 namespace Durian
 {
 	FileDialog::FileDialog(FileDialogAction action, const char* filter)
-		: m_Action(action)
+		: m_Action(action), m_Filter(filter)
 	{
-		#ifdef DURIAN_USE_IMGUI_DIALOGS
-			// Trim the filter string for ImGuiFileDialog because it takes only the extension
-			int i;
-			for (i = 0; i < 1024; i++)
-			{
-				if (filter[i] == '\0')
-					break;
-			}
-			m_Filter = &filter[i + 1]; // Dangerous but C++ wouldn't be fun without segfaults
-		#else
-			m_Filter = filter;
-		#endif
-
 		switch (action)
 		{
 		case FileDialogAction::Open:
@@ -44,13 +31,52 @@ namespace Durian
 		}
 	}
 
-	std::string FileDialog::GetPath()
+	std::string FileDialog::GetFileName()
 	{
-		return ImGuiFileDialog::Instance()->GetFilePathName();
+		// return ImGuiFileDialog::Instance()->GetCurrentFileName();
+		return m_FilePath;
 	}
 
-	std::string FileDialog::GetObjectName()
+	const char* FileDialog::GetDurianSceneFilter()
 	{
+		#ifdef DURIAN_WINDOWS
+			return "Durian scene file (*.durian)\0*.durian\0";
+		#endif
+		#ifdef DURIAN_USE_TINYFILEDIALOGS
+			return ".durian";
+		#endif
+		return "";
+	}
+	const char* FileDialog::GetImagesFilter()
+	{
+		// TODO: Add the other formats
+		#ifdef DURIAN_WINDOWS
+			return "Image files\0*.jpg;*.jpeg;*.png;*.bmp\0";
+		#endif
+		#ifdef DURIAN_USE_TINYFILEDIALOGS
+			return ".jpg,.jpeg,.png,.bmp";
+		#endif
+		return "";
+	}
+	const char* FileDialog::GetSoundsFilter()
+	{
+		// TODO: Add the other formats
+		#ifdef DURIAN_WINDOWS
+			return "Sound files\0*.wav;*.mp3;*.ogg\0";
+		#endif
+		#ifdef DURIAN_USE_TINYFILEDIALOGS
+			return ".wav,.mp3,.ogg";
+		#endif
+		return "";
+	}
+	const char* FileDialog::GetLuaScriptFilter()
+	{
+		#ifdef DURIAN_WINDOWS
+			return "Lua script file\0*.lua\0";
+		#endif
+		#ifdef DURIAN_USE_TINYFILEDIALOGS
+			return ".lua";
+		#endif
 		return "";
 	}
 
@@ -78,8 +104,8 @@ namespace Durian
 				m_FilePath = openFileName.lpstrFile;
 			}
 		#endif
-        #ifdef DURIAN_USE_IMGUI_DIALOGS
-			DURIAN_LOG_INFO("poggers");
+        #ifdef DURIAN_USE_TINYFILEDIALOGS
+			m_FilePath = tinyfd_saveFileDialog("Save as...", ".", 0, nullptr, nullptr);
 		#endif
 	}
 
@@ -107,8 +133,8 @@ namespace Durian
 				m_FilePath = openFileName.lpstrFile;
             }
 		#endif
-		#ifdef DURIAN_USE_IMGUI_DIALOGS
-			ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Open file...", m_Filter, ".");
+		#ifdef DURIAN_USE_TINYFILEDIALOGS
+			m_FilePath = tinyfd_openFileDialog("Open file...", ".", 0, nullptr, nullptr, 0);
 		#endif
 	}
 	void FileDialog::OpenFolderDialog()
