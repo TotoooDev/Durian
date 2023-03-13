@@ -192,7 +192,6 @@ namespace Durian
         std::string path = dialog.GetFileName();
         if (!path.empty())
         {
-            DURIAN_LOG_INFO("Loading {}", path);
             m_ScenePath = path;
             m_Scene = Scene();
             Serializer serializer(&m_Scene);

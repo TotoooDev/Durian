@@ -51,6 +51,9 @@ project "Durian"
 	pchheader "pch.h"
 	pchsource "Durian/src/pch.cpp"
 
+	filter "files:Durian/src/vendor/tinyfiledialogs/tinyfiledialogs.c"
+		flags "NoPCH"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
@@ -61,6 +64,8 @@ project "Durian"
 		}
 		links
 		{
+			"Comdlg32",
+			"Ole32",
 			"SDL2",
 			"SDL2main",
 			"glew32",

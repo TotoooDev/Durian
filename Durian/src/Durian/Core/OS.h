@@ -13,9 +13,7 @@
 	#error "Android is not supported!"
 #elif __linux__
 	#define DURIAN_LINUX
+	#define DURIAN_USE_TINYFILEDIALOGS
 #else
 	#error "Unknown compiler"
 #endif
-
-// Since I'm too lazy to implement a dialog thing on Linux I just use ImGui for it
-#define DURIAN_USE_TINYFILEDIALOGS DURIAN_LINUX

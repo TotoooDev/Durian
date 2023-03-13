@@ -132,12 +132,16 @@ namespace Durian
 			if (GetOpenFileNameA(&openFileName) == TRUE)
 			{
 				m_FilePath = openFileName.lpstrFile;
+				DURIAN_LOG_INFO("Opening {}", m_FilePath);
             }
 		#endif
 		#ifdef DURIAN_USE_TINYFILEDIALOGS
 			const char* path =  tinyfd_openFileDialog("Open file...", ".", m_Filter.NumFilters, m_Filter.Filter.data(), nullptr, 0);
 			if (path != nullptr)
+			{
 				m_FilePath = path;
+				DURIAN_LOG_INFO("Opening {}", m_FilePath);
+			}
 		#endif
 	}
 	void FileDialog::OpenFolderDialog()
