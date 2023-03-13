@@ -11,7 +11,7 @@
 namespace Durian
 {
     EditorLayer::EditorLayer()
-        : m_SceneView(&m_Scene, m_SelectedEntity)
+        : m_SceneView(&m_Scene, m_SelectedEntity), m_EditorCamera(0.0f, 0.0f)
     {
         Application::Get().GetEventBus()->Subscribe(this, &EditorLayer::OnKeyDown);
     }
@@ -30,7 +30,7 @@ namespace Durian
 
         m_SelectedEntity = new Entity(entt::null, &m_Scene);
 
-		m_Viewport = ViewportPanel(m_Framebuffer, &m_ViewportSize);
+        m_Viewport = ViewportPanel(m_Framebuffer, &m_ViewportSize, &(m_EditorCamera.Hovered));
 		m_SceneView = ScenePanel(&m_Scene, m_SelectedEntity);
         m_ComponentsView = PropertiesPanel(m_SelectedEntity);
 	}
@@ -40,6 +40,7 @@ namespace Durian
 		m_Framebuffer->Bind();
 		Renderer::Get()->Clear(0.1f, 0.1f, 0.1f);
 
+        m_Scene.CurrentCamera(m_EditorCamera.GetOrthoCamera(), m_EditorCamera.GetViewMatrix());
 		m_Scene.UpdateScene(timestep, &m_Runtime);
 	}
 
@@ -71,7 +72,6 @@ namespace Durian
                 // Set menu bar color to red to indicate runtime mode
                 ImGuiStyle& style = ImGui::GetStyle();
                 style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.501960813999176, 0.07450980693101883, 0.2549019753932953, 1.0);
-                // Application::Get().GetWindow().SetTitle("Durian Editor (RUNTIME MODE)"); // Crashes ImGui for some reason?????
                 m_Viewport.SetTitle("Viewport (RUNTIME MODE)");
             }
             ImGui::EndMenu();
@@ -89,6 +89,7 @@ namespace Durian
 		if (m_ViewportSize.x != oldSize.x || m_ViewportSize.y != oldSize.y)
 		{
 			m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
 		}
 
 		m_SceneView.Draw(&m_OpenSceneView);
@@ -159,7 +160,6 @@ namespace Durian
                 // Reset menu bar color
                 ImGuiStyle& style = ImGui::GetStyle();
                 style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.2000000029802322, 0.2196078449487686, 0.2666666805744171, 1.0);
-                // Application::Get().GetWindow().SetTitle("Durian Editor"); // Crashes ImGui too lol
                 m_Viewport.SetTitle("Viewport");
 
                 // Reload scene
@@ -169,6 +169,7 @@ namespace Durian
                     Serializer serializer(&m_Scene);
                     serializer.ImportJson(m_ScenePath);
                     m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+                    m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
                 }
             }
         }
@@ -197,6 +198,7 @@ namespace Durian
             Serializer serializer(&m_Scene);
             serializer.ImportJson(path);
             m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
         }
     }
 }

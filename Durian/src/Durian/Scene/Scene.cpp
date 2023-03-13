@@ -11,7 +11,6 @@ namespace Durian
 {
 	Scene::Scene()
 	{
-		m_SceneBus.Subscribe(this, &Scene::OnKeyDown);
 	}
 
 	Entity Scene::CreateEntity(const std::string& name)
@@ -29,9 +28,6 @@ namespace Durian
 
 	void Scene::UpdateScene(double timestep, bool* runtime)
 	{
-		if (m_QuitRuntime)
-			*runtime = false;
-
 		if (*runtime)
 		{
 			// Execute scripts
@@ -111,18 +107,30 @@ namespace Durian
 					}
 				}
 			}
+			// Rendering
+			auto camView = m_Registry.view<TransformComponent, OrthoCameraComponent>();
+			for (auto&& [id, transform, camera] : camView.each())
+			{
+				if (!camera.Use)
+					continue;
+
+				// TODO: Store this somewhere and only update it when the camera gets updated
+				glm::mat4 view = glm::lookAt(transform.Translation, transform.Translation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+				Renderer::Get()->SetCurrentCamera(camera.Cam, view);
+
+				auto spriteView = m_Registry.view<TransformComponent, SpriteComponent>();
+				for (auto&& [entity, transform, sprite] : spriteView.each())
+				{
+					if (sprite.UseColor)
+						Renderer::Get()->DrawRectColor(transform.GetTransfrom(), sprite.Color);
+					else
+						Renderer::Get()->DrawRectTextured(transform.GetTransfrom(), sprite.Tex);
+				}
+			}
 		}
-
-		// Rendering
-		auto camView = m_Registry.view<TransformComponent, OrthoCameraComponent>();
-		for (auto&& [id, transform, camera] : camView.each())
+		else // If we are in the editor we render the scene using the "editor camera" m_Cam
 		{
-			if (!camera.Use)
-				continue;
-
-			// TODO: Store this somewhere and only update it when the camera gets updated
-			glm::mat4 view = glm::lookAt(transform.Translation, transform.Translation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			Renderer::Get()->SetCurrentCamera(camera.Cam, view);
+			Renderer::Get()->SetCurrentCamera(m_Cam, m_View);
 
 			auto spriteView = m_Registry.view<TransformComponent, SpriteComponent>();
 			for (auto&& [entity, transform, sprite] : spriteView.each())
@@ -133,6 +141,7 @@ namespace Durian
 					Renderer::Get()->DrawRectTextured(transform.GetTransfrom(), sprite.Tex);
 			}
 		}
+
 	}
 
 	void Scene::OnViewportResize(float width, float height)
@@ -150,13 +159,5 @@ namespace Durian
 
 			cam.Cam.UpdateMatrices();
 		}
-	}
-
-	void Scene::OnKeyDown(KeyDownEvent* event)
-	{
-		if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
-        {
-			m_QuitRuntime = true;
-        }
 	}
 }

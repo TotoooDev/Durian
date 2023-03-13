@@ -384,3 +384,7 @@
 
 #define DURIAN_NUM_SCANCODES 512 /**< not a key just marks the number of scancodes
                              for array bounds */
+
+#define DURIAN_BUTTON_LEFT     1
+#define DURIAN_BUTTON_MIDDLE   2
+#define DURIAN_BUTTON_RIGHT    3

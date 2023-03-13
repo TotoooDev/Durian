@@ -1,17 +1,40 @@
 #pragma once
 #include <Durian/Graphics/Camera.h>
+#include <Durian/Event/Events.h>
 
 namespace Durian
 {
 	class EditorCamera
 	{
 	public:
-		EditorCamera(float viewportWidth, float viewportHeight);
+		EditorCamera(float viewportWidth, float viewportHeight, glm::vec3 pos = glm::vec3(0.0f));
 
+		void OnUpdate(double timestep);
 		void OnViewportResize(float width, float height);
-		void GetProjectionMatrix() { return m_Cam.GetProjectionMatrix(); };
+		
+		OrthoCamera GetOrthoCamera() { return m_Cam; }
+		glm::mat4 GetProjectionMatrix() { return m_Cam.GetProjectionMatrix(); };
+		glm::mat4 GetViewMatrix() { return m_View; };
+
+		bool Hovered = false;
 
 	private:
+		void OnMouseButtonDown(MouseButtonDownEvent* event);
+		void OnMouseButtonUp(MouseButtonUpEvent* event);
+		void OnMouseScrolled(MouseScrolledEvent* event);
+		void OnMouseMoved(MouseMovedEvent* event);
+
+		struct Inputs
+		{
+			bool LeftButton = false;
+			bool MiddleButton = false;
+			bool RightButton = false;
+		} m_Inputs;
+
+		glm::mat4 m_View;
+		glm::vec3 m_Pos;
+		glm::vec2 m_LastMousePos = glm::vec2(0.0f);
 		OrthoCamera m_Cam;
+		float m_AspectRatio;
 	};
 }

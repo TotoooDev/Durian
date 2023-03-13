@@ -3,8 +3,8 @@
 
 namespace Durian
 {
-	ViewportPanel::ViewportPanel(Ref<Framebuffer> target, ImVec2* viewportSize)
-		: m_Framebuffer(target), m_FramebufferSize(viewportSize) {}
+	ViewportPanel::ViewportPanel(Ref<Framebuffer> target, ImVec2* viewportSize, bool* hovered)
+		: m_Framebuffer(target), m_FramebufferSize(viewportSize), m_Hovered(hovered) {}
 
 	void ViewportPanel::Draw(bool* isOpen)
 	{
@@ -16,6 +16,7 @@ namespace Durian
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
 		ImGui::Begin(m_Title.c_str(), isOpen);
+		*m_Hovered = ImGui::IsWindowHovered();
 		ImVec2 regionAvail = ImGui::GetContentRegionAvail();
 		if (m_FramebufferSize->x != regionAvail.x || m_FramebufferSize->y != regionAvail.y)
 		{

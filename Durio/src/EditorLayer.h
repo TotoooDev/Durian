@@ -6,6 +6,7 @@
 #include <Durian/Graphics/Framebuffer.h>
 #include <Durian/Event/Events.h>
 
+#include <EditorCamera.h>
 #include <Panels/ViewportPanel.h>
 #include <Panels/ScenePanel.h>
 #include <Panels/PropertiesPanel.h>
@@ -34,7 +35,7 @@ namespace Durian
 		Ref<Framebuffer> m_Framebuffer;
 		Entity* m_SelectedEntity;
 
-
+		EditorCamera m_EditorCamera;
 		ImVec2 m_ViewportSize;
 
 		ViewportPanel m_Viewport;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Durian/Graphics/Camera.h>
 #include <Durian/Event/Events.h>
 #include <Durian/Event/EventBus.h>
 #include <string>
@@ -19,6 +20,7 @@ namespace Durian
 
 		void UpdateScene(double timestep, bool* runtime);
 
+		void CurrentCamera(OrthoCamera cam, glm::mat4 view) { m_Cam = cam; m_View = view; }
 		void OnViewportResize(float width, float height);
 
 	private:
@@ -30,7 +32,8 @@ namespace Durian
 		double m_Timestep = 0.0f;
 		double m_LastFrame = 0.0f;
 
-		void OnKeyDown(KeyDownEvent* event);
+		OrthoCamera m_Cam;
+		glm::mat4 m_View;
 
 		friend class Entity;
 		friend class ScenePanel;
