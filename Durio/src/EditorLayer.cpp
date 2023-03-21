@@ -92,6 +92,7 @@ namespace Durian
 		m_SceneView.Draw(&m_OpenSceneView);
         m_ComponentsView.Draw(&m_OpenComponentsView);
         m_LogPanel.Draw(&m_OpenLogPanel);
+        m_StatsPanel.Draw(&m_OpenStatsPanel);
 	}
 
     void EditorLayer::BeginDockSpace()

@@ -49,7 +49,7 @@ namespace Durian
 			DeserializeEntity(ent, json["scene"]["entities"][i]);
 		}
 	}
-
+	
 	void Serializer::SerializeEntity(Entity entity, nlohmann::json& entityJson)
 	{
 		if (entity.HasComponent<TagComponent>())

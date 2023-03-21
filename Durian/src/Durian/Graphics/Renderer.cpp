@@ -5,6 +5,7 @@
 namespace Durian
 {
 	Renderer* Renderer::m_Instance = nullptr;
+	RendererStats Renderer::m_Stats;
 
 	Renderer::Renderer()
 		: m_ShaderColor("shaders/color.vert", "shaders/color.frag"), m_ShaderTexture("shaders/texture.vert", "shaders/texture.frag")
@@ -32,6 +33,10 @@ namespace Durian
 		layout.AddAttribute(Type::Float, 2); // Tex coords
 		m_RectVAO.SetData(quadVertices, layout);
 		m_RectEBO.SetData(quadIndices);
+
+		#ifdef DURIAN_DEBUG
+			m_Timer.Reset();
+		#endif
 	}
 
 	Renderer* Renderer::Get()
@@ -52,6 +57,13 @@ namespace Durian
 
 		glClearColor(r, g, b, a);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		#ifdef DURIAN_DEBUG
+			m_Stats.FrameTime = m_Timer.ElapsedMillis();
+			m_Stats.NumIndices = 0;
+			m_Stats.NumVertices = 0;
+			m_Timer.Reset();
+		#endif
 	}
 
 	void Renderer::SetCurrentCamera(const OrthoCamera& cam, const glm::mat4& view)
@@ -89,6 +101,9 @@ namespace Durian
 		ebo.Bind();
 
 		glDrawElements(GL_TRIANGLES, ebo.GetCount(), GL_UNSIGNED_INT, 0);
+
+		m_Stats.NumVertices += vao.GetVertexCount();
+		m_Stats.NumIndices += ebo.GetCount();
 	}
 
 	void Renderer::DrawVerticesColor(const glm::mat4& transform, const glm::vec4& color, const VAO& vao, const EBO& ebo)
@@ -104,6 +119,9 @@ namespace Durian
 		ebo.Bind();
 
 		glDrawElements(GL_TRIANGLES, ebo.GetCount(), GL_UNSIGNED_INT, 0);
+
+		m_Stats.NumVertices += vao.GetVertexCount();
+		m_Stats.NumIndices += ebo.GetCount();
 	}
 
 	void Renderer::InitOpenGLDebugOutput()
