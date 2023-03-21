@@ -19,16 +19,24 @@ namespace Durian
 		bool Hovered = false;
 
 	private:
+		void UpdateViewMatrix();
+
 		void OnMouseButtonDown(MouseButtonDownEvent* event);
 		void OnMouseButtonUp(MouseButtonUpEvent* event);
 		void OnMouseScrolled(MouseScrolledEvent* event);
 		void OnMouseMoved(MouseMovedEvent* event);
+		void OnKeyDown(KeyDownEvent* event);
+		void OnKeyUp(KeyUpEvent* event);
 
 		struct Inputs
 		{
 			bool LeftButton = false;
 			bool MiddleButton = false;
 			bool RightButton = false;
+			bool Up = false;
+			bool Down = false;
+			bool Left = false;
+			bool Right = false;
 		} m_Inputs;
 
 		glm::mat4 m_View;
@@ -36,5 +44,7 @@ namespace Durian
 		glm::vec2 m_LastMousePos = glm::vec2(0.0f);
 		OrthoCamera m_Cam;
 		float m_AspectRatio;
+		float m_ZoomLevel = 1.0f;
+		float m_Speed;
 	};
 }

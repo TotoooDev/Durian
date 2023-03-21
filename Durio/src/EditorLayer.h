@@ -25,6 +25,7 @@ namespace Durian
 
 	private:
 		void BeginDockSpace();
+		void SetRuntime(bool runtime);
 
 		void SaveAs();
 		void Save();
@@ -48,7 +49,11 @@ namespace Durian
 		bool m_OpenLogPanel = true;
 
 		bool m_Runtime = false;
+		
+		bool m_CtrlPressed = false;
+		bool m_ShiftPressed = false;
 
 		void OnKeyDown(KeyDownEvent* event);
+		void OnKeyUp(KeyUpEvent* event);
 	};
 }

@@ -9,6 +9,11 @@
 
 namespace Durian
 {
+	struct RendererStats
+	{
+		float FrameTime = 0.0f;
+	};
+
 	class Renderer
 	{
 	public:
@@ -23,6 +28,8 @@ namespace Durian
 		void DrawVerticesTextured(const glm::mat4& transform, Ref<Texture> texture, const VAO& vao, const EBO& ebo);
 		void DrawVerticesColor(const glm::mat4& transform, const glm::vec4& color, const VAO& vao, const EBO& ebo);
 
+		RendererStats GetRendererStats() { return m_Stats; }
+
 	private:
 		Renderer();
 		static void InitOpenGLDebugOutput();
@@ -36,5 +43,7 @@ namespace Durian
 		
 		VAO m_RectVAO;
 		EBO m_RectEBO;
+
+		RendererStats m_Stats;
 	};
 }

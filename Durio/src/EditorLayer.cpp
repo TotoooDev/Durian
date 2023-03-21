@@ -14,6 +14,7 @@ namespace Durian
         : m_SceneView(&m_Scene, m_SelectedEntity), m_EditorCamera(0.0f, 0.0f)
     {
         Application::Get().GetEventBus()->Subscribe(this, &EditorLayer::OnKeyDown);
+        Application::Get().GetEventBus()->Subscribe(this, &EditorLayer::OnKeyUp);
     }
 
 	void EditorLayer::OnCreate() 
@@ -37,6 +38,8 @@ namespace Durian
 
 	void EditorLayer::OnUpdate(double timestep)
 	{
+        m_EditorCamera.OnUpdate(timestep);
+
 		m_Framebuffer->Bind();
 		Renderer::Get()->Clear(0.1f, 0.1f, 0.1f);
 
@@ -66,14 +69,8 @@ namespace Durian
 		}
         if (ImGui::BeginMenu("Scene"))
         {
-            if (ImGui::MenuItem("Play scene"))
-            {
-                m_Runtime = true;
-                // Set menu bar color to red to indicate runtime mode
-                ImGuiStyle& style = ImGui::GetStyle();
-                style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.501960813999176, 0.07450980693101883, 0.2549019753932953, 1.0);
-                m_Viewport.SetTitle("Viewport (RUNTIME MODE)");
-            }
+            if (ImGui::MenuItem("Play scene", "F10"))
+                SetRuntime(true);
             ImGui::EndMenu();
         }
         if (m_Runtime)
@@ -150,33 +147,42 @@ namespace Durian
         }
     }
 
-    void EditorLayer::OnKeyDown(KeyDownEvent* event)
+    void EditorLayer::SetRuntime(bool runtime)
     {
-        if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
+        m_Runtime = runtime;
+        if (m_Runtime)
         {
-            if (m_Runtime)
-            {
-                m_Runtime = false;
-                // Reset menu bar color
-                ImGuiStyle& style = ImGui::GetStyle();
-                style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.2000000029802322, 0.2196078449487686, 0.2666666805744171, 1.0);
-                m_Viewport.SetTitle("Viewport");
+            // Set menu bar color to red to indicate runtime mode
+            ImGuiStyle& style = ImGui::GetStyle();
+            style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.501960813999176, 0.07450980693101883, 0.2549019753932953, 1.0);
+            m_Viewport.SetTitle("Viewport (RUNTIME MODE)");
+        }
+        else
+        {
+            // Reset menu bar color
+            ImGuiStyle& style = ImGui::GetStyle();
+            style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.2000000029802322, 0.2196078449487686, 0.2666666805744171, 1.0);
+            m_Viewport.SetTitle("Viewport");
 
-                // Reload scene
-                if (!m_ScenePath.empty())
-                {
-                    m_Scene = Scene();
-                    Serializer serializer(&m_Scene);
-                    serializer.ImportJson(m_ScenePath);
-                    m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-                    m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
-                }
+            // Reload scene
+            if (!m_ScenePath.empty())
+            {
+                m_Scene = Scene();
+                Serializer serializer(&m_Scene);
+                serializer.ImportJson(m_ScenePath);
+                m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
+                m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
             }
         }
     }
 
     void EditorLayer::Save()
     {
+        if (m_ScenePath.empty())
+        {
+            SaveAs();
+            return;
+        }
         Serializer serializer(&m_Scene);
         serializer.SerializeJson(m_ScenePath);
     }
@@ -184,6 +190,8 @@ namespace Durian
     void EditorLayer::SaveAs()
     {
         FileDialog dialog(FileDialogAction::Save, FileDialog::GetDurianSceneFilter());
+        Serializer serializer(&m_Scene);
+        serializer.SerializeJson(m_ScenePath);
     }
 
     void EditorLayer::Open()
@@ -200,5 +208,43 @@ namespace Durian
             m_Scene.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
             m_EditorCamera.OnViewportResize(m_ViewportSize.x, m_ViewportSize.y);
         }
+    }
+    
+    void EditorLayer::OnKeyDown(KeyDownEvent* event)
+    {
+        if (event->Keycode == DURIAN_SCANCODE_LCTRL || event->Keycode == DURIAN_SCANCODE_RCTRL)
+            m_CtrlPressed = true;
+        if (event->Keycode == DURIAN_SCANCODE_LSHIFT || event->Keycode == DURIAN_SCANCODE_RSHIFT)
+            m_ShiftPressed = true;
+
+        if (event->Keycode == DURIAN_SCANCODE_ESCAPE)
+        {
+            if (m_Runtime)
+                SetRuntime(false);
+        }
+
+        if (event->Keycode == DURIAN_SCANCODE_F10)
+            SetRuntime(true);
+
+        if (m_CtrlPressed)
+        {
+            if (event->Keycode == DURIAN_SCANCODE_S)
+            {
+                if (m_ShiftPressed)
+                    SaveAs();
+                else
+                    Save();
+            }
+            if (event->Keycode == DURIAN_SCANCODE_O)
+                Open();
+        }
+    }
+    
+    void EditorLayer::OnKeyUp(KeyUpEvent* event)
+    {
+        if (event->Keycode == DURIAN_SCANCODE_LCTRL || event->Keycode == DURIAN_SCANCODE_RCTRL)
+            m_CtrlPressed = false;
+        if (event->Keycode == DURIAN_SCANCODE_LSHIFT || event->Keycode == DURIAN_SCANCODE_RSHIFT)
+            m_ShiftPressed = false;
     }
 }

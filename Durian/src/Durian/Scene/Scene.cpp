@@ -152,10 +152,10 @@ namespace Durian
 			if (!cam.Resizable)
 				continue;
 
-			cam.Cam.xMin = -width / 2.0f;
-			cam.Cam.xMax = width / 2.0f;
-			cam.Cam.yMin = height / 2.0f;
-			cam.Cam.yMax = -height / 2.0f;
+			cam.Cam.xMin = 0;
+			cam.Cam.xMax = width;
+			cam.Cam.yMin = 0;
+			cam.Cam.yMax = height;
 
 			cam.Cam.UpdateMatrices();
 		}

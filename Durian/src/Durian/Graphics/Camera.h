@@ -12,10 +12,10 @@ namespace Durian
 
 		// You need to call this method after updating one of the camera's parameters
 		void UpdateMatrices();
-		float xMin = -400; float xMax = 400;
-		float yMin = 300; float yMax = -300;
-		float Near = -1;
-		float Far = 1;
+		float xMin = 0.0f; float xMax = 800.0f;
+		float yMin = 0.0f; float yMax = 600.0f;
+		float Near = 0.01f;
+		float Far = 1.0f;
 
 	private:
 		glm::mat4 m_Projection;
