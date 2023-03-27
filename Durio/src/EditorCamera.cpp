@@ -24,13 +24,13 @@ namespace Durian
     void EditorCamera::OnUpdate(double timestep)
     {
         if (m_Inputs.Up)
-            m_Pos.y -= m_Speed * timestep;
-        if (m_Inputs.Down)
             m_Pos.y += m_Speed * timestep;
+        if (m_Inputs.Down)
+            m_Pos.y -= m_Speed * timestep;
         if (m_Inputs.Right)
-            m_Pos.x += m_Speed * timestep;
-        if (m_Inputs.Left)
             m_Pos.x -= m_Speed * timestep;
+        if (m_Inputs.Left)
+            m_Pos.x += m_Speed * timestep;
         
         bool changed = m_Inputs.Up || m_Inputs.Down || m_Inputs.Left || m_Inputs.Right;
         if (changed)

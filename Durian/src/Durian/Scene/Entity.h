@@ -16,6 +16,7 @@ namespace Durian
 		}
 
 		entt::entity GetID() const { return m_Identifier; }
+		Scene* GetParentScene() const { return m_Scene; }
 
 		template <typename T, typename... Args>
 		T& AddComponent(Args&&... args)

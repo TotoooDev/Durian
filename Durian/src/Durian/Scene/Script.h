@@ -1,5 +1,6 @@
 #pragma once
 #include <Durian/Scene/Entity.h>
+#include <Durian/Scene/Scene.h>
 #include <Durian/Event/Events.h>
 extern "C"
 {
@@ -39,6 +40,7 @@ namespace Durian
 
         struct UserData
         {
+            Scene* CurrentScene;
             Entity Ent;
 
             int KeyDown = 0, KeyUp = 0;

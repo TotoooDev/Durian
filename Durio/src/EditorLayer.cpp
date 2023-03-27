@@ -73,6 +73,12 @@ namespace Durian
                 SetRuntime(true);
             ImGui::EndMenu();
         }
+        if (ImGui::BeginMenu("Editor"))
+        {
+            if (ImGui::MenuItem("Reset camera position"))
+                m_EditorCamera.ResetPos();
+            ImGui::EndMenu();
+        }
         if (m_Runtime)
         {
             ImGui::Separator();

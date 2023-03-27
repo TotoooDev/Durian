@@ -19,9 +19,10 @@ namespace Durian
         Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnWindowMoved);
         Application::Get().GetEventBus()->Subscribe(this, &LuaScript::OnWindowResized);
 
+        m_UserData.CurrentScene = ent.GetParentScene();
+        m_UserData.Ent = ent;
         m_UserData.WindowWidth = Application::Get().GetWindowSpec().Width;
         m_UserData.WindowHeight = Application::Get().GetWindowSpec().Height;
-        m_UserData.Ent = ent;
 
         Create();
     }
@@ -264,6 +265,17 @@ namespace Durian
                 Application::Get().GetAudioEngine().SetVolume(sound, volume);
                 emitter.AttachedSounds[soundId].Volume = volume;
                 return 0;
+            });
+        
+        // Scene
+        // Get entity by name
+        lua_register(m_State, "Durian_GetEntityByName", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                const char* name = lua_tostring(state, 1);
+                lua_pushnumber(state, (unsigned int)data->CurrentScene->GetEntityByName(name).GetID());
+                return 1;
             });
 
         // Events

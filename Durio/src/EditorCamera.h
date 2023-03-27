@@ -16,6 +16,8 @@ namespace Durian
 		glm::mat4 GetProjectionMatrix() { return m_Cam.GetProjectionMatrix(); };
 		glm::mat4 GetViewMatrix() { return m_View; };
 
+		void ResetPos() { m_Pos = glm::vec3(0.0f); UpdateViewMatrix(); }
+
 		bool Hovered = false;
 
 	private:

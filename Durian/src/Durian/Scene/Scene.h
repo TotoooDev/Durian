@@ -18,13 +18,15 @@ namespace Durian
 		Entity CreateEntity(const std::string& name = "Unnamed Entity");
 		void DeleteEntity(Entity entity);
 
+		// Incredibly slow, I should change it to use a map or something like that
+		Entity GetEntityByName(const std::string& tag);
+
 		void UpdateScene(double timestep, bool* runtime);
 
 		void CurrentCamera(OrthoCamera cam, glm::mat4 view) { m_Cam = cam; m_View = view; }
 		void OnViewportResize(float width, float height);
 
 	private:
-
 		entt::registry m_Registry;
 
 		EventBus m_SceneBus;
@@ -32,8 +34,8 @@ namespace Durian
 		double m_Timestep = 0.0f;
 		double m_LastFrame = 0.0f;
 
-		OrthoCamera m_Cam;
 		glm::mat4 m_View;
+		OrthoCamera m_Cam;
 
 		friend class Entity;
 		friend class ScenePanel;
