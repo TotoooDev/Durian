@@ -2,6 +2,47 @@
 
 A wannabe 2D game engine
 
+## Lua functions you can call
+
+### Logging
+
+- `Durian_LogInfo`
+- `Durian_LogWarn`
+- `Durian_LogError`
+
+### Component manipulation
+
+- Transform component
+    - `Durian_AttachTransform`
+    - `Durian_DetachTransform`
+- Sprite component
+    - `Durian_AttachSprite`
+    - `Durian_DetachSprite`
+- Sound emitter component
+    - `Durian_AttachSoundEmitter`
+    - `Durian_DetachSoundEmitter`
+    - `Durian_SoundLoad`
+    - `Durian_SoundPlay`
+    - `Durian_SoundVolume` (doesn't work according to the comments in my code, didn't test it though)
+
+### Scene
+
+- `Durian_GetEntityByName`
+
+### Events
+
+- Keyboard
+    - `Durian_EventKeyDown`
+    - `Durian_EventKeyUp`
+- Mouse
+    - `Durian_EventMouseMoved`
+    - `Durian_EventMouseButtonDown`
+    - `Durian_EventMouseButtonUp`
+    - `Durian_EventMouseScrolled`
+- Window
+    - `Durian_EventWindowPos`
+    - `Durian_EventWindowSize`
+
 ## Want to build Durian from source?
 
 ### For Windows users
