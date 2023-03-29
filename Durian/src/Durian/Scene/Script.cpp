@@ -143,6 +143,7 @@ namespace Durian
     {
         m_State = luaL_newstate();
         luaL_openlibs(m_State);
+        DURIAN_LOG_INFO("Compiling {}...", m_Path);
         if (!CheckLua(luaL_dofile(m_State, m_Path.c_str())))
             return;
 
@@ -275,6 +276,16 @@ namespace Durian
                 UserData* data = (UserData*)lua_touserdata(state, -1);
                 const char* name = lua_tostring(state, 1);
                 lua_pushnumber(state, (unsigned int)data->CurrentScene->GetEntityByName(name).GetID());
+                return 1;
+            });
+        // Get transform
+        lua_register(m_State, "Durian_GetEntityTransform", [](lua_State* state)
+            {
+                lua_getglobal(state, "Durian_DataPointer");
+                UserData* data = (UserData*)lua_touserdata(state, -1);
+                unsigned int entityId = (unsigned int)lua_tonumber(state, 1);
+                Entity ent((entt::entity)entityId, data->CurrentScene);
+                lua_pushnumber(state, ent.GetComponent<TransformComponent>().Translation.x);
                 return 1;
             });
 
