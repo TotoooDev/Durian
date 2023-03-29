@@ -38,7 +38,8 @@ namespace Durian
 
 	void EditorLayer::OnUpdate(double timestep)
 	{
-        m_EditorCamera.OnUpdate(timestep);
+        if (!m_Runtime)
+            m_EditorCamera.OnUpdate(timestep);
 
 		m_Framebuffer->Bind();
 		Renderer::Get()->Clear(0.1f, 0.1f, 0.1f);
