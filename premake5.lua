@@ -210,3 +210,19 @@ project "Durio"
 	filter "configurations:Distribution"
 		defines "DURIAN_DIST"
 		optimize "On"
+
+project "Malvales"
+	location "Malvales"
+	kind "SharedLib"
+	language "C"
+
+	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
+	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.hpp",
+		"%{prj.name}/src/**.c",
+		"%{prj.name}/src/**.cpp"
+	}
