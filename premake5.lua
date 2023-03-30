@@ -125,6 +125,7 @@ project "Durio"
 
 	debugdir ("bin/" .. outputDir .. "/%{prj.name}")
 
+	
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -132,7 +133,7 @@ project "Durio"
 		"%{prj.name}/src/**.c",
 		"%{prj.name}/src/**.cpp"
 	}
-
+	
 	includedirs
 	{
 		"Durio/src",
@@ -140,12 +141,12 @@ project "Durio"
 		"Durian/src/vendor",
 		"Durian/src"
 	}
-
+	
 	links
 	{
 		"Durian",
 	}
-
+	
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
@@ -165,6 +166,7 @@ project "Durio"
 			"OpenAL32",
 			"sndfile"
 		}
+		postbuildcommands ("xcopy ..\\dev-assets ..\\bin\\" .. outputDir .. "\\%{prj.name}\\ /s /e /y /i")
 
 	filter "system:linux"
 		cppdialect "C++17"
@@ -186,6 +188,7 @@ project "Durio"
             "vorbis",
             "vorbisfile"
 		}
+		postbuildcommands ("cp ..\\dev-assets ..\\bin\\" .. outputDir .. "\\%{prj.name}\\ --recursive")
 
 	filter "configurations:Debug"
 		defines
@@ -207,8 +210,3 @@ project "Durio"
 	filter "configurations:Distribution"
 		defines "DURIAN_DIST"
 		optimize "On"
-
-	postbuildcommands
-	{
-		"{COPYFILE} dev-assets/* bin/" .. outputDir .. "/%{prj.name}/"
-	}

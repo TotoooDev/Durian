@@ -1,3 +1,5 @@
+require "Durian/TransformComponent"
+
 Durian =
 {
     Transform =
@@ -26,7 +28,7 @@ Durian =
     {
         -- I copied all of this from the Durian source by hand and now I want to fucking die
         DURIAN_SCANCODE_UNKNOWN = 0,
-        DURIAN_SCANCODE_A = 4.0,
+        DURIAN_SCANCODE_A = 4,
         DURIAN_SCANCODE_B = 5,
         DURIAN_SCANCODE_C = 6,
         DURIAN_SCANCODE_D = 7,
