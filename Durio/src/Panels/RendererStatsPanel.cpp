@@ -9,6 +9,7 @@ namespace Durian
     {
         ImGui::Begin("Renderer stats");
         RendererStats stats = Renderer::GetRendererStats();
+        ImGui::Text("%f FPS", (1.0f / stats.FrameTime) * 1000.0f);
         ImGui::Text("Render time: %fms", stats.FrameTime);
         ImGui::Text("Num vertices: %d", stats.NumVertices);
         ImGui::Text("Num indices: %d", stats.NumIndices);

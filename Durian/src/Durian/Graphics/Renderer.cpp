@@ -59,7 +59,7 @@ namespace Durian
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		#ifdef DURIAN_DEBUG
-			m_Stats.FrameTime = m_Timer.ElapsedMillis();
+			m_Stats.FrameTime = m_Timer.ElapsedMilliseconds();
 			m_Stats.NumIndices = 0;
 			m_Stats.NumVertices = 0;
 			m_Timer.Reset();

@@ -114,18 +114,69 @@ project "Durian"
 		optimize "On"
 
 
+project "DurianLua"
+	location "DurianLua"
+	kind "SharedLib"
+	language "C"
+
+	targetname ("Durian")
+	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
+	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.hpp",
+		"%{prj.name}/src/**.c",
+		"%{prj.name}/src/**.cpp"
+	}
+
+	includedirs
+	{
+		"DurianLua/src",
+		"Durian/src",
+		"Durian/src/Durian"
+	}
+
+	libdirs
+	{
+		"libs"
+	}
+
+	postbuildcommands ("cp ../bin/" .. outputDir .. "/%{prj.name}/libDurian.so ../bin/Debug-linux-x86_64/Durio --recursive")
+
+	filter "configurations:Debug"
+		defines
+		{
+			"DURIAN_DEBUG",
+			"DURIAN_DO_ASSERT",
+			"DURIAN_OPENGL_DEBUG"
+		}
+		symbols "On"
+
+	filter "configurations:Release"
+		defines
+		{
+			"DURIAN_DEBUG",
+			"DURIAN_DO_ASSERT"
+		}
+		optimize "On"
+
+	filter "configurations:Distribution"
+		defines "DURIAN_DIST"
+		optimize "On"
+
 
 project "Durio"
 	location "Durio"
 	kind "ConsoleApp"
-	language "C++"
+	language "C"
 
 	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
 	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
 
 	debugdir ("bin/" .. outputDir .. "/%{prj.name}")
 
-	
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -188,7 +239,11 @@ project "Durio"
             "vorbis",
             "vorbisfile"
 		}
-		postbuildcommands ("cp ..\\dev-assets ..\\bin\\" .. outputDir .. "\\%{prj.name}\\ --recursive")
+		postbuildcommands
+		{
+			"cp ../dev-assets/* ../bin/" .. outputDir .. "/%{prj.name} --recursive",
+			"cp ../bin/Debug-linux-x86_64/DurianLua/libDurian.so ../bin/" .. outputDir .. "/%{prj.name} --recursive"
+		}
 
 	filter "configurations:Debug"
 		defines
@@ -210,19 +265,3 @@ project "Durio"
 	filter "configurations:Distribution"
 		defines "DURIAN_DIST"
 		optimize "On"
-
-project "Malvales"
-	location "Malvales"
-	kind "SharedLib"
-	language "C"
-
-	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
-	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.hpp",
-		"%{prj.name}/src/**.c",
-		"%{prj.name}/src/**.cpp"
-	}
