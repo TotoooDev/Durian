@@ -41,20 +41,6 @@ namespace Durian
 	{
 		if (*runtime)
 		{
-			// Execute scripts
-			auto scriptView = m_Registry.view<ScriptComponent>();
-			for (auto&& [id, script] : scriptView.each())
-			{
-				if (!script.Script.WasStarted())
-					script.Script.OnStart();
-				script.Script.OnUpdate(timestep);
-				if (m_Registry.any_of<TransformComponent>(id))
-				{
-					auto& transform = m_Registry.get<TransformComponent>(id);
-					script.Script.GetTransformComponent(&transform);
-				}
-			}
-
 			// Sounds
 			auto listenerView = m_Registry.view<SoundListenerComponent>();
 			for (auto&& [id, listener] : listenerView.each())

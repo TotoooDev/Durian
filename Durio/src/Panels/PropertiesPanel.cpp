@@ -1,5 +1,6 @@
 #include <pch.h>
 #include <Panels/PropertiesPanel.h>
+#include <Durian/Scene/Entity.h>
 
 namespace Durian
 {
@@ -56,12 +57,6 @@ namespace Durian
 					m_SelectedEntity->AddComponent<SoundListenerComponent>();
 				ImGui::EndMenu();
 			}
-			if (ImGui::BeginMenu("Scripting"))
-			{
-				if (ImGui::MenuItem("Lua Script"))
-					m_SelectedEntity->AddComponent<ScriptComponent>(*m_SelectedEntity);
-				ImGui::EndMenu();
-			}
 			ImGui::EndPopup();
 		}
 	}
@@ -113,29 +108,6 @@ namespace Durian
 					std::string path = dialog.GetFileName();
 					if (!path.empty())
 						spriteComp.Tex = CreateRef<Texture>(path);
-				}
-				ImGui::TreePop();
-			}
-		}
-
-		if (m_SelectedEntity->HasComponent<ScriptComponent>())
-		{
-			if (ImGui::TreeNodeEx("Script", flags))
-			{
-				auto& scriptComp = m_SelectedEntity->GetComponent<ScriptComponent>();
-				DisplayRemoveComponent<ScriptComponent>();
-				ImGui::Text("Path: %s", scriptComp.ScriptPath.c_str());
-				if (ImGui::Button("Recompile script"))
-					scriptComp.Script.Recompile();
-				if (ImGui::Button("Select file..."))
-				{
-					FileDialog dialog(FileDialogAction::Open, FileDialog::GetLuaScriptFilter());
-					std::string path = dialog.GetFileName();
-					if (!path.empty())
-					{
-						m_SelectedEntity->RemoveComponent<ScriptComponent>();
-						m_SelectedEntity->AddComponent<ScriptComponent>(*m_SelectedEntity, path);
-					}
 				}
 				ImGui::TreePop();
 			}
