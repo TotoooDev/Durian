@@ -134,16 +134,28 @@ project "DurianLua"
 	includedirs
 	{
 		"DurianLua/src",
+		"DurianLua/src/vendor",
 		"Durian/src",
 		"Durian/src/Durian"
 	}
 
-	libdirs
+	links
 	{
-		"libs"
+		"lua54"
 	}
 
-	postbuildcommands ("cp ../bin/" .. outputDir .. "/%{prj.name}/libDurian.so ../bin/Debug-linux-x86_64/Durio --recursive")
+	filter "system:windows"
+		libdirs
+		{
+			"libs/windows"
+		}
+		links
+		{
+			"lua54"
+		}
+
+	filter "system:linux"
+		postbuildcommands ("cp ../bin/" .. outputDir .. "/%{prj.name}/libDurian.so ../bin/Debug-linux-x86_64/Durio --recursive")
 
 	filter "configurations:Debug"
 		defines
