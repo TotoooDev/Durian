@@ -38,15 +38,7 @@ project "Durian"
 		"Durian/src/vendor"
 	}
 
-	libdirs
-	{
-		"libs"
-	}
-
-	defines
-	{
-		"GLEW_NO_GLU"
-	}
+	defines ("GLEW_NO_GLU")
 
 	pchheader "pch.h"
 	pchsource "Durian/src/pch.cpp"
@@ -58,10 +50,8 @@ project "Durian"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
-		libdirs
-		{
-			"libs/windows"
-		}
+		libdirs ("libs/windows")
+
 		links
 		{
 			"Comdlg32",
@@ -70,7 +60,6 @@ project "Durian"
 			"SDL2main",
 			"glew32",
 			"opengl32",
-			"lua54",
 			"OpenAL32",
 			"sndfile"
 		}
@@ -79,13 +68,15 @@ project "Durian"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
+		libdirs ("libs/linux")
+
 		links
 		{
+			"m",
 			"SDL2",
 			"SDL2main",
 			"GLEW",
 			"GL",
-			"lua",
 			"openal",
 			"sndfile",
             "vorbis",
@@ -139,23 +130,20 @@ project "DurianLua"
 		"Durian/src/Durian"
 	}
 
-	links
-	{
-		"lua54"
-	}
-
 	filter "system:windows"
-		libdirs
-		{
-			"libs/windows"
-		}
+		libdirs ("libs/windows")
 		links
 		{
 			"lua54"
 		}
 
 	filter "system:linux"
-		postbuildcommands ("cp ../bin/" .. outputDir .. "/%{prj.name}/libDurian.so ../bin/Debug-linux-x86_64/Durio --recursive")
+		libdirs ("libs/linux")
+		postbuildcommands
+		{
+			"mv ../bin/" .. outputDir .. "/%{prj.name}/libDurian.so ../bin/" .. outputDir .. "/%{prj.name}/Durian.so",
+			"cp ../bin/" .. outputDir .. "/%{prj.name}/Durian.so ../bin/Debug-linux-x86_64/Durio --recursive"
+		}
 
 	filter "configurations:Debug"
 		defines
@@ -182,7 +170,7 @@ project "DurianLua"
 project "Durio"
 	location "Durio"
 	kind "ConsoleApp"
-	language "C"
+	language "C++"
 
 	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
 	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
@@ -207,17 +195,15 @@ project "Durio"
 	
 	links
 	{
-		"Durian",
+		"Durian"
 	}
 	
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
-		libdirs
-		{
-			"libs/windows"
-		}
+		libdirs ("libs/windows")
+
 		links
 		{
 			"SDL2",
@@ -225,7 +211,6 @@ project "Durio"
 			"SDL2_mixer",
 			"glew32",
 			"opengl32",
-			"lua54",
 			"OpenAL32",
 			"sndfile"
 		}
@@ -235,17 +220,14 @@ project "Durio"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
-		libdirs
-		{
-			"libs/linux"
-		}
+		libdirs ("libs/linux")
+
 		links
 		{
 			"SDL2",
 			"SDL2main",
 			"GLEW",
 			"GL",
-			"lua",
 			"openal",
 			"sndfile",
             "vorbis",
@@ -254,7 +236,6 @@ project "Durio"
 		postbuildcommands
 		{
 			"cp ../dev-assets/* ../bin/" .. outputDir .. "/%{prj.name} --recursive",
-			"cp ../bin/Debug-linux-x86_64/DurianLua/libDurian.so ../bin/" .. outputDir .. "/%{prj.name} --recursive"
 		}
 
 	filter "configurations:Debug"
