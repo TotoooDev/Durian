@@ -8,6 +8,8 @@
 #include <Utils/FileManagement.h>
 #include <EditorSink.h>
 
+#include <Durian/Scene/Script.h>
+
 namespace Durian
 {
     EditorLayer::EditorLayer()
@@ -34,6 +36,9 @@ namespace Durian
         m_Viewport = ViewportPanel(m_Framebuffer, &m_ViewportSize, &(m_EditorCamera.Hovered));
 		m_SceneView = ScenePanel(&m_Scene, m_SelectedEntity);
         m_ComponentsView = PropertiesPanel(m_SelectedEntity);
+
+        LuaScript script("Script.lua");
+        script.OnStart();
 	}
 
 	void EditorLayer::OnUpdate(double timestep)

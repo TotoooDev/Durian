@@ -72,7 +72,6 @@ project "Durian"
 
 		links
 		{
-			"m",
 			"SDL2",
 			"SDL2main",
 			"GLEW",
@@ -80,7 +79,8 @@ project "Durian"
 			"openal",
 			"sndfile",
             "vorbis",
-            "vorbisfile"
+            "vorbisfile",
+			"lua"
 		}
 
 	filter "configurations:Debug"
@@ -117,9 +117,7 @@ project "DurianLua"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.hpp",
-		"%{prj.name}/src/**.c",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.c"
 	}
 
 	includedirs
@@ -139,6 +137,7 @@ project "DurianLua"
 
 	filter "system:linux"
 		libdirs ("libs/linux")
+		links ("lua")
 		postbuildcommands
 		{
 			"mv ../bin/" .. outputDir .. "/%{prj.name}/libDurian.so ../bin/" .. outputDir .. "/%{prj.name}/Durian.so",
@@ -231,7 +230,8 @@ project "Durio"
 			"openal",
 			"sndfile",
             "vorbis",
-            "vorbisfile"
+            "vorbisfile",
+			"lua"
 		}
 		postbuildcommands
 		{
