@@ -57,6 +57,12 @@ namespace Durian
 					m_SelectedEntity->AddComponent<SoundListenerComponent>();
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Scripting"))
+			{
+				if (ImGui::MenuItem("Lua script"))
+					m_SelectedEntity->AddComponent<ScriptComponent>("", m_SelectedEntity);
+				ImGui::EndMenu();
+			}
 			ImGui::EndPopup();
 		}
 	}
@@ -200,6 +206,35 @@ namespace Durian
 
 				 if (modified > 0)
 					camComp.Cam.UpdateMatrices();
+
+				ImGui::TreePop();
+			}
+		}
+
+		if (m_SelectedEntity->HasComponent<ScriptComponent>())
+		{
+			if (ImGui::TreeNodeEx("Lua script", flags))
+			{
+				auto& scriptComp = m_SelectedEntity->GetComponent<ScriptComponent>();
+				DisplayRemoveComponent<ScriptComponent>();
+
+				if (ImGui::Button("Open Lua file..."))
+				{
+					FileDialog dialog(FileDialogAction::Open, FileDialog::GetLuaScriptFilter());
+					std::string path = dialog.GetFileName();
+					if (!path.empty())
+					{
+						scriptComp.Script.SetPath(path);
+						scriptComp.Script.Recompile();
+					}
+				}
+
+				if (!scriptComp.Script.GetPath().empty())
+				{
+					if (ImGui::Button("Recompile"))
+						scriptComp.Script.Recompile();
+					ImGui::Text(scriptComp.Script.GetPath().c_str());
+				}
 
 				ImGui::TreePop();
 			}

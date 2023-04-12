@@ -140,7 +140,11 @@ namespace Durian
 			if (path != nullptr)
 			{
 				m_FilePath = path;
+				std::string cwd = std::filesystem::current_path();
+				m_RelativePath = m_FilePath.substr(m_FilePath.find_first_not_of(cwd));
 				DURIAN_LOG_INFO("Opening {}", m_FilePath);
+				DURIAN_LOG_INFO("Opening {}", m_RelativePath);
+				DURIAN_LOG_INFO("cwd {}", cwd);
 			}
 		#endif
 	}

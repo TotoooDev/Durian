@@ -3,6 +3,7 @@
 #include <Durian/Graphics/Texture.h>
 #include <Durian/Graphics/Camera.h>
 #include <Durian/Audio/Sound.h>
+#include <Durian/Scene/Script.h>
 #include <string>
 #include <queue>
 #include <glm/glm.hpp>
@@ -83,5 +84,13 @@ namespace Durian
 
 		SoundListenerComponent() {}
 		SoundListenerComponent(const SoundListenerComponent&) = default;
+	};
+
+	struct ScriptComponent
+	{
+		LuaScript Script;
+		ScriptComponent(const std::string& path, Entity* ent)
+			: Script(path, ent) {}
+		ScriptComponent(const ScriptComponent&) = default;
 	};
 }

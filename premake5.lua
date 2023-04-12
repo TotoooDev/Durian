@@ -117,7 +117,9 @@ project "DurianLua"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.c"
+		"%{prj.name}/src/**.hpp",
+		"%{prj.name}/src/**.c",
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
@@ -125,6 +127,7 @@ project "DurianLua"
 		"DurianLua/src",
 		"DurianLua/src/vendor",
 		"Durian/src",
+		"Durian/src/vendor",
 		"Durian/src/Durian"
 	}
 
