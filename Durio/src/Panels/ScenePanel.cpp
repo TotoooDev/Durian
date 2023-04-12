@@ -1,5 +1,6 @@
 #include <pch.h>
 #include <Panels/ScenePanel.h>
+#include <Durian/Scene/Entity.h>
 
 namespace Durian
 {

@@ -8,6 +8,8 @@
 #include <Utils/FileManagement.h>
 #include <EditorSink.h>
 
+#include <Durian/Scene/Script.h>
+
 namespace Durian
 {
     EditorLayer::EditorLayer()

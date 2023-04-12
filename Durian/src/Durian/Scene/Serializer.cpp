@@ -1,6 +1,7 @@
 #include <pch.h>
 #include <Durian/Scene/Serializer.h>
 #include <Durian/Scene/Components.h>
+#include <Durian/Scene/Entity.h>
 #include <nlohmann/json.hpp>
 #include <fstream>
 
@@ -114,12 +115,6 @@ namespace Durian
 			entityJson["sound_listener"]["listen"] = listenComp.Listen;
 			entityJson["sound_listener"]["ignore_distance"] = listenComp.IgnoreDistance;
 		}
-
-		if (entity.HasComponent<ScriptComponent>())
-		{
-			auto& scriptComp = entity.GetComponent<ScriptComponent>();
-			entityJson["script"]["path"] = scriptComp.ScriptPath;
-		}
 	}
 	void Serializer::DeserializeEntity(Entity& entity, nlohmann::json& entityJson)
 	{
@@ -193,11 +188,6 @@ namespace Durian
 			auto& listenComp = entity.AddComponent<SoundListenerComponent>();
 			listenComp.Listen = entityJson["sound_listener"]["listen"];
 			listenComp.IgnoreDistance = entityJson["sound_listener"]["ignore_distance"];
-		}
-
-		if (entityJson.contains("script"))
-		{
-			entity.AddComponent<ScriptComponent>(entity, entityJson["script"]["path"]);
 		}
 	}
 

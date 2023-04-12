@@ -39,5 +39,6 @@ namespace Durian
 		FileDialogAction m_Action;
 		FileDialogFilter m_Filter;
 		std::string m_FilePath;
+		std::string m_RelativePath;
 	};
 }

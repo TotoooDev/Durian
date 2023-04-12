@@ -1,67 +1,33 @@
 #pragma once
 #include <Durian/Scene/Entity.h>
-#include <Durian/Scene/Scene.h>
-#include <Durian/Event/Events.h>
-extern "C"
-{
-    #include "Lua/lua.h"
-    #include "Lua/lauxlib.h"
-    #include "Lua/lualib.h"
-}
+#include <lua.hpp>
 #include <string>
 
 namespace Durian
 {
-    struct TransformComponent;
-
     class LuaScript
     {
     public:
-        LuaScript(Entity ent, const std::string& filePath = "");
+        LuaScript(const std::string& path, Entity* entity);
         ~LuaScript();
-        
-        void OnStart();
-        void OnUpdate(float timestep);
 
+        std::string GetPath() { return m_Path; }
+        bool HasStarted() { return m_HasStarted; }
+
+        void SetPath(const std::string& path) { m_Path = path; }
         void Recompile();
 
-        void GetTransformComponent(TransformComponent* comp);
-        bool WasStarted() { return m_WasStarted; }
+        void OnStart();
+        void OnUpdate(double timestep);
+        void OnEnd();
 
     private:
         void Create();
-        void SetCppFunctions();
         bool CheckLua(int r);
 
-        bool m_WasStarted = false;
-
-        lua_State* m_State;
+        lua_State* m_State = nullptr;
+        Entity* m_Ent;
         std::string m_Path;
-
-        struct UserData
-        {
-            Scene* CurrentScene;
-            Entity Ent;
-
-            int KeyDown = 0, KeyUp = 0;
-
-            int MouseX = 0, MouseY = 0;
-            int ButtonDown = 0, ButtonUp = 0;
-            float ScrollX = 0.0f, ScrollY = 0.0f;
-
-            int WindowX = 0, WindowY = 0;
-            int WindowWidth = 0, WindowHeight = 0;
-        } m_UserData;
-
-        void OnKeyDown(KeyDownEvent* event);
-        void OnKeyUp(KeyUpEvent* event);
-
-        void OnMouseMoved(MouseMovedEvent* event);
-        void OnMouseButtonDown(MouseButtonDownEvent* event);
-        void OnMouseButtonUp(MouseButtonUpEvent* event);
-        void OnMouseScrolled(MouseScrolledEvent* event);
-
-        void OnWindowMoved(WindowMovedEvent* event);
-        void OnWindowResized(WindowResizedEvent* event);
+        bool m_HasStarted;
     };
 }

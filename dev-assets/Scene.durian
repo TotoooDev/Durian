@@ -49,7 +49,7 @@
                         {
                             "loop": false,
                             "name": "Bonk",
-                            "path": "C:\\Dev\\Projects\\Durian\\bin\\Debug-windows-x86_64\\Durio\\sounds\\bonk.mp3",
+                            "path": "sounds/bonk.mp3",
                             "volume": 1.0
                         }
                     ],
@@ -64,7 +64,7 @@
                         "z": 0.0
                     },
                     "draw": true,
-                    "path": "C:\\Dev\\Projects\\Durian\\bin\\Debug-windows-x86_64\\Durio\\sprites\\default.png",
+                    "path": "sprites/default.png",
                     "use_color": false
                 },
                 "tag": {
