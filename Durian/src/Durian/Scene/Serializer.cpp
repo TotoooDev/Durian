@@ -115,6 +115,12 @@ namespace Durian
 			entityJson["sound_listener"]["listen"] = listenComp.Listen;
 			entityJson["sound_listener"]["ignore_distance"] = listenComp.IgnoreDistance;
 		}
+
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			auto& scriptComp = entity.GetComponent<ScriptComponent>();
+			entityJson["lua_script"]["path"] = scriptComp.Script.GetPath();
+		}
 	}
 	void Serializer::DeserializeEntity(Entity& entity, nlohmann::json& entityJson)
 	{
@@ -188,6 +194,11 @@ namespace Durian
 			auto& listenComp = entity.AddComponent<SoundListenerComponent>();
 			listenComp.Listen = entityJson["sound_listener"]["listen"];
 			listenComp.IgnoreDistance = entityJson["sound_listener"]["ignore_distance"];
+		}
+
+		if (entityJson.contains("lua_script"))
+		{
+			auto& scriptComp = entity.AddComponent<ScriptComponent>(entityJson["lua_script"]["path"], entity);
 		}
 	}
 

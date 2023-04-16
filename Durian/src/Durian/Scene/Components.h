@@ -89,7 +89,7 @@ namespace Durian
 	struct ScriptComponent
 	{
 		LuaScript Script;
-		ScriptComponent(const std::string& path, Entity* ent)
+		ScriptComponent(const std::string& path, Entity ent)
 			: Script(path, ent) {}
 		ScriptComponent(const ScriptComponent&) = default;
 	};

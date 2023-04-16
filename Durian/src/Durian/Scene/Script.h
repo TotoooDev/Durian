@@ -8,7 +8,7 @@ namespace Durian
     class LuaScript
     {
     public:
-        LuaScript(const std::string& path, Entity* entity);
+        LuaScript(const std::string& path, Entity entity);
         ~LuaScript();
 
         std::string GetPath() { return m_Path; }
@@ -26,7 +26,7 @@ namespace Durian
         bool CheckLua(int r);
 
         lua_State* m_State = nullptr;
-        Entity* m_Ent;
+        Entity m_Ent;
         std::string m_Path;
         bool m_HasStarted;
     };

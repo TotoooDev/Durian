@@ -60,7 +60,7 @@ namespace Durian
 			if (ImGui::BeginMenu("Scripting"))
 			{
 				if (ImGui::MenuItem("Lua script"))
-					m_SelectedEntity->AddComponent<ScriptComponent>("", m_SelectedEntity);
+					m_SelectedEntity->AddComponent<ScriptComponent>("", *m_SelectedEntity);
 				ImGui::EndMenu();
 			}
 			ImGui::EndPopup();

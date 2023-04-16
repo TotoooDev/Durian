@@ -3,6 +3,7 @@
 
 #include "Log.h"
 #include "Entity.h"
+#include "Transform.h"
 
 extern "C"
 {
@@ -15,6 +16,11 @@ extern "C"
 
 		// Entity
 		{"GetID", Entity_GetID},
+
+		// Transform
+		{"HasTransform", HasTransform},
+		{"AttachTransform", AttachTransform},
+		{"GetTransform", GetTransform},
 
 		{NULL, NULL}
 	};

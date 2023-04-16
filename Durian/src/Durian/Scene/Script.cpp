@@ -4,7 +4,7 @@
 
 namespace Durian
 {
-    LuaScript::LuaScript(const std::string& path, Entity* entity)
+    LuaScript::LuaScript(const std::string& path, Entity entity)
         : m_Path(path), m_Ent(entity)
     {
         if (!path.empty())
@@ -13,9 +13,9 @@ namespace Durian
 
     LuaScript::~LuaScript()
     {
-        OnEnd();
-        if (m_State != nullptr)
-            lua_close(m_State);
+        // OnEnd();
+        // if (m_State != nullptr)
+        //     lua_close(m_State);
     }
 
     void LuaScript::Recompile()
@@ -59,7 +59,7 @@ namespace Durian
         CheckLua(luaL_dofile(m_State, m_Path.c_str()));
 
         // Pass the entity as a global variable in the script
-        lua_pushlightuserdata(m_State, m_Ent);
+        lua_pushlightuserdata(m_State, &m_Ent);
         lua_setglobal(m_State, "DurianEntity");
     }
 

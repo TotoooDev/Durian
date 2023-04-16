@@ -2,47 +2,8 @@
     "scene": {
         "entities": [
             {
-                "ortho_cam": {
-                    "cam": {
-                        "far": 1.0,
-                        "near": -1.0,
-                        "x_max": 688.5,
-                        "x_min": -688.5,
-                        "y_max": -484.5,
-                        "y_min": 484.5
-                    },
-                    "primary": true,
-                    "resizable": true,
-                    "use": true
-                },
-                "sound_listener": {
-                    "ignore_distance": false,
-                    "listen": true
-                },
-                "tag": {
-                    "tag": "Camera"
-                },
-                "transform": {
-                    "rotation": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    },
-                    "translation": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0
-                    }
-                }
-            },
-            {
-                "script": {
-                    "path": "lua/Script.lua"
+                "lua_script": {
+                    "path": "/home/totoenf5/Documents/Dev/Durian/bin/Debug-linux-x86_64/Durio/Script.lua"
                 },
                 "sound_emitter": {
                     "attached_sounds": [
@@ -80,6 +41,45 @@
                         "x": 64.0,
                         "y": 64.0,
                         "z": 0.0
+                    },
+                    "translation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    }
+                }
+            },
+            {
+                "ortho_cam": {
+                    "cam": {
+                        "far": 1.0,
+                        "near": -1.0,
+                        "x_max": 1377.0,
+                        "x_min": 0.0,
+                        "y_max": 716.0,
+                        "y_min": 0.0
+                    },
+                    "primary": true,
+                    "resizable": true,
+                    "use": true
+                },
+                "sound_listener": {
+                    "ignore_distance": false,
+                    "listen": true
+                },
+                "tag": {
+                    "tag": "Camera"
+                },
+                "transform": {
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
                     },
                     "translation": {
                         "x": 0.0,

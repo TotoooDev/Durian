@@ -175,6 +175,7 @@ namespace Durian
             m_Viewport.SetTitle("Viewport");
 
             // Reload scene
+            // TODO: Instead of reloading the scene from the file, it should store a copy of the scene in memory and restore it
             if (!m_ScenePath.empty())
             {
                 m_Scene = Scene();

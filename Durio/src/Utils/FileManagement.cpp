@@ -139,12 +139,11 @@ namespace Durian
 			const char* path =  tinyfd_openFileDialog("Open file...", ".", m_Filter.NumFilters, m_Filter.Filter.data(), nullptr, 0);
 			if (path != nullptr)
 			{
+				// TODO: make the relative path work
 				m_FilePath = path;
 				std::string cwd = std::filesystem::current_path();
 				m_RelativePath = m_FilePath.substr(m_FilePath.find_first_not_of(cwd));
 				DURIAN_LOG_INFO("Opening {}", m_FilePath);
-				DURIAN_LOG_INFO("Opening {}", m_RelativePath);
-				DURIAN_LOG_INFO("cwd {}", cwd);
 			}
 		#endif
 	}
