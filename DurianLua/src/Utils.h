@@ -8,7 +8,7 @@ extern "C"
     Durian::Entity* GetEntity(lua_State* L)
     {
         lua_getglobal(L, "DurianEntity");
-        Durian::Entity* ent =  (Durian::Entity*)lua_touserdata(L, -1);
+        Durian::Entity* ent = (Durian::Entity*)lua_touserdata(L, -1);
         lua_pop(L, 1);
         return ent;
     }
