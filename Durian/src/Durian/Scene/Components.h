@@ -13,7 +13,7 @@ namespace Durian
 {
     struct TagComponent
 	{
-		std::string Tag;
+		std::string Tag = nullptr;
 
 		TagComponent(const std::string& tag = "")
 			: Tag(tag) {}

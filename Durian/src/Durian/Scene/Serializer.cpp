@@ -56,7 +56,7 @@ namespace Durian
 		if (entity.HasComponent<TagComponent>())
 		{
 			auto& tagComp = entity.GetComponent<TagComponent>();
-			entityJson["tag"]["tag"] = tagComp.Tag;
+			entityJson["tag"]["tag"] = tagComp.Tag.c_str();
 		}
 
 		if (entity.HasComponent<TransformComponent>())

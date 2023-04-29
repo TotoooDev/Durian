@@ -1,5 +1,6 @@
 #pragma once
 #include <lua.hpp>
+#include <Durian/Scene/Components.h>
 #include "Utils.h"
 
 extern "C"
@@ -31,12 +32,13 @@ extern "C"
     {
         Durian::Entity* ent = GetEntity(L);
         Durian::TagComponent* tag = (Durian::TagComponent*)lua_newuserdata(L, sizeof(Durian::TagComponent));
+        **(&tag) = Durian::TagComponent();
 
         luaL_getmetatable(L, "Durian.Tag");
         lua_setmetatable(L, -2);
 
         Durian::TagComponent comp = ent->GetComponent<Durian::TagComponent>();
-        tag->Tag = comp.Tag;
+        *tag = comp;
         return 1;
     }
 

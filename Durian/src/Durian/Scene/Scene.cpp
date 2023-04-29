@@ -26,17 +26,6 @@ namespace Durian
 		m_Registry.destroy(entity.m_Identifier);
 	}
 
-	Entity Scene::GetEntityByName(const std::string& tag)
-	{
-		auto view = m_Registry.view<TagComponent>();
-		for (auto&& [id, entityTag] : view.each()) // Ew
-		{
-			if (tag == entityTag.Tag)
-				return Entity(id, this);
-		}
-		return Entity(entt::null, nullptr);
-	}
-
 	void Scene::UpdateScene(double timestep, bool* runtime)
 	{
 		if (*runtime)
