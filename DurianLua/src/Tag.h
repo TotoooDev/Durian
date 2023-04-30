@@ -15,9 +15,8 @@ extern "C"
     static int TagAttach(lua_State* L)
     {
         Durian::Entity* ent = GetEntity(L);
-        Durian::TagComponent* tag = CheckTag(L);
         const char* name = luaL_checkstring(L, 1);
-        *tag = ent->AddComponent<Durian::TagComponent>(name);
+        ent->AddComponent<Durian::TagComponent>(name);
         return 0;
     }
 
@@ -32,7 +31,9 @@ extern "C"
     {
         Durian::Entity* ent = GetEntity(L);
         Durian::TagComponent* tag = (Durian::TagComponent*)lua_newuserdata(L, sizeof(Durian::TagComponent));
-        **(&tag) = Durian::TagComponent();
+        // Lua allocates memory for the userdata but does not call the constructor of TagComponent
+        // so we need to recreate one in the allocated memory space to call the constructor
+        new(tag) Durian::TagComponent();
 
         luaL_getmetatable(L, "Durian.Tag");
         lua_setmetatable(L, -2);
@@ -56,7 +57,13 @@ extern "C"
         const char* value = luaL_checkstring(L, 3);
 
         if (strcmp(index, "Tag") == 0)
+        {
             tag->Tag = value;
+            Durian::Entity* ent = GetEntity(L);
+            Durian::TagComponent comp = ent->GetComponent<Durian::TagComponent>();
+            comp = *tag;
+            // FIXME: The change does not appear in the scene and properties panels
+        }
         else
             printf("bad argument, expedcted 'Tag' but got %s\n", index);
 

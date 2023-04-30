@@ -29,6 +29,7 @@ static int LogInfo(lua_State* L)
     }
     return 0;
 }
+
 static int LogWarn(lua_State* L)
 {
     if (lua_gettop(L) < 1)
@@ -54,6 +55,7 @@ static int LogWarn(lua_State* L)
     }
     return 0;
 }
+
 static int LogError(lua_State* L)
 {
     if (lua_gettop(L) < 1)

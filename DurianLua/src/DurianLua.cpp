@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "Entity.h"
 #include "Tag.h"
+#include "Transform.h"
 
 #ifdef DURIAN_WINDOWS
 	#define DURIAN_DLL __dllexport
@@ -30,12 +31,18 @@ extern "C"
 		{ "AttachTag", TagAttach },
 		{ "DetachTag", TagDetach },
 
-		{NULL, NULL}
+		// Transform
+		{ "GetTransform", TransformGet },
+		{ "AttachTransform", TransformAttach },
+		{ "DetachTransform", TransformDetach },
+
+		{ nullptr, nullptr }
 	};
 
 	DURIAN_DLL int luaopen_Durian(lua_State* L)
 	{
 		RegisterTag(L);
+		RegisterTransform(L);
 		luaL_newlib(L, lib_Durian);
 		return 1;
 	}
