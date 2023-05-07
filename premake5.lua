@@ -19,6 +19,7 @@ project "Durian"
 	location "Durian"
 	kind "StaticLib"
 	language "C++"
+	cppdialect "C++17"
 	
 	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
 	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
@@ -47,7 +48,6 @@ project "Durian"
 		flags "NoPCH"
 
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 		libdirs ("libs/windows")
@@ -65,7 +65,6 @@ project "Durian"
 		}
 
 	filter "system:linux"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 		libdirs ("libs/linux")
@@ -109,6 +108,7 @@ project "DurianLua"
 	location "DurianLua"
 	kind "SharedLib"
 	language "C"
+	cppdialect "C++17"
 
 	targetname ("Durian")
 	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
@@ -173,6 +173,7 @@ project "Durio"
 	location "Durio"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
 
 	targetdir ("bin/" .. outputDir .. "/%{prj.name}")
 	objdir ("bin-intermediate/" .. outputDir .. "/%{prj.name}")
@@ -201,7 +202,6 @@ project "Durio"
 	}
 	
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 		libdirs ("libs/windows")
@@ -214,12 +214,12 @@ project "Durio"
 			"glew32",
 			"opengl32",
 			"OpenAL32",
-			"sndfile"
+			"sndfile",
+			"lua54"
 		}
 		postbuildcommands ("xcopy ..\\dev-assets ..\\bin\\" .. outputDir .. "\\%{prj.name}\\ /s /e /y /i")
 
 	filter "system:linux"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 		libdirs ("libs/linux")
