@@ -1,6 +1,6 @@
 #pragma once
 #include <Durian/Scene/Entity.h>
-#include <lua.hpp>
+#include <Lua/lua.hpp>
 #include <string>
 
 namespace Durian

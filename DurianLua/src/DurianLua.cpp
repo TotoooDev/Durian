@@ -8,7 +8,7 @@
 #include "Transform.h"
 
 #ifdef DURIAN_WINDOWS
-	#define DURIAN_DLL __dllexport
+	#define DURIAN_DLL __declspec(dllexport)
 #else
 	#define DURIAN_DLL 
 #endif
@@ -38,7 +38,7 @@ extern "C"
 
 		{ nullptr, nullptr }
 	};
-
+	
 	DURIAN_DLL int luaopen_Durian(lua_State* L)
 	{
 		RegisterTag(L);
