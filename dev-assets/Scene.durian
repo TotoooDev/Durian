@@ -3,7 +3,7 @@
         "entities": [
             {
                 "lua_script": {
-                    "path": "/home/totoenf5/Documents/Dev/Durian/bin/Debug-linux-x86_64/Durio/Script.lua"
+                    "path": "Script.lua"
                 },
                 "sound_emitter": {
                     "attached_sounds": [
