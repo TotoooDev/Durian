@@ -42,7 +42,8 @@ namespace Durian
 
 	Application::~Application()
 	{
-
+		delete m_ImGuiLayer;
+		delete m_Instance;
 	}
 
 	Application& Application::Get()

@@ -46,7 +46,18 @@ namespace Durian
 		m_Framebuffer->Bind();
 		Renderer::Get()->Clear(0.1f, 0.1f, 0.1f);
 
-        m_Scene.CurrentCamera(m_EditorCamera.GetOrthoCamera(), m_EditorCamera.GetViewMatrix());
+        if (m_CurrentCameraID != -1)
+        {
+            Entity ent((entt::entity)m_CurrentCameraID, &m_Scene);
+            OrthoCameraComponent cam = ent.GetComponent<OrthoCameraComponent>();
+            TransformComponent transform = ent.GetComponent<TransformComponent>();
+            m_Scene.CurrentCamera(cam.Cam, glm::lookAt(transform.Translation, transform.Translation + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
+        }
+        else
+        {
+            m_Scene.CurrentCamera(m_EditorCamera.GetOrthoCamera(), m_EditorCamera.GetViewMatrix());
+        }
+
 		m_Scene.UpdateScene(timestep, &m_Runtime);
 	}
 
@@ -80,6 +91,21 @@ namespace Durian
         {
             if (ImGui::MenuItem("Reset camera position"))
                 m_EditorCamera.ResetPos();
+            if (ImGui::BeginMenu("Current camera..."))
+            {
+                if (ImGui::MenuItem("Default editor camera"))
+                    m_CurrentCameraID = -1;
+
+                auto camView = m_Scene.m_Registry.view<OrthoCameraComponent, TransformComponent, TagComponent>();
+                for (auto&& [id, cam, trans, tag] : camView.each())
+                {
+                    Entity ent(id, &m_Scene);
+                    if (ImGui::MenuItem(tag.Tag.c_str()))
+                        m_CurrentCameraID = (unsigned int)id;
+                }
+
+                ImGui::EndMenu();
+            }
             ImGui::EndMenu();
         }
         if (m_Runtime)

@@ -71,21 +71,13 @@ namespace Durian
 				DURIAN_LOG_INFO("SDL info: {0}", SDL_GetError());
 				return;
 			}
-			// int flags = MIX_INIT_FLAC | MIX_INIT_MID | MIX_INIT_MOD | MIX_INIT_MP3 | MIX_INIT_OGG | MIX_INIT_OPUS;
-			// if (Mix_Init(flags) != flags)
-			// {
-			// 	DURIAN_LOG_ERROR("Failed to initialize SDL_Mixer!");
-			// 	DURIAN_LOG_INFO("SDL info: {0}", Mix_GetError());
-			// 	return;
-			// }
-			// Mix_OpenAudio(48000, AUDIO_F32SYS, 2, 2048);
 			g_IsSDLInit = true;
 		}
 	}
 
 	void Window::CreateSDLWindow()
 	{
-		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_MAXIMIZED | SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
+		m_NativeWindow = SDL_CreateWindow(m_Spec.Title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Spec.Width, m_Spec.Height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 		m_Spec.NativeWindow = m_NativeWindow;
 
 		#if defined DURIAN_OPENGL_DEBUG

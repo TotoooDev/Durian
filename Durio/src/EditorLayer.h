@@ -37,6 +37,7 @@ namespace Durian
 		Ref<Framebuffer> m_Framebuffer;
 		Entity* m_SelectedEntity;
 
+		unsigned int m_CurrentCameraID = -1; // ID of the entity that has the camera used in the editor, -1 if we use m_EditorCamera
 		EditorCamera m_EditorCamera;
 		ImVec2 m_ViewportSize;
 

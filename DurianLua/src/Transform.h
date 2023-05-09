@@ -71,7 +71,7 @@ R"({
 
     static int TransformNewIndex(lua_State* L)
     {
-        Durian::TagComponent* tag = CheckTag(L);
+        Durian::TransformComponent* transform = CheckTransform(L);
         const char* index = luaL_checkstring(L, 2);
         const char* value = luaL_checkstring(L, 3);
         return 0;

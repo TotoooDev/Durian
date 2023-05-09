@@ -39,6 +39,7 @@ namespace Durian
 		OrthoCamera m_Cam;
 
 		friend class Entity;
+		friend class EditorLayer;
 		friend class ScenePanel;
 		friend class Serializer;
 	};
