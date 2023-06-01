@@ -44,6 +44,11 @@ namespace Durian
         m_Cam.UpdateMatrices();
     }
 
+    void EditorCamera::SetPos(glm::vec3 pos)
+    {
+        m_View = glm::lookAt(pos, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    }
+
     void EditorCamera::ResetPos()
     {
         m_View = glm::lookAt(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));

@@ -93,19 +93,26 @@ namespace Durian
                 m_EditorCamera.ResetPos();
             if (ImGui::BeginMenu("Current camera..."))
             {
-                if (ImGui::MenuItem("Default editor camera"))
+                if (ImGui::MenuItem("Default editor camera", "", m_CurrentCameraID == -1))
                     m_CurrentCameraID = -1;
 
                 auto camView = m_Scene.m_Registry.view<OrthoCameraComponent, TransformComponent, TagComponent>();
                 for (auto&& [id, cam, trans, tag] : camView.each())
                 {
                     Entity ent(id, &m_Scene);
-                    if (ImGui::MenuItem(tag.Tag.c_str()))
+                    if (ImGui::MenuItem(tag.Tag.c_str(), "", m_CurrentCameraID == (unsigned int)id))
                         m_CurrentCameraID = (unsigned int)id;
                 }
 
                 ImGui::EndMenu();
             }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Help"))
+        {
+            if (ImGui::MenuItem("Documentation"))
+                DURIAN_LOG_INFO("bruh");
+
             ImGui::EndMenu();
         }
         if (m_Runtime)

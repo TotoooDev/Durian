@@ -24,6 +24,7 @@ namespace Durian
 			*m_FramebufferSize = regionAvail;
 		}
 		ImGui::Image((ImTextureID)m_Framebuffer->RetrieveTexture(0), ImGui::GetContentRegionAvail());
+		
 		ImGui::End();
 		ImGui::PopStyleVar();
 	}

@@ -17,7 +17,7 @@ namespace Durian
 		if (!m_SelectedEntity->IsValid())
 		{
 			ImGui::Text("No entity selected");
-			ImGui::Text("Select an entity to diplay its properties");
+			ImGui::Text("Select an entity to display its properties");
 			ImGui::End();
 			return;
 		}
